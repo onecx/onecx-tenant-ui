@@ -3,7 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { addInitializeModuleGuard } from '@onecx/portal-integration-angular';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: 'tenant',
+    loadChildren: () =>
+      import('./tenant/tenant.module').then((mod) => mod.TenantModule),
+  },
+];
 
 @NgModule({
   imports: [
