@@ -1,29 +1,33 @@
 app:
   name: ui
   image:
-    repository: 'onecx/onecx-tenant-ui'
+    repository: onecx/onecx-tenant-ui
   routing:
     enabled: true
     path: /mfe/onecxTenant/
-
   operator:
-    # Microfrontend
     microfrontend:
       enabled: true
       spec:
-        exposedModule: './OnecxTenantModule'
-        description: 'OneCX OnecxTenant Module'
-        note: 'OneCX OnecxTenant UI module auto import via MF operator'
-    # Permission
+        exposedModule: ./OnecxTenantModule
+        description: OneCX OnecxTenant Module
+        note: OneCX OnecxTenant UI module auto import via MF operator
     permission:
       enabled: true
       spec:
         permissions:
-    # Keycloak
+          TENANT:
+            CREATE: Create tenant
+            EDIT: Edit tenant
+            DELETE: Delete tenant
+            SAVE: Update and save tenant
+            IMPORT: Import tenant
+            EXPORT: Export tenant
+            VIEW: View mode for tenant
+            SEARCH: Seaarch tenant
     keycloak:
       client:
         enabled: true
         spec:
           kcConfig:
-            clientId: 'onecx-tenant-ui'
-# PIPE Config
+            clientId: onecx-tenant-ui

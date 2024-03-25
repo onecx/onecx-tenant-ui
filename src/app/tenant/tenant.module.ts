@@ -20,11 +20,13 @@ import {
 } from '@onecx/portal-integration-angular';
 import { CalendarModule } from 'primeng/calendar';
 import { SharedModule } from '../shared/shared.module';
+import { TenantSearchComponent } from './pages/tenant-search/tenant-search.component';
+import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects';
 import { tenantFeature } from './tenant.reducers';
 import { routes } from './tenant.routes';
 
 @NgModule({
-  declarations: [],
+  declarations: [TenantSearchComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -36,7 +38,7 @@ import { routes } from './tenant.routes';
     ReactiveFormsModule,
     CalendarModule,
     StoreModule.forFeature(tenantFeature),
-    EffectsModule.forFeature(),
+    EffectsModule.forFeature([TenantSearchEffects]),
     TranslateModule.forRoot({
       extend: true,
       isolate: false,
