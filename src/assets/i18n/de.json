@@ -31,6 +31,16 @@
       "ORG_ID": "Organisations-Id",
       "TENANT_ID": "Tenant Id",
       "DESCRIPTION": "Beschreibung"
+    },
+    "PREDEFINED_GROUP":{
+      "DEFAULT": "Standard",
+      "EXTENDED": "Erweitert",
+      "FULL": "Vollständig"
+    },
+    "TENANT_GROUP":{
+      "DEFAULT": "Tenant standard",
+      "EXTENDED": "Tenant erweitert",
+      "FULL": "Tenant vollständig"
     }
   }
 }

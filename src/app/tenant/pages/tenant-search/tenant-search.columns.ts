@@ -8,9 +8,9 @@ export const tenantSearchColumns: DataTableColumn[] = [
     filterable: true,
     sortable: true,
     predefinedGroupKeys: [
-      'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
-      'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
+      'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
     ],
   },
   {
@@ -20,9 +20,9 @@ export const tenantSearchColumns: DataTableColumn[] = [
     filterable: true,
     sortable: true,
     predefinedGroupKeys: [
-      'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
-      'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      'TENANT_SEARCH.TENANT_GROUP.DEFAULT',
+      'TENANT_SEARCH.TENANT_GROUP.EXTENDED',
+      'TENANT_SEARCH.TENANT_GROUP.FULL',
     ],
   },
   {
@@ -32,9 +32,9 @@ export const tenantSearchColumns: DataTableColumn[] = [
     filterable: true,
     sortable: true,
     predefinedGroupKeys: [
-      'FEATURE_SEARCH.TENANT_GROUP.DEFAULT',
-      'FEATURE_SEARCH.TENANT_GROUP.EXTENDED',
-      'FEATURE_SEARCH.TENANT_GROUP.FULL',
+      'TENANT_SEARCH.TENANT_GROUP.DEFAULT',
+      'TENANT_SEARCH.TENANT_GROUP.EXTENDED',
+      'TENANT_SEARCH.TENANT_GROUP.FULL',
     ],
   },
   {
@@ -44,9 +44,9 @@ export const tenantSearchColumns: DataTableColumn[] = [
     filterable: true,
     sortable: true,
     predefinedGroupKeys: [
-      'FEATURE_SEARCH.TENANT_GROUP.DEFAULT',
-      'FEATURE_SEARCH.TENANT_GROUP.EXTENDED',
-      'FEATURE_SEARCH.TENANT_GROUP.FULL',
+      'TENANT_SEARCH.TENANT_GROUP.DEFAULT',
+      'TENANT_SEARCH.TENANT_GROUP.EXTENDED',
+      'TENANT_SEARCH.TENANT_GROUP.FULL',
     ],
   },
 ]

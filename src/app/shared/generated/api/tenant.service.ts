@@ -144,7 +144,7 @@ export class TenantBffService {
             }
         }
 
-        let localVarPath = `/tenant/search`;
+        let localVarPath = `/tenants/search`;
         return this.httpClient.request<TenantSearchResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

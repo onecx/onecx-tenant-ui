@@ -265,7 +265,7 @@ export class TenantSearchEffects {
       filterOutOnlyQueryParamsChanged(this.router),
       switchMap(() =>
         this.searchConfigService
-          .getSearchConfigInfos('construction-task-search')
+          .getSearchConfigInfos('tenant-search')
           .pipe(
             map(({ configs }) =>
               TenantSearchActions.searchConfigInfosReceived({

@@ -1,4 +1,4 @@
-const bypassFn = function (req, res) {
+const bypassFn = function (req, res, proxyOptions) {
   try {
     if (req.method === 'OPTIONS') {
       res.setHeader('Allow', 'GET, POST, HEAD, PUT, DELETE, OPTIONS');
@@ -7,12 +7,173 @@ const bypassFn = function (req, res) {
       res.setHeader('Access-Control-Allow-Headers', '*');
       return res.send('');
     } else {
-      return null;
+      console.log('############## REQ ', req.url);
+      if (req.url === '/bff/tenant/search') {
+        const tenantSearchResponseMock = {
+          results: [
+            {
+              tenant: {
+                id: 1,
+                modificationCount: 12,
+                type: 'type mock 1',
+              },
+            },
+            {
+              tenant: {
+                id: 2,
+                modificationCount: 23,
+                type: 'type mock 2',
+              },
+            },
+            {
+              tenant: {
+                id: 3,
+                modificationCount: 31,
+                type: 'type mock 3',
+              },
+            },
+          ],
+          totalNumberOfResults: 3,
+        };
+
+          res.end(
+            JSON.stringify({
+              results: tenantSearchResponseMock.results
+      
+              ,
+              totalNumberOfResults:
+                tenantSearchResponseMock.totalNumberOfResults,
+            })
+          );
+      } else if (req.url === '/bff/searchConfig/infos/tenant-search' ) {
+        console.log('new search config created')
+        const searchConfigMock = {
+          totalElements: 3,
+          configs : [
+            {
+              id: '1',
+              name: 'test1',
+            },
+            {
+              id: '2',
+              name: 'test2',
+            },
+            {
+              id: '4',
+              name: 'test3',
+            },
+          ]
+        };
+
+          res.end(
+            JSON.stringify({
+              totalElements:
+              searchConfigMock.totalElements,
+              configs: searchConfigMock.configs
+
+            })
+            
+          );
+      } else if (req.url === '/bff/searchConfig/' ) {
+      const searchConfigMockCreated = {
+        totalElements: 4,
+        configs : [
+          {
+            id: '1',
+            name: 'test1',
+          },
+          {
+            id: '2',
+            name: 'test2',
+          },
+          {
+            id: '4',
+            name: 'test3',
+          },
+          {
+            id: '4',
+            name: 'test4',
+          },
+        ]
+      };
+
+      res.end(
+        JSON.stringify({
+          totalElements:
+          searchConfigMockCreated.totalElements,
+          configs: searchConfigMockCreated.configs
+        })
+        );
+        
+      } else if (req.url === '/bff/searchConfig/2' || req.url === '/bff/searchConfig/1' ) {
+        console.log('get search config with id')
+        const searchConfigSingleMock = {
+          config : {
+                      id: 1,
+                      page: 'tenant',
+                      name: 'test',
+                      modificationCount: 0,
+                      fieldListVersion: 0,
+                      isReadonly: false,
+                      isAdvanced: false,
+                      columns: [],
+                      values: {
+                        id: '10',
+                      },
+        }
+        };
+
+          res.end(
+            JSON.stringify({
+              config: searchConfigSingleMock.config
+
+            })
+            
+          );
+      } else if (req.url === '/bff/searchConfig/' ) {
+      console.log('searchConfig created')
+
+      const searchConfigMockCreated = {
+        totalElements: 4,
+        configs : [
+          {
+            id: '1',
+            name: 'test1',
+          },
+          {
+            id: '2',
+            name: 'test2',
+          },
+          {
+            id: '4',
+            name: 'test3',
+          },
+          {
+            id: '4',
+            name: 'test4',
+          },
+        ]
+      };
+     
+      res.end(
+        JSON.stringify({
+          totalElements:
+          searchConfigMockCreated.totalElements,
+          configs: searchConfigMockCreated.configs
+        })
+        );
+      }
+        else
+       {
+        return null;
+      }
     }
   } catch (error) {
     console.log('error', error);
   }
 };
+
+
 
 const PROXY_CONFIG = {
   '/portal-api': {
@@ -34,7 +195,7 @@ const PROXY_CONFIG = {
     changeOrigin: true,
     logLevel: 'debug',
     bypass: bypassFn,
-  },
+  }
 };
 
 module.exports = PROXY_CONFIG;
