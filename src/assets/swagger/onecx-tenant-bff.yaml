@@ -257,17 +257,26 @@ components:
     TenantSearchResponse:
       type: object
       required:
-        - 'results'
-        - 'totalNumberOfResults'
+        - 'stream'
+        - 'totalElements'
       properties:
-        results:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
           type: array
           items:
-            $ref: '#/components/schemas/TenantSearchResult'
-        totalNumberOfResults:
-          description: Total number of results on the server.
-          type: integer
-          format: int64
+            $ref: '#/components/schemas/Tenant'
 
     TenantSearchResult:
       type: object

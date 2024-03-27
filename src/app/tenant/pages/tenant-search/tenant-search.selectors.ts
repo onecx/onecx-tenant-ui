@@ -33,7 +33,6 @@ export const selectResults = createSelector(
   tenantSearchSelectors.selectResults,
   (results): RowListGridData[] => {
     return results.map((item) => ({
-      id: item.tenant.id,
       imagePath: '',
       ...item,
       // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings

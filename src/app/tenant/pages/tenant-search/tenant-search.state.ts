@@ -2,13 +2,14 @@ import { DataTableColumn } from '@onecx/portal-integration-angular';
 import {
   SearchConfig,
   SearchConfigInfo,
+  Tenant,
   TenantSearchResult,
 } from 'src/app/shared/generated';
 import { TenantSearchCriteria } from './tenant-search.parameters';
 
 export interface TenantSearchState {
   columns: DataTableColumn[];
-  results: TenantSearchResult[];
+  results: Tenant[];
   searchConfigs: SearchConfigInfo[];
   selectedSearchConfig: SearchConfig | null;
   displayedColumns: string[] | null;

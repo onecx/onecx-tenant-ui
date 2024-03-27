@@ -3,6 +3,7 @@ import { DataTableColumn } from '@onecx/portal-integration-angular';
 import {
   SearchConfig,
   SearchConfigInfo,
+  Tenant,
   TenantSearchResult,
 } from '../../../shared/generated';
 import { TenantSearchCriteria } from './tenant-search.parameters';
@@ -16,8 +17,8 @@ export const TenantSearchActions = createActionGroup({
     'Reset button clicked': emptyProps(),
 
     'tenant search results received': props<{
-      results: TenantSearchResult[];
-      totalNumberOfResults: number;
+      results: Tenant[];
+      totalElements: number;
     }>(),
     'tenant search results loading failed': props<{ error: string | null }>(),
     'Search config received': props<{

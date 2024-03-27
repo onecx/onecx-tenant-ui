@@ -9,14 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TenantSearchResult } from './tenantSearchResult';
+import { Tenant } from './tenant';
 
 
 export interface TenantSearchResponse { 
-    results: Array<TenantSearchResult>;
     /**
-     * Total number of results on the server.
+     * The total elements in the resource.
      */
-    totalNumberOfResults: number;
+    totalElements: number;
+    number?: number;
+    size?: number;
+    totalPages?: number;
+    stream: Array<Tenant>;
 }
 

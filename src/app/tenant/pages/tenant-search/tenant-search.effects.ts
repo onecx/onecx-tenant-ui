@@ -218,10 +218,10 @@ export class TenantSearchEffects {
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
       switchMap(([, searchCriteria]) =>
         this.tenantService.searchTenants(searchCriteria).pipe(
-          map(({ results, totalNumberOfResults }) =>
+          map(({ stream, totalElements }) =>
             TenantSearchActions.tenantSearchResultsReceived({
-              results,
-              totalNumberOfResults,
+              results: stream,
+              totalElements,
             })
           ),
           catchError((error) =>

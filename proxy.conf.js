@@ -8,44 +8,7 @@ const bypassFn = function (req, res, proxyOptions) {
       return res.send('');
     } else {
       console.log('############## REQ ', req.url);
-      if (req.url === '/bff/tenant/search') {
-        const tenantSearchResponseMock = {
-          results: [
-            {
-              tenant: {
-                id: 1,
-                modificationCount: 12,
-                type: 'type mock 1',
-              },
-            },
-            {
-              tenant: {
-                id: 2,
-                modificationCount: 23,
-                type: 'type mock 2',
-              },
-            },
-            {
-              tenant: {
-                id: 3,
-                modificationCount: 31,
-                type: 'type mock 3',
-              },
-            },
-          ],
-          totalNumberOfResults: 3,
-        };
-
-          res.end(
-            JSON.stringify({
-              results: tenantSearchResponseMock.results
-      
-              ,
-              totalNumberOfResults:
-                tenantSearchResponseMock.totalNumberOfResults,
-            })
-          );
-      } else if (req.url === '/bff/searchConfig/infos/tenant-search' ) {
+      if (req.url === '/bff/searchConfig/infos/tenant-search' ) {
         console.log('new search config created')
         const searchConfigMock = {
           totalElements: 3,
