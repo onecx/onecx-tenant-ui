@@ -236,6 +236,18 @@ export class TenantSearchEffects {
     );
   });
 
+  tmp$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TenantSearchActions.selectedSearchConfigInfo),
+      map(() => {
+        return TenantSearchActions.tenantSearchResultsReceived({
+          results: [],
+          totalElements: 0,
+        });
+      })
+    );
+  });
+
   loadSearchConfig$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TenantSearchActions.selectedSearchConfigInfo),

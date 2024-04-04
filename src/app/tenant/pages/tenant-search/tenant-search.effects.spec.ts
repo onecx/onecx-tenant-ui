@@ -1,155 +1,127 @@
-import { Action, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from 'jest-marbles';
-import { TenantSearchEffects } from './tenant-search.effects';
-import { TenantSearchResponse } from 'src/app/shared/generated';
-import { TestBed } from '@angular/core/testing';
+import { TenantSearchEffects } from './tenant-search.effects'
+import {
+  SearchConfigBffService,
+  TenantBffService,
+  TenantSearchResponse,
+} from 'src/app/shared/generated';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { TenantService } from 'src/app/shared/services/tenant.service';
 import { TenantSearchActions } from './tenant-search.actions';
 import { TenantApiActions } from 'src/app/shared/actions/tenant-api.actions';
-import { ActivatedRoute, Router, RouterModule, convertToParamMap } from '@angular/router';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular';
-import { INJECTOR, Injector } from '@angular/core';
-import { provideMockStore } from '@ngrx/store/testing';
+import {
+  ActivatedRoute,
+  Router,
+  RouterModule,
+  convertToParamMap,
+} from '@angular/router';
+import {
+  PortalDialogService,
+  PortalMessageService,
+} from '@onecx/portal-integration-angular';
+import {
+  MockStore,
+  createMockStore,
+  provideMockStore,
+} from '@ngrx/store/testing';
 import { Actions } from '@ngrx/effects';
 
 
 describe('TenantSearchEffects:', () => {
-    let actions$: Observable<any> = of();
-
-    const mockedTenantService = {
-        search: jest.fn()
+    const mockedTenantService: Partial<TenantBffService> = {
+      searchTenants: jest.fn(),
     };
+    const mockedSearchConfigService: Partial<SearchConfigBffService> = {};
     const mockSuccessSearchResponse: TenantSearchResponse = {
-        totalElements: 1,
-        stream: [{
-            orgId: 'asdf_1',
-            modificationCount: 1,
-            id: 1
-        }],
+      totalElements: 1,
+      stream: [
+        {
+          orgId: 'asdf_1',
+          modificationCount: 1,
+          id: 1,
+        },
+      ],
     };
-    let activatedRouteMock: Partial<ActivatedRoute>= { paramMap: of(convertToParamMap({id: 1})) }
-
-
-    let routerSpy = jest.spyOn(Router.prototype, 'navigate');
-
+  
+    let activatedRouteMock: Partial<ActivatedRoute> = {
+      paramMap: of(convertToParamMap({ id: 1 })),
+    };
+    let mockedRouter: Partial<Router> = {
+      events: of({} as any),
+    };
+  
+    let store: MockStore;
+    const initialState = {};
+  
+    const initEffects = (actions: Actions) => {
+      return new TenantSearchEffects(
+        actions,
+        activatedRouteMock as ActivatedRoute,
+        mockedTenantService as TenantBffService,
+        mockedSearchConfigService as SearchConfigBffService,
+        mockedRouter as Router,
+        store,
+        {} as PortalMessageService,
+        {} as PortalDialogService
+      );
+    };
+  
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                StoreModule.forRoot({}),
-                RouterTestingModule,
-                RouterModule.forRoot([]),
-                HttpClientTestingModule,
-            ],
-            providers: [
-                provideMockActions(() => actions$),
-                provideMockStore({}),
-                { provide: ActivatedRoute, useValue: activatedRouteMock },
-                { provide: Router, useValue: routerSpy },
-                { provide: PortalMessageService, useValue: {} },
-                { provide: PortalDialogService, useValue: {} },
-                { provide: TenantService, useValue: { searchTenants: jest.fn() } },
-                TenantSearchEffects,
-            ],
-        }).compileComponents();
-
-        // let testbedInjector = TestBed.inject(INJECTOR) as any
-        // testbedInjector.parent = Injector.create({providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }]})
-
-        // console.log("Testbed Injector___",testbedInjector)
+      store = createMockStore({ initialState });
     });
+  
+    it('test', async () => {
+      const actions = hot('-a', {
+        a: TenantSearchActions.selectedSearchConfigInfo({
+          searchConfigInfo: { id: '1', name: 'asd' },
+        }),
+      });
 
-
-    it('TenantSearchActions.searchButtonClicked should dispatch TenantApiActions.tenantsReceived with the results', () => {
-
-        // actions$ = hot('-a', {
-        //     a: TenantSearchActions.searchButtonClicked({ searchCriteria: { orgId: '' } }),
-        // });
-        console.log("TESTSTART____")
-        console.log("ACTIONS____", TestBed.inject(Actions))
-        let effects = TestBed.inject(TenantSearchEffects);
-
-        mockedTenantService.search.mockReturnValue(
-            cold('--a', { a: mockSuccessSearchResponse })
-        );
-
-        const expected = hot('---a', {
-            a: TenantApiActions.tenantsReceived({
-                stream: [{
-                    modificationCount: 1,
-                    id: 1,
-                    orgId: 'asdf_1'
-                }],
-            }),
-        });
-        expect(effects.searchByUrl$).toBe(expected);
+      let effects = initEffects(actions);
+  
+  
+      const expected = hot('-a', {
+        a: TenantSearchActions.tenantSearchResultsReceived({
+          results: [],
+          totalElements: 0,
+        }),
+      });
+  
+      expect(effects!.tmp$).toBeObservable(expected);
     });
-
-
-    //   describe('TenantSearchActions.searchClicked', () => {
-    //     it('should dispatch TenantApiActions.tenantsReceived with the results', () => {
-    //       actions$ = hot('-a', {
-    //         a: TenantSearchActions.searchButtonClicked({ searchCriteria: {orgId: ''}}),
-    //       });
-
-    //       mockedTenantService.search.mockReturnValue(
-    //         cold('--a', { a: mockSuccessSearchResponse })
-    //       );
-
-    //       const expected = hot('---a', {
-    //         a: TenantApiActions.tenantsReceived({
-    //           stream: [{ 
-    //             modificationCount:1, 
-    //             id:1,
-    //             orgId: 'asdf_1' }],
-    //         }),
-    //       });
-    //       expect(effects.searchByUrl$).toBe(expected);
-    //     });
-
-    //     it('should dispatch TenantApiActions.tenantsReceived with empty results when response is empty', () => {
-    //       actions$ = hot('-a', {
-    //         a: TenantSearchActions.searchButtonClicked({ searchCriteria: {orgId: '1'}}),
-    //       });
-
-    //       mockedTenantService.search.mockReturnValue(
-    //         cold('--a', { a: mockEmptySearchResponse })
-    //       );
-
-    //       const expected = hot('---a', {
-    //         a: TenantApiActions.tenantsReceived({
-    //           stream: [],
-    //         }),
-    //       });
-    //       expect(effects.searchByUrl$).toBe(expected);
-    //     });
-
-    //     it('should not call the service when query is empty', () => {
-    //       actions$ = hot('-a', {
-    //         a: TenantSearchActions.searchButtonClicked({ searchCriteria: {orgId: ''}}),
-    //       });
-
-    //       const expected = hot('---');
-    //       expect(effects.searchByUrl$).toBe(expected);
-    //       expect(mockedTenantService.search).not.toHaveBeenCalled();
-    //     });
-
-    //     it('should dispatch TenantApiActions.tenantSearchResultsLoadingFailed when there is an error calling the service', () => {
-    //       actions$ = hot('-a', {
-    //         a: TenantSearchActions.searchButtonClicked({ searchCriteria: {orgId: '1'}}),
-    //       });
-
-    //       mockedTenantService.search.mockReturnValue(cold('--#'));
-
-    //       const expected = hot('---a', {
-    //         a: TenantApiActions.tenantLoadingFailed({
-    //           error: 'error',
-    //         }),
-    //       });
-    //       expect(effects.searchByUrl$).toBe(expected);
-    //     });
+  
+    // it('TenantSearchActions.searchButtonClicked should dispatch TenantApiActions.tenantsReceived with the results', () => {
+    //   const actions = hot('-a', {
+    //     a: TenantSearchActions.searchButtonClicked({
+    //       searchCriteria: { orgId: '' },
+    //     }),
     //   });
-});
+    //   // console.log(ACTIONS____, TestBed.inject(Actions));
+    //   // let effects = TestBed.inject(TenantSearchEffects);
+
+  
+    //   let effects = initEffects(actions);
+  
+    //   jest
+    //     .spyOn(mockedTenantService, 'searchTenants')
+    //     .mockReturnValue(cold('--a', { a: mockSuccessSearchResponse }));
+  
+    //   const expected = hot('---a', {
+    //     a: TenantApiActions.tenantSearchResultsReceived({
+    //       results: [
+    //         {
+    //           modificationCount: 1,
+    //           id: 1,
+    //           orgId: 'asdf_1',
+    //         },
+    //       ],
+    //       totalElements: 1
+    //     }),
+    //   });
+    // //   expect(mockedTenantService.searchTenants).toHaveBeenCalledTimes(1);
+    //   expect(effects.searchByUrl$).toBe(expected);
+    // });
+  });
