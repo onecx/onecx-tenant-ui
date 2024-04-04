@@ -4,7 +4,11 @@ import { Tenant } from '../generated';
 export const TenantApiActions = createActionGroup({
   source: 'TenantApi',
   events: {
-    'Tenants received': props<{ stream: Tenant[] }>(),
+    'tenant search results received': props<{ 
+      results: Tenant[];
+      totalElements: number;
+    }>(),
     'Tenant loading failed': props<{ error: any }>(),
   },
 });
+
