@@ -76,4 +76,4 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
     },
   ],
 })
-export class OnecxTenantModule {}
+export class OneCXTenantModule {}

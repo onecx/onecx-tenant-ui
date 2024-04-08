@@ -3,10 +3,10 @@ const {
   withModuleFederationPlugin,
 } = require('@angular-architects/module-federation/webpack');
 const config = withModuleFederationPlugin({
-  name: 'onecx-tenant-app',
+  name: 'onecx-tenant-ui',
   filename: 'remoteEntry.js',
   exposes: {
-    './OnecxTenantModule': './src/app/onecx-tenant-app.remote.module.ts',
+    './OneCXTenantModule': './src/app/onecx-tenant-ui.remote.module.ts',
   },
   shared: share({
     '@angular/core': {
