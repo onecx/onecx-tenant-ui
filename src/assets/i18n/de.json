@@ -1,7 +1,7 @@
 {
   "TENANT_SEARCH": {
-    "HEADER": "Tenant Suche",
-    "SUB_HEADER": "Suchen und Anzeigen von Tenant",
+    "HEADER": "Mandanten-Suche ",
+    "SUB_HEADER": "Suchen und Anzeigen von Mandanten",
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
@@ -29,7 +29,7 @@
     "COLUMNS":{
       "ID":  "Id",
       "ORG_ID": "Organisations-Id",
-      "TENANT_ID": "Tenant Id",
+      "TENANT_ID": "Mandant-Id",
       "DESCRIPTION": "Beschreibung"
     },
     "PREDEFINED_GROUP":{
@@ -38,9 +38,9 @@
       "FULL": "Vollständig"
     },
     "TENANT_GROUP":{
-      "DEFAULT": "Tenant standard",
-      "EXTENDED": "Tenant erweitert",
-      "FULL": "Tenant vollständig"
+      "DEFAULT": "Mandanten standard",
+      "EXTENDED": "Mandanten erweitert",
+      "FULL": "Mandanten vollständig"
     }
   }
 }

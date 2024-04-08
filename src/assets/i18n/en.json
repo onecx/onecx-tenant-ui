@@ -1,7 +1,7 @@
 {
   "TENANT_SEARCH": {
     "HEADER": "Tenant Search",
-    "SUB_HEADER": "Searching and displaying of Tenant",
+    "SUB_HEADER": "Searching and displaying of Tenants",
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",

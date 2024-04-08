@@ -12,20 +12,7 @@ const bypassFn = function (req, res, proxyOptions) {
         console.log('new search config created')
         const searchConfigMock = {
           totalElements: 3,
-          configs : [
-            {
-              id: '1',
-              name: 'test1',
-            },
-            {
-              id: '2',
-              name: 'test2',
-            },
-            {
-              id: '4',
-              name: 'test3',
-            },
-          ]
+          configs : []
         };
 
           res.end(
@@ -35,28 +22,11 @@ const bypassFn = function (req, res, proxyOptions) {
               configs: searchConfigMock.configs
 
             })
-            
           );
       } else if (req.url === '/bff/searchConfig/' ) {
       const searchConfigMockCreated = {
         totalElements: 4,
         configs : [
-          {
-            id: '1',
-            name: 'test1',
-          },
-          {
-            id: '2',
-            name: 'test2',
-          },
-          {
-            id: '4',
-            name: 'test3',
-          },
-          {
-            id: '4',
-            name: 'test4',
-          },
         ]
       };
 
@@ -99,22 +69,6 @@ const bypassFn = function (req, res, proxyOptions) {
       const searchConfigMockCreated = {
         totalElements: 4,
         configs : [
-          {
-            id: '1',
-            name: 'test1',
-          },
-          {
-            id: '2',
-            name: 'test2',
-          },
-          {
-            id: '4',
-            name: 'test3',
-          },
-          {
-            id: '4',
-            name: 'test4',
-          },
         ]
       };
      
