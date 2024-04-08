@@ -1,7 +1,7 @@
 {
   "name": "onecx-tenant-ui",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "apigen": "openapi-generator-cli generate -i src/assets/swagger/onecx-tenant-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object",
     "start": "nx serve",
