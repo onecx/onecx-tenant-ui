@@ -31,7 +31,7 @@ describe('TenantSearchReducer', () => {
       };
 
       it('should store the query, increase button click count and clear the results', () => {
-        let query = 'my query';
+        const query = 'my query';
         const action = TenantSearchActions.searchButtonClicked({ searchCriteria: {} });
         const nextState = tenantSearchReducer(intermediateState, action);
 
@@ -46,7 +46,7 @@ describe('TenantSearchReducer', () => {
   describe('on tenantReceived action', () => {
     describe('with the initial state', () => {
       it('should store the results', () => {
-        let tenant = {
+        const tenant = {
             results: [
                 {id: 123, modificationCount:1},
                 {id: 234, modificationCount:1}

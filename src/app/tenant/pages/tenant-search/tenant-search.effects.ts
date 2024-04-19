@@ -61,7 +61,7 @@ export class TenantSearchEffects {
         if (dialogResult.button === 'secondary') {
           return of(TenantSearchActions.searchConfigCreationCancelled());
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           fieldListVersion: 0,
           name: dialogResult.result?.searchConfigName ?? '',
@@ -127,7 +127,7 @@ export class TenantSearchEffects {
         if (dialogResult.button === 'secondary') {
           return of(TenantSearchActions.searchConfigUpdateCancelled());
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           name: dialogResult.result?.searchConfigName ?? '',
           fieldListVersion: 0,
