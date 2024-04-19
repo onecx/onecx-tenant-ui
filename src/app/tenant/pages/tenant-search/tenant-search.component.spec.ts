@@ -37,6 +37,7 @@ describe('TenantSearchComponent', () => {
     });
   });
 
+  /* eslint-disable @typescript-eslint/no-var-requires */
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TenantSearchComponent],
@@ -46,8 +47,7 @@ describe('TenantSearchComponent', () => {
         ReactiveFormsModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(
-          'en',
-          require('./../../../../assets/i18n/en.json')
+          'en', require('./../../../../assets/i18n/en.json')
         ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
         HttpClientTestingModule,
       ],
@@ -61,6 +61,7 @@ describe('TenantSearchComponent', () => {
       ],
     }).compileComponents();
   });
+  /* eslint-disable @typescript-eslint/no-var-requires */
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TenantSearchComponent);

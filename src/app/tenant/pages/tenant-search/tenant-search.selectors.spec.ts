@@ -19,7 +19,7 @@ import {
   
     describe('selectTenantSearchViewModel', () => {
       it('should combine the input to be the viewmodel', () => {
-        let columns : DataTableColumn[]= [{
+        const columns : DataTableColumn[]= [{
             columnType: ColumnType.STRING,
             id: 'id',
             nameKey: 'TENANT_SEARCH.COLUMNS.ID',
@@ -45,14 +45,14 @@ import {
           }
         ];
 
-        let searchCriteria = {
+        const searchCriteria = {
             orgId: "1",
             
         };
-        let results : RowListGridData[]= [{id: 1, imagePath: ''}];
-        let searchConfigs: SearchConfigInfo[] = [{id: '1', name: "test1"}];
-        let selectedSearchConfig = null;
-        let displayedColumns : DataTableColumn[]= [{
+        const results : RowListGridData[]= [{id: 1, imagePath: ''}];
+        const searchConfigs: SearchConfigInfo[] = [{id: '1', name: "test1"}];
+        const selectedSearchConfig = null;
+        const displayedColumns : DataTableColumn[]= [{
             columnType: ColumnType.STRING,
             id: 'id',
             nameKey: 'TENANT_SEARCH.COLUMNS.ID',
@@ -77,9 +77,9 @@ import {
             ],
           }
         ];
-        let viewMode = 'advanced' as "basic" | "advanced";
-        let chartVisible = false;
-        let searchConfigEnabled = true;
+        const viewMode = 'advanced' as "basic" | "advanced";
+        const chartVisible = false;
+        const searchConfigEnabled = true;
         expect(
             selectTenantSearchViewModel.projector(
                 columns,

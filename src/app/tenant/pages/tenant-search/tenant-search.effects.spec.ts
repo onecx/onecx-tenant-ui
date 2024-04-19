@@ -109,7 +109,7 @@ class MockRouter implements Partial<Router> {
 }
 
 describe("TenantSearchEffects:", () => {
-  let activatedRouteMock: Partial<ActivatedRoute> = {};
+  const activatedRouteMock: Partial<ActivatedRoute> = {};
   let mockedRouter: MockRouter;
   let store: MockStore;
   const initialState = {};
@@ -247,7 +247,7 @@ describe("TenantSearchEffects:", () => {
   });
 
   it("should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: true on TenantSearchComponent route navigation", (done) => {
-    let localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
+    const localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
     localStorageSpy.mockReturnValue("true");
 
     const effects = initEffects();
@@ -270,7 +270,7 @@ describe("TenantSearchEffects:", () => {
   });
 
   it("should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: false on TenantSearchComponent route navigation", (done) => {
-    let localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
+    const localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
     localStorageSpy.mockReturnValue("false");
 
     const effects = initEffects();
@@ -540,7 +540,7 @@ describe("TenantSearchEffects:", () => {
       })
     );
 
-    effects.searchButtonClicked$.subscribe(() => {});
+    effects.searchButtonClicked$.subscribe(() => ({}));
 
     effects.searchByUrl$.subscribe((action) => {
       expect(action).toEqual({
@@ -562,7 +562,7 @@ describe("TenantSearchEffects:", () => {
       })
     );
 
-    effects.resetButtonClicked$.subscribe(() => {});
+    effects.resetButtonClicked$.subscribe(() => ({}));
 
     expect(effects.searchByUrl$).toBeObservable(hot("--"));
   });
@@ -597,7 +597,7 @@ describe("TenantSearchEffects:", () => {
       })
     );
 
-    effects.searchConfigReceived$.subscribe(() => {});
+    effects.searchConfigReceived$.subscribe(() => ({}));
 
     effects.searchByUrl$.subscribe((action) => {
       expect(action).toEqual({
@@ -619,7 +619,7 @@ describe("TenantSearchEffects:", () => {
       })
     );
 
-    effects.resetButtonClicked$.subscribe(() => {});
+    effects.resetButtonClicked$.subscribe(() => ({}));
 
     expect(effects.searchByUrl$).toBeObservable(hot("--"));
   });
