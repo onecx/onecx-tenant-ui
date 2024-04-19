@@ -11,7 +11,8 @@
     "lint": "nx lint",
     "lint:fix": "nx lint --fix",
     "sonar": "npx sonarqube-scanner -Dproject.settings=sonar-local-project.properties",
-    "test": "nx test"
+    "test": "nx test",
+    "test:ci": "nx test --watch=false --browsers=ChromeHeadless --code-coverage"
   },
   "husky": {
     "hooks": {
