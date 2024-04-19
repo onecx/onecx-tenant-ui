@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'onecx-tenant',
+  displayName: 'onecx-tenant-ui',
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: './coverage/onecx-tenant',
+  coverageDirectory: './coverage/onecx-tenant-ui',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
