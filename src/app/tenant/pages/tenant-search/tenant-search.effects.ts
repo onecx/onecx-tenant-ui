@@ -48,7 +48,7 @@ export class TenantSearchEffects {
   createSearchConfig$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TenantSearchActions.createSearchConfigClicked),
-      mergeMap((action) => {
+      mergeMap(() => {
         return this.portalDialogService.openDialog(
           'TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
           CreateOrEditSearchConfigDialogComponent,

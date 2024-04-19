@@ -1,9 +1,6 @@
-import { TenantApiActions } from 'src/app/shared/actions/tenant-api.actions';
 import { TenantSearchActions } from './tenant-search.actions';
 import { TenantSearchState } from './tenant-search.state';
 import { initialState, tenantSearchReducer } from './tenant-search.reducers';
-import { Tenant } from 'src/app/shared/generated';
-import { ColumnType } from '@onecx/portal-integration-angular';
 
 describe('TenantSearchReducer', () => {
   describe('on searchClicked action', () => {
@@ -31,7 +28,6 @@ describe('TenantSearchReducer', () => {
       };
 
       it('should store the query, increase button click count and clear the results', () => {
-        const query = 'my query';
         const action = TenantSearchActions.searchButtonClicked({ searchCriteria: {} });
         const nextState = tenantSearchReducer(intermediateState, action);
 
