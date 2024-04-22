@@ -14,14 +14,6 @@
     "test": "nx test",
     "test:ci": "nx test --watch=false --browsers=ChromeHeadless --code-coverage"
   },
-  "jest": {
-    "testResultsProcessor": "jest-sonar-reporter"
-  },
-  "jestSonar": {
-    "reportPath": "reports",
-    "reportFile": "sonarqube_report.xml",
-    "indent": 4
-  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
@@ -90,7 +82,7 @@
     "jest-environment-jsdom": "^29.4.1",
     "jest-marbles": "^3.0.6",
     "jest-preset-angular": "~13.1.4",
-    "jest-sonar-reporter": "^2.0.0",
+    "jest-sonar": "^0.2.16",
     "js-yaml": "^4.1.0",
     "jsonc-eslint-parser": "^2.1.0",
     "ngx-translate-testing": "^6.1.0",
