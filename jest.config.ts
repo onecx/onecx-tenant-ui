@@ -3,10 +3,7 @@ export default {
   displayName: 'onecx-tenant-ui',
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  // Coverage settings
   coverageDirectory: './coverage/onecx-tenant-ui',
-  coverageReporters: ['clover', 'json', 'lcov', ['text', {skipFull: true}]],
-  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
@@ -23,18 +20,6 @@ export default {
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
-  ],
-  reporters: [
-    'default',
-    ['jest-sonar-reporter', {
-      reportPath: './reports',
-      reportFileName: 'sonarqube_report.xml',
-      sonarQubeVersion: 'LATEST',
-      testPaths: ['./src/app'],
-      testFilePattern: '**/*.spec.ts',
-      indent: 2,
-      useBrowserName: false,
-    }]
   ],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
