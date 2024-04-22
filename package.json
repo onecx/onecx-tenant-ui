@@ -17,6 +17,11 @@
   "jest": {
     "testResultsProcessor": "jest-sonar-reporter"
   },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "sonarqube_report.xml",
+    "indent": 4
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
