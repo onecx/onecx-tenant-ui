@@ -35,12 +35,6 @@ export default {
       testFilePattern: '**/*.spec.ts',
       indent: 2,
       useBrowserName: false,
-    }],
-    ['jest-coverage-reporter', {
-      includeAllSources: true,
-      dir: 'reports',
-      subdir: 'coverage',
-      reporters: [{ type: 'text-summary' }, { type: 'lcov' }],
     }]
   ],
   testMatch: [
