@@ -21,6 +21,24 @@ export default {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  reporters: [
+    'default',
+    ['jest-sonar-reporter', {
+      reportPath: './reports',
+      reportFileName: 'sonarqube_report.xml',
+      sonarQubeVersion: 'LATEST',
+      testPaths: ['./src/app'],
+      testFilePattern: '**/*.spec.ts',
+      indent: 2,
+      useBrowserName: false,
+    }],
+    ['jest-coverage-reporter', {
+      includeAllSources: true,
+      dir: 'reports',
+      subdir: 'coverage',
+      reporters: [{ type: 'text-summary' }, { type: 'lcov' }],
+    }]
+  ],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
     '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
