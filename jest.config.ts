@@ -5,8 +5,7 @@ export default {
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   // Coverage settings
   coverageDirectory: './coverage/onecx-tenant-ui',
-  collectCoverage: true,
-  coverageReporters: ['text-summary', 'lcov'],
+  coverageReporters: ['clover', 'json', 'lcov', ['text', {skipFull: true}]],
   coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
