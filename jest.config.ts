@@ -3,7 +3,11 @@ export default {
   displayName: 'onecx-tenant-ui',
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  // Coverage settings
   coverageDirectory: './coverage/onecx-tenant-ui',
+  collectCoverage: true,
+  coverageReporters: ['text-summary', 'lcov'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
