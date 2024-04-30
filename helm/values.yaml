@@ -8,10 +8,12 @@ app:
   operator:
     microfrontend:
       enabled: true
-      spec:
-        exposedModule: "./OneCXTenantModule"
-        description: "OneCX Tenant UI"
-        note: "OneCX OneCXTenant UI module auto import via MF operator"
+      specs:
+        main:
+          exposedModule: "./OneCXTenantModule"
+          description: "OneCX Tenant UI"
+          note: "OneCX OneCXTenant UI module auto import via MF operator"
+          type: MODULE
     permission:
       enabled: true
       spec:
