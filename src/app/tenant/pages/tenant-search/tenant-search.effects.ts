@@ -190,8 +190,6 @@ export class TenantSearchEffects {
     (state, action) => ({
       ...state,
       ...action.searchCriteria,
-      //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime
-      //exampleDate: action.searchCriteria.exampleDate?.slice(0, 10)
     })
   );
 
@@ -276,15 +274,13 @@ export class TenantSearchEffects {
       filterForNavigatedTo(this.router, TenantSearchComponent),
       filterOutOnlyQueryParamsChanged(this.router),
       switchMap(() =>
-        this.searchConfigService
-          .getSearchConfigInfos('tenant-search')
-          .pipe(
-            map(({ configs }) =>
-              TenantSearchActions.searchConfigInfosReceived({
-                searchConfigInfos: configs,
-              })
-            )
+        this.searchConfigService.getSearchConfigInfos('tenant-search').pipe(
+          map(({ configs }) =>
+            TenantSearchActions.searchConfigInfosReceived({
+              searchConfigInfos: configs,
+            })
           )
+        )
       )
     );
   });

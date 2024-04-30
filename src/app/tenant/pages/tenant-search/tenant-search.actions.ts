@@ -4,7 +4,6 @@ import {
   SearchConfig,
   SearchConfigInfo,
   Tenant,
-  TenantSearchResult,
 } from '../../../shared/generated';
 import { TenantSearchCriteria } from './tenant-search.parameters';
 
