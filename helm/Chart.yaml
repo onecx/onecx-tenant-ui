@@ -8,8 +8,8 @@ keywords:
 sources:
   - https://github.com/onecx/onecx-tenant-ui
 maintainers:
-  - name: # ACTION: add name of maintainer
-    email: # ACTION: add email of maintainer
+  - name: OneCX Developer Team
+    email: tkit_dev@1000kit.org
 dependencies:
   - name: helm-angular-app
     version: ^0
