@@ -5,7 +5,7 @@ import { addInitializeModuleGuard } from '@onecx/portal-integration-angular';
 
 export const routes: Routes = [
   {
-    path: 'tenant',
+    path: '',
     loadChildren: () =>
       import('./tenant/tenant.module').then((mod) => mod.TenantModule),
   },
