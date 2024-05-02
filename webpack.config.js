@@ -11,24 +11,28 @@ const config = withModuleFederationPlugin({
   shared: share({
     '@angular/core': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      singleton: true
     },
     '@angular/forms': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
       eager: false,
     },
     '@angular/common': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: {
         skip: ['@angular/common/http/testing'],
       },
     },
     '@angular/common/http': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
     '@angular/router': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
@@ -46,8 +50,7 @@ const config = withModuleFederationPlugin({
     },
     '@ngx-translate/core': {
       singleton: true,
-      strictVersion: false,
-      requiredVersion: '^14.0.0',
+      requiredVersion: 'auto',
     },
   }),
 
