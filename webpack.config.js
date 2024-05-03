@@ -10,25 +10,29 @@ const config = withModuleFederationPlugin({
   },
   shared: share({
     '@angular/core': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
     '@angular/forms': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
-      eager: false,
     },
     '@angular/common': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: {
         skip: ['@angular/common/http/testing'],
       },
     },
     '@angular/common/http': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
     '@angular/router': {
+      singleton: true,
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
@@ -36,7 +40,9 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    '@onecx/portal-integration-angular': {
+    '@ngx-translate/core': { singleton: true, requiredVersion: 'auto' },
+    '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
+    '@onecx/integration-interface': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
@@ -44,10 +50,9 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    '@ngx-translate/core': {
-      singleton: true,
-      strictVersion: false,
-      requiredVersion: '^14.0.0',
+    '@onecx/portal-integration-angular': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
     },
   }),
 
