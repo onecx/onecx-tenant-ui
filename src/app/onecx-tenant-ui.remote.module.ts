@@ -22,8 +22,8 @@ import {
   createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
+  providePortalDialogService
 } from '@onecx/portal-integration-angular';
-import { DialogService } from 'primeng/dynamicdialog';
 import { routes } from './app-routing.module';
 import { commonImports } from './app.module';
 import { metaReducers, reducers } from './app.reducers';
@@ -68,7 +68,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
   ],
   exports: [],
   providers: [
-    DialogService,
+    providePortalDialogService(),
     {
       provide: Configuration,
       useFactory: apiConfigProvider,
