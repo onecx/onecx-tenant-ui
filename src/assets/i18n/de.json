@@ -6,7 +6,7 @@
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
     "TOOLTIPS": {
-      "ORGID":"Organisations-ID"
+      "ORGID": "Organisations-ID"
     },
     "DIAGRAM": {
       "SUM": "Gesamtanzahl"
@@ -26,18 +26,18 @@
       "SEARCH_CONFIG_UPDATE_FAILED": "Suchkonfiguration konnte nicht aktualisiert werden.",
       "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
-    "CRITERIA":{
+    "CRITERIA": {
       "ORGID": "Organisations-ID"
     },
-    "COLUMNS":{
-      "ID":  "ID",
+    "COLUMNS": {
+      "ID": "ID",
       "ORG_ID": "Organisations-ID",
       "TENANT_ID": "Mandanten-ID",
       "DESCRIPTION": "Beschreibung",
       "MODIFICATION_DATE": "Änderungsdatum",
       "CREATION_DATE": "Erstellungsdatum"
     },
-    "PREDEFINED_GROUP":{
+    "PREDEFINED_GROUP": {
       "DEFAULT": "Standard",
       "EXTENDED": "Erweitert",
       "FULL": "Vollständig"

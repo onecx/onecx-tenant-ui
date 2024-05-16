@@ -61,4 +61,4 @@ export const tenantSearchColumns: DataTableColumn[] = [
       'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
     ],
   },
-]
+];

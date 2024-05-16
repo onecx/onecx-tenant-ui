@@ -129,7 +129,7 @@ export const tenantSearchReducer = createReducer(
     TenantSearchActions.displayedColumnsChanged,
     (state: TenantSearchState, { displayedColumns }) => ({
       ...state,
-      displayedColumns: displayedColumns.map((c) => c.id)
+      displayedColumns: displayedColumns.map((c) => c.id),
     })
   )
 );

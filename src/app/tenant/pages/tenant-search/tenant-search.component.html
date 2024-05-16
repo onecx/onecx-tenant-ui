@@ -15,10 +15,10 @@
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="tenantSearchFormGroup">
-        <div class="grid mt-0 p-fluid">
-          <div class="col-12 md:col-3">
-            <span class="p-float-label">
-              <input
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+            <input
               pInputText
               id="tenant_search_orgId"
               type="text"
@@ -27,10 +27,12 @@
               formControlName="orgId"
               [(ngModel)]="vm.searchCriteria.orgId"
             />
-            <label for="tenant_search_orgId" style="white-space: nowrap;">{{ 'TENANT_SEARCH.CRITERIA.ORGID' | translate }}</label>
-            </span>
-          </div>
+            <label for="tenant_search_orgId" style="white-space: nowrap">{{
+              'TENANT_SEARCH.CRITERIA.ORGID' | translate
+            }}</label>
+          </span>
         </div>
+      </div>
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
