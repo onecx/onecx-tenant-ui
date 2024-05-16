@@ -38,9 +38,9 @@ import {
             filterable: true,
             sortable: true,
             predefinedGroupKeys: [
-              'TENANT_SEARCH.TENANT_GROUP.DEFAULT',
-              'TENANT_SEARCH.TENANT_GROUP.EXTENDED',
-              'TENANT_SEARCH.TENANT_GROUP.FULL',
+              'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
+              'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
+              'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
             ],
           }
         ];
@@ -71,9 +71,9 @@ import {
             filterable: true,
             sortable: true,
             predefinedGroupKeys: [
-              'TENANT_SEARCH.TENANT_GROUP.DEFAULT',
-              'TENANT_SEARCH.TENANT_GROUP.EXTENDED',
-              'TENANT_SEARCH.TENANT_GROUP.FULL',
+              'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
+              'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
+              'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
             ],
           }
         ];

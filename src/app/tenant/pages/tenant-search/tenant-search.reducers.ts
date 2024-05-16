@@ -124,5 +124,12 @@ export const tenantSearchReducer = createReducer(
       ...state,
       viewMode: viewMode,
     })
+  ),
+  on(
+    TenantSearchActions.displayedColumnsChanged,
+    (state: TenantSearchState, { displayedColumns }) => ({
+      ...state,
+      displayedColumns: displayedColumns.map((c) => c.id)
+    })
   )
 );

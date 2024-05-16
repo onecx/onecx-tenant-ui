@@ -8,7 +8,7 @@
     [subheader]="'TENANT_SEARCH.SUB_HEADER' | translate"
     (searched)="search(tenantSearchFormGroup)"
     (resetted)="resetSearch()"
-    [manualBreadcrumbs]="true"
+    [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
     (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
     [searchConfigs]="vm.searchConfigs"
@@ -23,8 +23,9 @@
               id="tenant_search_orgId"
               type="text"
               class="w-18rem"
-              [title]="'APP.TOOLTIPS.ORGID' | translate"
+              [title]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
               formControlName="orgId"
+              [(ngModel)]="vm.searchCriteria.orgId"
             />
             <label for="tenant_search_orgId" style="white-space: nowrap;">{{ 'TENANT_SEARCH.CRITERIA.ORGID' | translate }}</label>
             </span>
@@ -33,7 +34,7 @@
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
-    <ocx-content>
+    <ocx-content class="w-full">
       <div class="card mt-2 p-0">
         <div>
           <ocx-interactive-data-view
@@ -44,6 +45,7 @@
             [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
             [supportedViewLayouts]="['table']"
             (displayedColumnsChange)="onDisplayedColumnsChange($event)"
+            [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
           >
           </ocx-interactive-data-view>
         </div>

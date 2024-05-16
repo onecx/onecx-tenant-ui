@@ -211,7 +211,7 @@ export class TenantSearchEffects {
       filterOutQueryParamsHaveNotChanged(
         this.router,
         tenantSearchCriteriasSchema,
-        false
+        true
       ),
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
       switchMap(([, searchCriteria]) =>

@@ -1,10 +1,13 @@
 {
   "TENANT_SEARCH": {
     "HEADER": "Tenant Search",
-    "SUB_HEADER": "Searching and displaying of Tenants",
+    "SUB_HEADER": "Search and display Tenants",
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
+    "TOOLTIPS": {
+      "ORGID":"Organization ID"
+    },
     "DIAGRAM": {
       "SUM": "Total"
     },
@@ -24,23 +27,20 @@
       "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
     },
     "CRITERIA":{
-      "ORGID": "Organization Id"
+      "ORGID": "Organization ID"
     },
     "COLUMNS":{
-      "ID":  "Id",
-      "ORG_ID": "Organization Id",
-      "TENANT_ID": "Name",
-      "DESCRIPTION": "Description"
+      "ID":  "ID",
+      "ORG_ID": "Organization ID",
+      "TENANT_ID": "Tenant ID",
+      "DESCRIPTION": "Description",
+      "MODIFICATION_DATE": "Modification Date",
+      "CREATION_DATE": "Creation Date"
     },
     "PREDEFINED_GROUP":{
       "DEFAULT": "Default",
       "EXTENDED": "Extended",
       "FULL": "Full"
-    },
-    "TENANT_GROUP":{
-      "DEFAULT": "Tenant default",
-      "EXTENDED": "Tenant extended",
-      "FULL": "Tenant Full"
     }
   }
 }

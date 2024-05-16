@@ -13,7 +13,11 @@
 
 export interface Tenant { 
     modificationCount: number;
-    id: number;
+    creationDate?: string;
+    creationUser?: string;
+    modificationDate?: string;
+    modificationUser?: string;
+    id: string;
     /**
      * Id of the organization
      */
