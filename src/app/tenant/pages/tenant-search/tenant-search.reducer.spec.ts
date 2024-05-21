@@ -6,7 +6,9 @@ describe('TenantSearchReducer', () => {
   describe('on searchClicked action', () => {
     describe('with the initial state', () => {
       it('should store the query, increase button click count', () => {
-        const action = TenantSearchActions.searchButtonClicked({ searchCriteria:{orgId: "orgIdTest"} });
+        const action = TenantSearchActions.searchButtonClicked({
+          searchCriteria: { orgId: 'orgIdTest' },
+        });
         const nextState = tenantSearchReducer(initialState, action);
         expect(nextState).toEqual({
           ...initialState,
@@ -18,7 +20,7 @@ describe('TenantSearchReducer', () => {
     describe('with the intermediate state', () => {
       const intermediateState: TenantSearchState = {
         columns: [],
-        results: [{ id: 12345, modificationCount:1, orgId: 'asdf_1' }],
+        results: [{ id: '12345', modificationCount: 1, orgId: 'asdf_1' }],
         searchConfigs: [],
         selectedSearchConfig: null,
         displayedColumns: [],
@@ -28,7 +30,9 @@ describe('TenantSearchReducer', () => {
       };
 
       it('should store the query, increase button click count and clear the results', () => {
-        const action = TenantSearchActions.searchButtonClicked({ searchCriteria: {} });
+        const action = TenantSearchActions.searchButtonClicked({
+          searchCriteria: {},
+        });
         const nextState = tenantSearchReducer(intermediateState, action);
 
         expect(nextState).toEqual({
@@ -43,24 +47,20 @@ describe('TenantSearchReducer', () => {
     describe('with the initial state', () => {
       it('should store the results', () => {
         const tenant = {
-            results: [
-                {id: 123, modificationCount:1},
-                {id: 234, modificationCount:1}
-            ],
-            totalElements: 2
-        }
-        const action = TenantSearchActions.tenantSearchResultsReceived(
-            tenant
-        );
+          results: [
+            { id: '123', modificationCount: 1 },
+            { id: '234', modificationCount: 1 },
+          ],
+          totalElements: 2,
+        };
+        const action = TenantSearchActions.tenantSearchResultsReceived(tenant);
         const nextState = tenantSearchReducer(initialState, action);
         expect(nextState).toEqual({
           ...initialState,
-          results: tenant.results
+          results: tenant.results,
         });
         expect(nextState).not.toBe(initialState);
       });
     });
-
-
   });
 });

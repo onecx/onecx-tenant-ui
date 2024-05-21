@@ -222,11 +222,18 @@ components:
         - 'id'
       properties:
         modificationCount:
-          type: integer
           format: int32
-        id:
           type: integer
-          format: int64
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        id:
+          type: string
         orgId:
           type: string
           description: Id of the organization
@@ -442,3 +449,8 @@ components:
           type: string
         message:
           type: string
+
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00

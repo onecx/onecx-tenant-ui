@@ -5,6 +5,9 @@
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
+    "TOOLTIPS": {
+      "ORGID": "Organisations-ID"
+    },
     "DIAGRAM": {
       "SUM": "Gesamtanzahl"
     },
@@ -23,24 +26,21 @@
       "SEARCH_CONFIG_UPDATE_FAILED": "Suchkonfiguration konnte nicht aktualisiert werden.",
       "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
-    "CRITERIA":{
-      "ORGID": "Organisations-Id"
+    "CRITERIA": {
+      "ORGID": "Organisations-ID"
     },
-    "COLUMNS":{
-      "ID":  "Id",
-      "ORG_ID": "Organisations-Id",
-      "TENANT_ID": "Mandant-Id",
-      "DESCRIPTION": "Beschreibung"
+    "COLUMNS": {
+      "ID": "ID",
+      "ORG_ID": "Organisations-ID",
+      "TENANT_ID": "Mandanten-ID",
+      "DESCRIPTION": "Beschreibung",
+      "MODIFICATION_DATE": "Änderungsdatum",
+      "CREATION_DATE": "Erstellungsdatum"
     },
-    "PREDEFINED_GROUP":{
+    "PREDEFINED_GROUP": {
       "DEFAULT": "Standard",
       "EXTENDED": "Erweitert",
       "FULL": "Vollständig"
-    },
-    "TENANT_GROUP":{
-      "DEFAULT": "Mandanten standard",
-      "EXTENDED": "Mandanten erweitert",
-      "FULL": "Mandanten vollständig"
     }
   }
 }

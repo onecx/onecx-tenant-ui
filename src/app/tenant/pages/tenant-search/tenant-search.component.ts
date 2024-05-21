@@ -52,25 +52,6 @@ export class TenantSearchComponent implements OnInit {
           actionCallback: () => this.toggleChartVisibility(),
         },
       ];
-      if (vm.searchConfigEnabled) {
-        if (vm.selectedSearchConfig) {
-          actions.push({
-            labelKey: 'TENANT_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-            icon: PrimeIcons.FILE_EDIT,
-            titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-            show: 'asOverflow',
-            actionCallback: () => this.updateSearchConfig(),
-          });
-        } else {
-          actions.push({
-            labelKey: 'TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-            icon: PrimeIcons.SAVE,
-            titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-            show: 'asOverflow',
-            actionCallback: () => this.createSearchConfig(),
-          });
-        }
-      }
       return actions;
     })
   );
