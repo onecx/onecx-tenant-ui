@@ -1,40 +1,40 @@
-import { HttpClient } from '@angular/common/http';
-import { isDevMode, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http'
+import { isDevMode, NgModule } from '@angular/core'
+import { RouterModule } from '@angular/router'
 import {
   Actions,
   EffectsModule,
   EffectSources,
   EffectsRunner,
-} from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+} from '@ngrx/effects'
+import { StoreRouterConnectingModule } from '@ngrx/router-store'
+import { StoreModule } from '@ngrx/store'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import {
   MissingTranslationHandler,
   TranslateLoader,
   TranslateModule,
-} from '@ngx-translate/core';
+} from '@ngx-translate/core'
 import {
-  addInitializeModuleGuard,
   AppStateService,
   ConfigurationService,
   createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
   providePortalDialogService
-} from '@onecx/portal-integration-angular';
-import { routes } from './app-routing.module';
-import { commonImports } from './app.module';
-import { metaReducers, reducers } from './app.reducers';
-import { Configuration } from './shared/generated';
-import { SharedModule } from './shared/shared.module';
-import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+} from '@onecx/portal-integration-angular'
+import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
+import { routes } from './app-routing.module'
+import { commonImports } from './app.module'
+import { metaReducers, reducers } from './app.reducers'
+import { Configuration } from './shared/generated'
+import { SharedModule } from './shared/shared.module'
+import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils'
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
-const effectProvidersForWorkaround = [EffectsRunner, EffectSources, Actions];
-effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
+const effectProvidersForWorkaround = [EffectsRunner, EffectSources, Actions]
+effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
 
 @NgModule({
   imports: [
