@@ -42,7 +42,7 @@
     "@onecx/integration-interface": "^4.30.1",
     "@onecx/angular-integration-interface": "^4.30.1",
     "@onecx/keycloak-auth": "^4.30.1",
-    "@onecx/nx-plugin": "1.2.0",
+    "@onecx/nx-plugin": "1.5.0",
     "@onecx/portal-integration-angular": "^4.30.1",
     "@onecx/portal-layout-styles": "^4.30.1",
     "keycloak-angular": "^13.1.0",
