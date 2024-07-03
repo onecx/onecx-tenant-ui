@@ -51,19 +51,6 @@ const config = withModuleFederationPlugin({
     '@onecx/nx-plugin': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-integration-angular': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-layout-styles': { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/integration-interface': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@onecx/keycloak-auth': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@onecx/portal-integration-angular': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
   }),
 
   sharedMappings: [],
