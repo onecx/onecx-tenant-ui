@@ -68,7 +68,6 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
         useClass: PortalMissingTranslationHandler,
       },
     }),
-    SharedModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effectProvidersForWorkaround),
     StoreRouterConnectingModule.forRoot(),
