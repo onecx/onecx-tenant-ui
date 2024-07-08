@@ -7,6 +7,7 @@ import {
   PortalCoreModule,
 } from '@onecx/portal-integration-angular';
 import { AppComponent } from './app.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -16,6 +17,7 @@ describe('AppComponent', () => {
         RouterTestingModule,
         PortalCoreModule.forRoot('test'),
         HttpClientTestingModule,
+        TranslateTestingModule.withTranslations('en', {}),
       ],
       providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }],
     }).compileComponents();
