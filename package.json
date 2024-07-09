@@ -45,7 +45,7 @@
     "@onecx/integration-interface": "^4.40.2",
     "@onecx/angular-integration-interface": "^4.40.2",
     "@onecx/keycloak-auth": "^4.40.2",
-    "@onecx/nx-plugin": "1.2.0",
+    "@onecx/nx-plugin": "1.5.0",
     "@onecx/portal-integration-angular": "^4.40.2",
     "@onecx/portal-layout-styles": "^4.40.2",
     "@webcomponents/webcomponentsjs": "^2.8.0",
