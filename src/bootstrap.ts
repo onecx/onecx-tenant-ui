@@ -1,13 +1,5 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-import { AppModule } from './app/app.module';
+import { bootstrapModule } from '@onecx/angular-webcomponents';
 import { environment } from './environments/environment';
+import { OneCXTenantModule } from './app/onecx-tenant-ui.remote.module';
 
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.error(err));
+bootstrapModule(OneCXTenantModule, 'microfrontend', environment.production);
