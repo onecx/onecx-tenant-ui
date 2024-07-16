@@ -7,7 +7,6 @@ import {
   NgModule,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { createCustomElement } from '@angular/elements';
 import {
   Actions,
   EffectsModule,
@@ -38,7 +37,10 @@ import { metaReducers, reducers } from './app.reducers';
 import { Configuration } from './shared/generated';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
 import { AppEntrypointComponent } from './app-entrypoint.component';
-import { initializeRouter } from '@onecx/angular-webcomponents';
+import {
+  createAppEntrypoint,
+  initializeRouter,
+} from '@onecx/angular-webcomponents';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LetModule } from '@ngrx/component';
@@ -103,9 +105,10 @@ export class OneCXTenantModule implements DoBootstrap {
   constructor(private injector: Injector) {}
 
   ngDoBootstrap(): void {
-    const appEntrypoint = createCustomElement(AppEntrypointComponent, {
-      injector: this.injector,
-    });
-    customElements.define('ocx-tenant-component', appEntrypoint);
+    createAppEntrypoint(
+      AppEntrypointComponent,
+      'ocx-tenant-component',
+      this.injector
+    );
   }
 }
