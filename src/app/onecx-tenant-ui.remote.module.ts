@@ -43,7 +43,7 @@ import {
 } from '@onecx/angular-webcomponents';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -82,7 +82,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
     BrowserModule,
     AngularAuthModule,
     BrowserAnimationsModule,
-    LetModule,
+    LetDirective,
     HttpClientModule,
   ],
   exports: [],

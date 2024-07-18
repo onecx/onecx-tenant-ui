@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { ofType } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -43,7 +43,7 @@ describe('TenantSearchComponent', () => {
       declarations: [TenantSearchComponent],
       imports: [
         PortalCoreModule,
-        LetModule,
+        LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(

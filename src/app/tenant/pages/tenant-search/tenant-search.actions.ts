@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DataTableColumn } from '@onecx/portal-integration-angular';
+import { DataTableColumn } from '@onecx/angular-accelerator';
 import {
   SearchConfig,
   SearchConfigInfo,

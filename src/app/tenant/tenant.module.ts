@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import {
@@ -31,7 +31,7 @@ import { routes } from './tenant.routes';
   imports: [
     CommonModule,
     SharedModule,
-    LetModule,
+    LetDirective,
     PortalCoreModule.forMicroFrontend(),
     RouterModule.forChild(addInitializeModuleGuard(routes)),
     FormsModule,
