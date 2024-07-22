@@ -28,9 +28,3 @@ app:
             SAVE: Update and save tenant
             VIEW: View mode for tenant
             SEARCH: Seaarch tenant
-    keycloak:
-      client:
-        enabled: true
-        spec:
-          kcConfig:
-            clientId: onecx-tenant-ui
