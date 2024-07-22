@@ -1,13 +1,9 @@
 {
   "TENANT_SEARCH": {
-    "HEADER": "Mandanten-Suche ",
+    "HEADER": "Mandanten ",
     "SUB_HEADER": "Suchen und Anzeigen von Mandanten",
-    "HELP_ARTICLE_ID": "Hilfeartikel",
-    "EMPTY_RESULTS": "Keine Ergebnisse.",
+    "EMPTY_RESULTS": "Keine Ergebnisse",
     "BREADCRUMB": "Suche",
-    "TOOLTIPS": {
-      "ORGID": "Organisations-ID"
-    },
     "DIAGRAM": {
       "SUM": "Gesamtanzahl"
     },
@@ -30,12 +26,14 @@
       "ORGID": "Organisations-ID"
     },
     "COLUMNS": {
-      "ID": "ID",
-      "ORG_ID": "Organisations-ID",
-      "TENANT_ID": "Mandanten-ID",
+      "ORG_ID": "Org ID",
+      "TENANT_ID": "Mandanten ID",
       "DESCRIPTION": "Beschreibung",
-      "MODIFICATION_DATE": "Änderungsdatum",
-      "CREATION_DATE": "Erstellungsdatum"
+      "MODIFICATION_DATE": "Geändert am",
+      "CREATION_DATE": "Erstellt am"
+    },
+    "TOOLTIPS": {
+      "ORGID": "Organisations-ID, wird verwenddet um einen Benutzer zu einem Tenant zuzuweisen, innerhalb des IAM (Identiy Access Management)"
     },
     "PREDEFINED_GROUP": {
       "DEFAULT": "Standard",

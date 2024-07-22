@@ -1,13 +1,9 @@
 {
   "TENANT_SEARCH": {
-    "HEADER": "Tenant Search",
+    "HEADER": "Tenants",
     "SUB_HEADER": "Search and display Tenants",
-    "HELP_ARTICLE_ID": "Help Article",
-    "EMPTY_RESULTS": "No results.",
+    "EMPTY_RESULTS": "No results",
     "BREADCRUMB": "Search",
-    "TOOLTIPS": {
-      "ORGID": "Organization ID"
-    },
     "DIAGRAM": {
       "SUM": "Total"
     },
@@ -30,12 +26,14 @@
       "ORGID": "Organization ID"
     },
     "COLUMNS": {
-      "ID": "ID",
-      "ORG_ID": "Organization ID",
+      "ORG_ID": "Org ID",
       "TENANT_ID": "Tenant ID",
       "DESCRIPTION": "Description",
-      "MODIFICATION_DATE": "Modification Date",
-      "CREATION_DATE": "Creation Date"
+      "MODIFICATION_DATE": "Modified on",
+      "CREATION_DATE": "Created on"
+    },
+    "TOOLTIPS": {
+      "ORGID": "Organization ID, used to assign a user to a tenant within IAM (Identity Access Management)"
     },
     "PREDEFINED_GROUP": {
       "DEFAULT": "Default",
