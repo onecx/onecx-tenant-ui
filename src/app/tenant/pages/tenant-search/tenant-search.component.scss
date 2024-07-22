@@ -1,3 +1,23 @@
 :host ::ng-deep .p-calendar-clear-icon {
   right: 1rem;
 }
+
+:host ::ng-deep {
+  // correct search header
+  .search-criteria-container > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    row-gap: 0.5rem;
+    column-gap: 3rem;
+    .search-criteria-buttons {
+      flex-wrap: wrap;
+      align-content: center;
+      margin-top: unset;
+    }
+  }
+  // reduce nested paddings
+  .no-card-padding .card {
+    padding-top: 0;
+  }
+}
