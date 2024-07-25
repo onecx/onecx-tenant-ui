@@ -93,16 +93,6 @@ const bypassFn = function (req, res, proxyOptions) {
 
 
 const PROXY_CONFIG = {
-  '/portal-api': {
-    target: 'http://tkit-portal-server/',
-    secure: false,
-    pathRewrite: {
-      '^.*/portal-api': '',
-    },
-    changeOrigin: true,
-    logLevel: 'debug',
-    bypass: bypassFn,
-  },
   '/bff': {
     target: 'http://onecx-tenant-bff',
     secure: false,
