@@ -1,8 +1,10 @@
 import { Injectable, SkipSelf } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
+import { concatLatestFrom } from '@ngrx/operators'
+
 import {
   CreateOrEditSearchConfigDialogComponent,
   CreateOrEditSearchDialogContent,
