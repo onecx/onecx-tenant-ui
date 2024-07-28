@@ -1,4 +1,8 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   DoBootstrap,
@@ -83,7 +87,6 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
     AngularAuthModule,
     BrowserAnimationsModule,
     LetDirective,
-    HttpClientModule,
   ],
   exports: [],
   providers: [
@@ -99,6 +102,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null));
       multi: true,
       deps: [Router, AppStateService],
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class OneCXTenantModule implements DoBootstrap {
@@ -108,7 +112,7 @@ export class OneCXTenantModule implements DoBootstrap {
     createAppEntrypoint(
       AppEntrypointComponent,
       'ocx-tenant-component',
-      this.injector
+      this.injector,
     );
   }
 }
