@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,7 +55,6 @@ export const commonImports = [CommonModule];
       traceLimit: 75,
     }),
     EffectsModule.forRoot([]),
-    HttpClientModule,
     PortalCoreModule.forRoot('onecx-tenant-ui'),
     TranslateModule.forRoot({
       extend: true,
@@ -84,6 +83,7 @@ export const commonImports = [CommonModule];
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },
+    provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: [AppComponent],
 })
