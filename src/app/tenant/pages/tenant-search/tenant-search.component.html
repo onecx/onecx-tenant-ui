@@ -11,8 +11,10 @@
     [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
     (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
-    [searchConfigs]="vm.searchConfigs"
     (viewModeChanged)="viewModeChanged($event)"
+    pageName="PAGE_TENANT_SEARCH"
+    [displayedColumns]="vm.displayedColumns"
+    [currentInputFieldValues]="(formValues$ | async) ?? {}"
   >
     <form [formGroup]="tenantSearchFormGroup">
       <div class="grid mt-0 p-fluid">

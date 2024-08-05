@@ -9,8 +9,7 @@ import {
   PortalDialogService,
 } from '@onecx/portal-integration-angular';
 import { PrimeIcons } from 'primeng/api';
-import { first, map, Observable } from 'rxjs';
-import { SearchConfigInfo } from 'src/app/shared/generated';
+import { first, map, Observable, tap } from 'rxjs';
 import { isValidDate } from '../../../shared/utils/isValidDate.utils';
 import { TenantSearchActions } from './tenant-search.actions';
 import {
@@ -27,7 +26,7 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel';
 })
 export class TenantSearchComponent implements OnInit {
   viewModel$: Observable<TenantSearchViewModel> = this.store.select(
-    selectTenantSearchViewModel
+    selectTenantSearchViewModel,
   );
 
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
@@ -53,22 +52,27 @@ export class TenantSearchComponent implements OnInit {
         },
       ];
       return actions;
-    })
+    }),
   );
 
   diagramColumnId = 'tenantId';
   diagramColumn$ = this.viewModel$.pipe(
     map(
       (vm) =>
-        vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn
-    )
+        vm.columns.find(
+          (e) => e.id === this.diagramColumnId,
+        ) as DataTableColumn,
+    ),
   );
 
   public tenantSearchFormGroup: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(
-      tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])
+      tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null]),
     ) as Record<keyof TenantSearchCriteria, unknown>),
   } satisfies Record<keyof TenantSearchCriteria, unknown>);
+
+  formValues$: Observable<{ [key: string]: unknown }> =
+    this.tenantSearchFormGroup.valueChanges;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -76,7 +80,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
-    private portalDialogService: PortalDialogService
+    private portalDialogService: PortalDialogService,
   ) {}
 
   ngOnInit() {
@@ -101,15 +105,15 @@ export class TenantSearchComponent implements OnInit {
                 value.getDay(),
                 value.getHours(),
                 value.getMinutes(),
-                value.getSeconds()
-              )
+                value.getSeconds(),
+              ),
             ).toISOString()
           : value || undefined,
       }),
-      {}
+      {},
     );
     this.store.dispatch(
-      TenantSearchActions.searchButtonClicked({ searchCriteria })
+      TenantSearchActions.searchButtonClicked({ searchCriteria }),
     );
   }
 
@@ -122,20 +126,27 @@ export class TenantSearchComponent implements OnInit {
       this.exportDataService.exportCsv(
         data.displayedColumns,
         data.results,
-        'tenant.csv'
+        'tenant.csv',
       );
     });
   }
 
-  searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
-    if (searchConfigInfo) {
-      this.store.dispatch(
-        TenantSearchActions.selectedSearchConfigInfo({
-          searchConfigInfo: searchConfigInfo,
-        })
+  searchConfigInfoSelectionChanged(searchConfig: {
+    inputValues: Record<string, any>;
+    displayedColumns: DataTableColumn[];
+  }) {
+    console.log('config changed', searchConfig);
+    if (searchConfig) {
+      Object.entries(searchConfig.inputValues).forEach(
+        ([inputKey, inputValue]) => {
+          this.tenantSearchFormGroup.controls[inputKey] = inputValue;
+        },
       );
-    } else {
-      this.store.dispatch(TenantSearchActions.searchConfigInfoDeselected());
+      this.store.dispatch(
+        TenantSearchActions.displayedColumnsChanged({
+          displayedColumns: searchConfig.displayedColumns,
+        }),
+      );
     }
   }
 
@@ -143,13 +154,13 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
         viewMode: viewMode,
-      })
+      }),
     );
   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
     this.store.dispatch(
-      TenantSearchActions.displayedColumnsChanged({ displayedColumns })
+      TenantSearchActions.displayedColumnsChanged({ displayedColumns }),
     );
   }
 
