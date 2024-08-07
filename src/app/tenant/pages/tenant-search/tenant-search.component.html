@@ -23,9 +23,11 @@
               id="tenant_search_orgId"
               type="text"
               class="w-18rem"
-              [title]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
               formControlName="orgId"
               [(ngModel)]="vm.searchCriteria.orgId"
+              [pTooltip]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
             />
             <label for="tenant_search_orgId" style="white-space: nowrap">{{
               'TENANT_SEARCH.CRITERIA.ORGID' | translate
