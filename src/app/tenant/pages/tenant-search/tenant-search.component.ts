@@ -133,20 +133,24 @@ export class TenantSearchComponent implements OnInit {
 
   searchConfigInfoSelectionChanged(searchConfig: {
     inputValues: Record<string, any>;
-    displayedColumns: DataTableColumn[];
+    displayedColumns: string[];
   }) {
     console.log('config changed', searchConfig);
     if (searchConfig) {
       Object.entries(searchConfig.inputValues).forEach(
         ([inputKey, inputValue]) => {
-          this.tenantSearchFormGroup.controls[inputKey] = inputValue;
+          this.tenantSearchFormGroup.get(inputKey)?.setValue(inputValue)
         },
       );
-      this.store.dispatch(
-        TenantSearchActions.displayedColumnsChanged({
-          displayedColumns: searchConfig.displayedColumns,
-        }),
-      );
+      this.viewModel$.pipe(first()).subscribe((data) => {
+        this.store.dispatch(
+          TenantSearchActions.displayedColumnsChanged({
+            displayedColumns: data.columns.filter((column) =>
+              searchConfig.displayedColumns.includes(column.id),
+            ),
+          }),
+        );
+      });
     }
   }
 
