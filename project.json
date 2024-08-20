@@ -78,10 +78,10 @@
       "executor": "@nx/angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "onecx-tenant-ui:build:production"
+          "buildTarget": "onecx-tenant-ui:build:production"
         },
         "development": {
-          "browserTarget": "onecx-tenant-ui:build:development"
+          "buildTarget": "onecx-tenant-ui:build:development"
         }
       },
       "defaultConfiguration": "development",
@@ -94,7 +94,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "onecx-tenant-ui:build"
+        "buildTarget": "onecx-tenant-ui:build"
       }
     },
     "lint": {
