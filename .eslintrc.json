@@ -35,7 +35,7 @@
         "plugin:@typescript-eslint/recommended"
       ],
       "rules": {
-        "semi": ["error", "never"],
+        // "semi": ["error", "never"],
         "@angular-eslint/directive-selector": [
           "error",
           {
