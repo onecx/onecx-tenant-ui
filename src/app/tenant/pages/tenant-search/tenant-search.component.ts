@@ -27,7 +27,7 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel';
 })
 export class TenantSearchComponent implements OnInit {
   viewModel$: Observable<TenantSearchViewModel> = this.store.select(
-    selectTenantSearchViewModel
+    selectTenantSearchViewModel,
   );
 
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
@@ -53,20 +53,22 @@ export class TenantSearchComponent implements OnInit {
         },
       ];
       return actions;
-    })
+    }),
   );
 
   diagramColumnId = 'tenantId';
   diagramColumn$ = this.viewModel$.pipe(
     map(
       (vm) =>
-        vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn
-    )
+        vm.columns.find(
+          (e) => e.id === this.diagramColumnId,
+        ) as DataTableColumn,
+    ),
   );
 
   public tenantSearchFormGroup: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(
-      tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])
+      tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null]),
     ) as Record<keyof TenantSearchCriteria, unknown>),
   } satisfies Record<keyof TenantSearchCriteria, unknown>);
 
@@ -76,7 +78,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
-    private portalDialogService: PortalDialogService
+    private portalDialogService: PortalDialogService,
   ) {}
 
   ngOnInit() {
@@ -101,15 +103,15 @@ export class TenantSearchComponent implements OnInit {
                 value.getDay(),
                 value.getHours(),
                 value.getMinutes(),
-                value.getSeconds()
-              )
+                value.getSeconds(),
+              ),
             ).toISOString()
           : value || undefined,
       }),
-      {}
+      {},
     );
     this.store.dispatch(
-      TenantSearchActions.searchButtonClicked({ searchCriteria })
+      TenantSearchActions.searchButtonClicked({ searchCriteria }),
     );
   }
 
@@ -122,7 +124,7 @@ export class TenantSearchComponent implements OnInit {
       this.exportDataService.exportCsv(
         data.displayedColumns,
         data.results,
-        'tenant.csv'
+        'tenant.csv',
       );
     });
   }
@@ -132,7 +134,7 @@ export class TenantSearchComponent implements OnInit {
       this.store.dispatch(
         TenantSearchActions.selectedSearchConfigInfo({
           searchConfigInfo: searchConfigInfo,
-        })
+        }),
       );
     } else {
       this.store.dispatch(TenantSearchActions.searchConfigInfoDeselected());
@@ -143,13 +145,13 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
         viewMode: viewMode,
-      })
+      }),
     );
   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
     this.store.dispatch(
-      TenantSearchActions.displayedColumnsChanged({ displayedColumns })
+      TenantSearchActions.displayedColumnsChanged({ displayedColumns }),
     );
   }
 

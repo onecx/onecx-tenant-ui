@@ -16,7 +16,7 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel';
 
 export const tenantSearchSelectors = createChildSelectors(
   tenantFeature.selectSearch,
-  initialState
+  initialState,
 );
 export const selectSearchCriteria = createSelector(
   selectQueryParams,
@@ -26,7 +26,7 @@ export const selectSearchCriteria = createSelector(
       return results.data as TenantSearchCriteria;
     }
     return {};
-  }
+  },
 );
 
 export const selectResults = createSelector(
@@ -37,7 +37,7 @@ export const selectResults = createSelector(
       ...item,
       // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
     }));
-  }
+  },
 );
 
 export const selectDisplayedColumns = createSelector(
@@ -49,7 +49,7 @@ export const selectDisplayedColumns = createSelector(
         ?.map((d) => columns.find((c) => c.id === d))
         .filter((d) => d) as DataTableColumn[]) ?? []
     );
-  }
+  },
 );
 
 export const selectTenantSearchViewModel = createSelector(
@@ -71,7 +71,7 @@ export const selectTenantSearchViewModel = createSelector(
     displayedColumns,
     viewMode,
     chartVisible,
-    searchConfigEnabled
+    searchConfigEnabled,
   ): TenantSearchViewModel => ({
     columns,
     searchCriteria,
@@ -82,7 +82,7 @@ export const selectTenantSearchViewModel = createSelector(
     viewMode,
     chartVisible,
     searchConfigEnabled,
-  })
+  }),
 );
 
 export const selectSearchConfigViewState = createSelector(
@@ -100,7 +100,7 @@ export const selectSearchConfigViewState = createSelector(
     displayedColumns,
     viewMode,
     searchCriteria,
-    searchConfigEnabled
+    searchConfigEnabled,
   ): TenantSearchConfigState => ({
     columns,
     searchConfigs,
@@ -109,5 +109,5 @@ export const selectSearchConfigViewState = createSelector(
     viewMode,
     searchCriteria,
     searchConfigEnabled,
-  })
+  }),
 );

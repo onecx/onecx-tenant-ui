@@ -8,12 +8,12 @@ import { Configuration } from '../generated';
 
 export function apiConfigProvider(
   configService: ConfigurationService,
-  appStateService: AppStateService
+  appStateService: AppStateService,
 ) {
   return new PortalApiConfiguration(
     Configuration,
     environment.apiPrefix,
     configService,
-    appStateService
+    appStateService,
   );
 }

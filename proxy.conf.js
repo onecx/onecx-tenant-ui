@@ -8,80 +8,72 @@ const bypassFn = function (req, res, proxyOptions) {
       return res.send('');
     } else {
       console.log('############## REQ ', req.url);
-      if (req.url === '/bff/searchConfig/infos/tenant-search' ) {
-        console.log('new search config created')
+      if (req.url === '/bff/searchConfig/infos/tenant-search') {
+        console.log('new search config created');
         const searchConfigMock = {
           totalElements: 3,
-          configs : []
+          configs: [],
         };
 
-          res.end(
-            JSON.stringify({
-              totalElements:
-              searchConfigMock.totalElements,
-              configs: searchConfigMock.configs
-
-            })
-          );
-      } else if (req.url === '/bff/searchConfig/' ) {
-      const searchConfigMockCreated = {
-        totalElements: 4,
-        configs : [
-        ]
-      };
-
-      res.end(
-        JSON.stringify({
-          totalElements:
-          searchConfigMockCreated.totalElements,
-          configs: searchConfigMockCreated.configs
-        })
+        res.end(
+          JSON.stringify({
+            totalElements: searchConfigMock.totalElements,
+            configs: searchConfigMock.configs,
+          }),
         );
-        
-      } else if (req.url === '/bff/searchConfig/2' || req.url === '/bff/searchConfig/1' ) {
-        console.log('get search config with id')
+      } else if (req.url === '/bff/searchConfig/') {
+        const searchConfigMockCreated = {
+          totalElements: 4,
+          configs: [],
+        };
+
+        res.end(
+          JSON.stringify({
+            totalElements: searchConfigMockCreated.totalElements,
+            configs: searchConfigMockCreated.configs,
+          }),
+        );
+      } else if (
+        req.url === '/bff/searchConfig/2' ||
+        req.url === '/bff/searchConfig/1'
+      ) {
+        console.log('get search config with id');
         const searchConfigSingleMock = {
-          config : {
-                      id: 1,
-                      page: 'tenant',
-                      name: 'test',
-                      modificationCount: 0,
-                      fieldListVersion: 0,
-                      isReadonly: false,
-                      isAdvanced: false,
-                      columns: [],
-                      values: {
-                        id: '10',
-                      },
-        }
+          config: {
+            id: 1,
+            page: 'tenant',
+            name: 'test',
+            modificationCount: 0,
+            fieldListVersion: 0,
+            isReadonly: false,
+            isAdvanced: false,
+            columns: [],
+            values: {
+              id: '10',
+            },
+          },
         };
 
-          res.end(
-            JSON.stringify({
-              config: searchConfigSingleMock.config
-
-            })
-            
-          );
-      } else if (req.url === '/bff/searchConfig/' ) {
-      console.log('searchConfig created')
-
-      const searchConfigMockCreated = {
-        totalElements: 4,
-        configs : [
-        ]
-      };
-     
-      res.end(
-        JSON.stringify({
-          totalElements:
-          searchConfigMockCreated.totalElements,
-          configs: searchConfigMockCreated.configs
-        })
+        res.end(
+          JSON.stringify({
+            config: searchConfigSingleMock.config,
+          }),
         );
-      }
-        else
-       {
+      } else if (req.url === '/bff/searchConfig/') {
+        console.log('searchConfig created');
+
+        const searchConfigMockCreated = {
+          totalElements: 4,
+          configs: [],
+        };
+
+        res.end(
+          JSON.stringify({
+            totalElements: searchConfigMockCreated.totalElements,
+            configs: searchConfigMockCreated.configs,
+          }),
+        );
+      } else {
         return null;
       }
     }
@@ -89,8 +81,6 @@ const bypassFn = function (req, res, proxyOptions) {
     console.log('error', error);
   }
 };
-
-
 
 const PROXY_CONFIG = {
   '/bff': {
@@ -102,7 +92,7 @@ const PROXY_CONFIG = {
     changeOrigin: true,
     logLevel: 'debug',
     bypass: bypassFn,
-  }
+  },
 };
 
 module.exports = PROXY_CONFIG;

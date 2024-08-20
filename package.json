@@ -4,19 +4,25 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "contributors": [
-    "OneCX Development Team <onecx-development-team@onecx.org>"
+    "OneCX Development Team <onecx_dev@1000kit.org>"
   ],
   "scripts": {
-    "apigen": "openapi-generator-cli generate -i src/assets/swagger/onecx-tenant-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object",
     "start": "nx serve",
-    "prepare": "husky install",
+    "clean": "nx cache clean --force && nx cache clean && rm -f .eslintcache && rm -f ./node_modules/.cache/prettier/.prettier-cache",
+    "prepare": "husky || true",
     "build": "nx build --configuration=production",
+    "browser": "npx browserslist",
     "format": "nx format:write --uncommitted",
     "lint": "nx lint",
     "lint:fix": "nx lint --fix",
+    "eslint": "eslint --quiet --ext .js,.ts src",
     "sonar": "npx sonarqube-scanner -Dproject.settings=sonar-local-project.properties",
     "test": "nx test",
-    "test:ci": "nx test --watch=false --browsers=ChromeHeadless --code-coverage"
+    "test:ci": "nx test --watch=false --browsers=ChromeHeadless --code-coverage",
+    "apigen": "openapi-generator-cli generate -i src/assets/swagger/onecx-tenant-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object",
+    "apigen-format": "npx prettier $npm_package_config_openapiYaml --write && npx prettier $npm_package_config_openapiOutput/**/* --write",
+    "apigen-generate": "openapi-generator-cli generate -i $npm_package_config_openapiYaml -g typescript-angular -c apigen.yaml -o $npm_package_config_openapiOutput --type-mappings=AnyType=object,set=Array",
+    "apigen-cleanup": "rm -rf $npm_package_config_openapiOutput"
   },
   "dependencies": {
     "@angular-architects/module-federation": "18.0.4",

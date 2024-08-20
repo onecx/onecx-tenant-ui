@@ -3,13 +3,18 @@
 # compiled output
 dist
 tmp
-/out-tsc
+out-tsc
+reports
 
 # dependencies
 node_modules
 
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -23,21 +28,20 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/reports
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
+.angular
+.eslintcache
+.husky/_
+.sass-cache
+.gitlab*
+.scannerwork
+connect.lock
+typings
+*.log
+*.sh
 
 # System Files
 .DS_Store
 Thumbs.db
-
-.nx
-.angular

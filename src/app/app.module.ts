@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { APP_INITIALIZER, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +28,7 @@ import {
   PortalMissingTranslationHandler,
   translateServiceInitializer,
   UserService,
-  providePortalDialogService
+  providePortalDialogService,
 } from '@onecx/portal-integration-angular';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -83,7 +87,7 @@ export const commonImports = [CommonModule];
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
   ],
   bootstrap: [AppComponent],
 })

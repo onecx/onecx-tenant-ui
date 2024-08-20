@@ -95,8 +95,8 @@ describe('Tenant search selectors:', () => {
           displayedColumns,
           viewMode,
           chartVisible,
-          searchConfigEnabled
-        )
+          searchConfigEnabled,
+        ),
       ).toEqual({
         columns: columns,
         searchCriteria: searchCriteria,

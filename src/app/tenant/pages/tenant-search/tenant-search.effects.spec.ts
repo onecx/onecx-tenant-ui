@@ -1,4 +1,4 @@
-import { Type } from "@angular/core";
+import { Type } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationExtras,
@@ -6,28 +6,28 @@ import {
   RouterState,
   RouterStateSnapshot,
   RoutesRecognized,
-} from "@angular/router";
-import { ROUTER_NAVIGATED, RouterNavigatedAction } from "@ngrx/router-store";
-import { MockStore, createMockStore } from "@ngrx/store/testing";
-import { ReplaySubject, of, throwError } from "rxjs";
-import { hot } from "jest-marbles";
+} from '@angular/router';
+import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store';
+import { MockStore, createMockStore } from '@ngrx/store/testing';
+import { ReplaySubject, of, throwError } from 'rxjs';
+import { hot } from 'jest-marbles';
 import {
   CreateOrEditSearchConfigDialogComponent,
   PortalDialogService,
   PortalMessageService,
-} from "@onecx/portal-integration-angular";
+} from '@onecx/portal-integration-angular';
 import {
   SearchConfigBffService,
   TenantBffService,
-} from "src/app/shared/generated";
-import { TenantSearchEffects } from "./tenant-search.effects";
-import { TenantSearchActions } from "./tenant-search.actions";
+} from 'src/app/shared/generated';
+import { TenantSearchEffects } from './tenant-search.effects';
+import { TenantSearchActions } from './tenant-search.actions';
 import {
   selectSearchConfigViewState,
   selectSearchCriteria,
   tenantSearchSelectors,
-} from "./tenant-search.selectors";
-import { TenantSearchComponent } from "./tenant-search.component";
+} from './tenant-search.selectors';
+import { TenantSearchComponent } from './tenant-search.component';
 
 class MockRouter implements Partial<Router> {
   constructor(effectsActions: ReplaySubject<any>) {
@@ -53,7 +53,7 @@ class MockRouter implements Partial<Router> {
   configureNavigationUrl = (
     routerAction: RouterNavigatedAction,
     currentUrl: string,
-    newUrl: string
+    newUrl: string,
   ) => {
     this.setRouterUrl(currentUrl);
     routerAction.payload = {
@@ -70,7 +70,7 @@ class MockRouter implements Partial<Router> {
   configureQueryParams = (
     routerAction: RouterNavigatedAction,
     routerParams: any,
-    actionParams: any
+    actionParams: any,
   ) => {
     this.setRouterParams(routerParams);
     routerAction.payload = {
@@ -84,14 +84,14 @@ class MockRouter implements Partial<Router> {
 
   simulateNavigation = (routerAction: RouterNavigatedAction) => {
     (this.events as ReplaySubject<any>).next(
-      new RoutesRecognized(0, "", "", {} as RouterStateSnapshot)
+      new RoutesRecognized(0, '', '', {} as RouterStateSnapshot),
     );
     this.effectsActions.next(routerAction);
   };
 
   navigate(
     commands: any[],
-    extras?: NavigationExtras | undefined
+    extras?: NavigationExtras | undefined,
   ): Promise<boolean> {
     const routerNavigatedAction = {
       type: ROUTER_NAVIGATED,
@@ -108,7 +108,7 @@ class MockRouter implements Partial<Router> {
   }
 }
 
-describe("TenantSearchEffects:", () => {
+describe('TenantSearchEffects:', () => {
   const activatedRouteMock: Partial<ActivatedRoute> = {};
   let mockedRouter: MockRouter;
   let store: MockStore;
@@ -139,7 +139,7 @@ describe("TenantSearchEffects:", () => {
       mockedRouter as any,
       store,
       mockedMessageService as PortalMessageService,
-      mockedDialogService as PortalDialogService
+      mockedDialogService as PortalDialogService,
     );
   };
 
@@ -151,57 +151,57 @@ describe("TenantSearchEffects:", () => {
     jest.resetAllMocks();
   });
 
-  it("should display error when TenantSearchActions.tenantSearchResultsLoadingFailed dispatched", (done) => {
+  it('should display error when TenantSearchActions.tenantSearchResultsLoadingFailed dispatched', (done) => {
     const effects = initEffects();
     effectsActions.next(
       TenantSearchActions.tenantSearchResultsLoadingFailed({
         error: null,
-      })
+      }),
     );
 
     effects.displayError$.subscribe(() => {
       expect(mockedMessageService.error).toHaveBeenLastCalledWith({
         summaryKey:
-          "TENANT_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED",
+          'TENANT_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
       });
       done();
     });
   });
 
-  it("should display error when TenantSearchActions.searchConfigCreationFailed dispatched", (done) => {
+  it('should display error when TenantSearchActions.searchConfigCreationFailed dispatched', (done) => {
     const effects = initEffects();
     effectsActions.next(
       TenantSearchActions.searchConfigCreationFailed({
         error: null,
-      })
+      }),
     );
 
     effects.displayError$.subscribe(() => {
       expect(mockedMessageService.error).toHaveBeenLastCalledWith({
         summaryKey:
-          "TENANT_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_CREATION_FAILED",
+          'TENANT_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_CREATION_FAILED',
       });
       done();
     });
   });
 
-  it("should display error when TenantSearchActions.searchConfigUpdateFailed dispatched", (done) => {
+  it('should display error when TenantSearchActions.searchConfigUpdateFailed dispatched', (done) => {
     const effects = initEffects();
     effectsActions.next(
       TenantSearchActions.searchConfigUpdateFailed({
         error: null,
-      })
+      }),
     );
 
     effects.displayError$.subscribe(() => {
       expect(mockedMessageService.error).toHaveBeenLastCalledWith({
-        summaryKey: "TENANT_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_UPDATE_FAILED",
+        summaryKey: 'TENANT_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_UPDATE_FAILED',
       });
       done();
     });
   });
 
-  it("should not display error when action without error mapping dispatched", (done) => {
+  it('should not display error when action without error mapping dispatched', (done) => {
     const effects = initEffects();
     // any not mapped action
     effectsActions.next(TenantSearchActions.chartVisibilityToggled());
@@ -212,8 +212,8 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should save visible: true to localStorage when TenantSearchActions.chartVisibilityToggled dispatched", (done) => {
-    jest.spyOn(Storage.prototype, "setItem");
+  it('should save visible: true to localStorage when TenantSearchActions.chartVisibilityToggled dispatched', (done) => {
+    jest.spyOn(Storage.prototype, 'setItem');
 
     store.overrideSelector(tenantSearchSelectors.selectChartVisible, true);
 
@@ -222,15 +222,15 @@ describe("TenantSearchEffects:", () => {
 
     effects.saveChartVisibility$.subscribe(() => {
       expect(localStorage.setItem).toHaveBeenLastCalledWith(
-        "tenantChartVisibility",
-        "true"
+        'tenantChartVisibility',
+        'true',
       );
       done();
     });
   });
 
-  it("should save visible: false to localStorage when TenantSearchActions.chartVisibilityToggled dispatched", (done) => {
-    jest.spyOn(Storage.prototype, "setItem");
+  it('should save visible: false to localStorage when TenantSearchActions.chartVisibilityToggled dispatched', (done) => {
+    jest.spyOn(Storage.prototype, 'setItem');
 
     store.overrideSelector(tenantSearchSelectors.selectChartVisible, false);
 
@@ -239,16 +239,16 @@ describe("TenantSearchEffects:", () => {
 
     effects.saveChartVisibility$.subscribe(() => {
       expect(localStorage.setItem).toHaveBeenLastCalledWith(
-        "tenantChartVisibility",
-        "false"
+        'tenantChartVisibility',
+        'false',
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: true on TenantSearchComponent route navigation", (done) => {
-    const localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
-    localStorageSpy.mockReturnValue("true");
+  it('should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: true on TenantSearchComponent route navigation', (done) => {
+    const localStorageSpy = jest.spyOn(Storage.prototype, 'getItem');
+    localStorageSpy.mockReturnValue('true');
 
     const effects = initEffects();
 
@@ -258,8 +258,8 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.routeFor(TenantSearchComponent);
     mockedRouter.configureNavigationUrl(
       routerNavigatedAction,
-      "current_url",
-      "navigation_url"
+      'current_url',
+      'navigation_url',
     );
     mockedRouter.simulateNavigation(routerNavigatedAction);
 
@@ -269,9 +269,9 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: false on TenantSearchComponent route navigation", (done) => {
-    const localStorageSpy = jest.spyOn(Storage.prototype, "getItem");
-    localStorageSpy.mockReturnValue("false");
+  it('should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: false on TenantSearchComponent route navigation', (done) => {
+    const localStorageSpy = jest.spyOn(Storage.prototype, 'getItem');
+    localStorageSpy.mockReturnValue('false');
 
     const effects = initEffects();
 
@@ -281,8 +281,8 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.routeFor(TenantSearchComponent);
     mockedRouter.configureNavigationUrl(
       routerNavigatedAction,
-      "current_url",
-      "navigation_url"
+      'current_url',
+      'navigation_url',
     );
     mockedRouter.simulateNavigation(routerNavigatedAction);
 
@@ -292,16 +292,16 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigInfosReceived with fetched configs on TenantSearchComponent route navigation", (done) => {
+  it('should dispatch TenantSearchActions.searchConfigInfosReceived with fetched configs on TenantSearchComponent route navigation', (done) => {
     jest
-      .spyOn(mockedSearchConfigService, "getSearchConfigInfos")
+      .spyOn(mockedSearchConfigService, 'getSearchConfigInfos')
       .mockReturnValue(
         of({
           configs: [
-            { id: "1", name: "config_1" },
-            { id: "2", name: "config_2" },
+            { id: '1', name: 'config_1' },
+            { id: '2', name: 'config_2' },
           ],
-        } as any)
+        } as any),
       );
 
     const effects = initEffects();
@@ -312,45 +312,45 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.routeFor(TenantSearchComponent);
     mockedRouter.configureNavigationUrl(
       routerNavigatedAction,
-      "current_url",
-      "navigation_url"
+      'current_url',
+      'navigation_url',
     );
     mockedRouter.simulateNavigation(routerNavigatedAction);
 
     effects.loadSearchConfigInfos$.subscribe((action) => {
       expect(
-        mockedSearchConfigService.getSearchConfigInfos
-      ).toHaveBeenLastCalledWith("tenant-search");
+        mockedSearchConfigService.getSearchConfigInfos,
+      ).toHaveBeenLastCalledWith('tenant-search');
       expect(action.searchConfigInfos).toEqual([
-        { id: "1", name: "config_1" },
-        { id: "2", name: "config_2" },
+        { id: '1', name: 'config_1' },
+        { id: '2', name: 'config_2' },
       ]);
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigReceived with fetched config on TenantSearchActions.selectedSearchConfigInfo", (done) => {
+  it('should dispatch TenantSearchActions.searchConfigReceived with fetched config on TenantSearchActions.selectedSearchConfigInfo', (done) => {
     const returnedConfig = {
-      name: "config_name",
+      name: 'config_name',
       isReadonly: true,
     };
-    jest.spyOn(mockedSearchConfigService, "getSearchConfig").mockReturnValue(
+    jest.spyOn(mockedSearchConfigService, 'getSearchConfig').mockReturnValue(
       of({
         config: returnedConfig,
-      } as any)
+      } as any),
     );
 
     const effects = initEffects();
     effectsActions.next(
       TenantSearchActions.selectedSearchConfigInfo({
-        searchConfigInfo: { id: "1", name: "config" },
-      })
+        searchConfigInfo: { id: '1', name: 'config' },
+      }),
     );
 
     effects.loadSearchConfig$.subscribe((action) => {
       expect(
-        mockedSearchConfigService.getSearchConfig
-      ).toHaveBeenLastCalledWith("1");
+        mockedSearchConfigService.getSearchConfig,
+      ).toHaveBeenLastCalledWith('1');
       expect(action).toEqual({
         type: TenantSearchActions.searchConfigReceived.type,
         searchConfig: returnedConfig,
@@ -359,25 +359,25 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigsLoadingFailed with failed config fetch on TenantSearchActions.selectedSearchConfigInfo", (done) => {
+  it('should dispatch TenantSearchActions.searchConfigsLoadingFailed with failed config fetch on TenantSearchActions.selectedSearchConfigInfo', (done) => {
     const error = {
-      cause: "Bad id",
+      cause: 'Bad id',
     };
     jest
-      .spyOn(mockedSearchConfigService, "getSearchConfig")
+      .spyOn(mockedSearchConfigService, 'getSearchConfig')
       .mockReturnValue(throwError(() => error));
 
     const effects = initEffects();
     effectsActions.next(
       TenantSearchActions.selectedSearchConfigInfo({
-        searchConfigInfo: { id: "1", name: "config" },
-      })
+        searchConfigInfo: { id: '1', name: 'config' },
+      }),
     );
 
     effects.loadSearchConfig$.subscribe((action) => {
       expect(
-        mockedSearchConfigService.getSearchConfig
-      ).toHaveBeenLastCalledWith("1");
+        mockedSearchConfigService.getSearchConfig,
+      ).toHaveBeenLastCalledWith('1');
       expect(action).toEqual({
         type: TenantSearchActions.searchConfigsLoadingFailed.type,
         error: error,
@@ -386,29 +386,29 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria", (done) => {
+  it('should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria', (done) => {
     const tenants = {
       stream: [
         {
-          id: "1",
+          id: '1',
         },
         {
-          id: "2",
+          id: '2',
         },
       ],
       totalElements: 2,
     };
     jest
-      .spyOn(mockedTenantService, "searchTenants")
+      .spyOn(mockedTenantService, 'searchTenants')
       .mockReturnValue(of(tenants) as any);
 
     const previousSearchCriteria = {
-      orgId: "prev_org_id",
+      orgId: 'prev_org_id',
       pageNumber: 1,
       pageSize: 1,
     };
     const newSearchCriteria = {
-      orgId: "org_id",
+      orgId: 'org_id',
       pageNumber: 1,
       pageSize: 1,
     };
@@ -423,13 +423,13 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.configureQueryParams(
       routerNavigatedAction,
       previousSearchCriteria,
-      newSearchCriteria
+      newSearchCriteria,
     );
     mockedRouter.simulateNavigation(routerNavigatedAction);
 
     effects.searchByUrl$.subscribe((action) => {
       expect(mockedTenantService.searchTenants).toHaveBeenLastCalledWith(
-        newSearchCriteria
+        newSearchCriteria,
       );
       expect(action).toEqual({
         type: TenantSearchActions.tenantSearchResultsReceived.type,
@@ -440,21 +440,21 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.tenantSearchResultsLoadingFailed when search call fails on new search criteria", (done) => {
+  it('should dispatch TenantSearchActions.tenantSearchResultsLoadingFailed when search call fails on new search criteria', (done) => {
     const error = {
-      cause: "Bad org id",
+      cause: 'Bad org id',
     };
     jest
-      .spyOn(mockedTenantService, "searchTenants")
+      .spyOn(mockedTenantService, 'searchTenants')
       .mockReturnValue(throwError(() => error));
 
     const previousSearchCriteria = {
-      orgId: "prev_org_id",
+      orgId: 'prev_org_id',
       pageNumber: 1,
       pageSize: 1,
     };
     const newSearchCriteria = {
-      orgId: "org_id",
+      orgId: 'org_id',
       pageNumber: 1,
       pageSize: 1,
     };
@@ -469,13 +469,13 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.configureQueryParams(
       routerNavigatedAction,
       previousSearchCriteria,
-      newSearchCriteria
+      newSearchCriteria,
     );
     mockedRouter.simulateNavigation(routerNavigatedAction);
 
     effects.searchByUrl$.subscribe((action) => {
       expect(mockedTenantService.searchTenants).toHaveBeenLastCalledWith(
-        newSearchCriteria
+        newSearchCriteria,
       );
       expect(action).toEqual({
         type: TenantSearchActions.tenantSearchResultsLoadingFailed.type,
@@ -485,9 +485,9 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should not dispatch anything via searchByUrl on same search criteria", () => {
+  it('should not dispatch anything via searchByUrl on same search criteria', () => {
     const sameSearchCriteria = {
-      orgId: "org_id",
+      orgId: 'org_id',
       pageNumber: 1,
       pageSize: 1,
     };
@@ -499,35 +499,35 @@ describe("TenantSearchEffects:", () => {
     mockedRouter.configureQueryParams(
       routerNavigatedAction,
       sameSearchCriteria,
-      { orgId: "ass" }
+      { orgId: 'ass' },
     );
 
     const effects = initEffects();
     effectsActions.next(
-      hot("-a", {
+      hot('-a', {
         a: routerNavigatedAction,
-      })
+      }),
     );
 
-    const expected = hot("--");
+    const expected = hot('--');
 
     expect(effects.searchByUrl$).toBeObservable(expected);
   });
 
-  it("should dispatch TenantSearchActions.tenantSearchResultsReceived with the results on TenantSearchActions.searchButtonClicked dispatch", (done) => {
+  it('should dispatch TenantSearchActions.tenantSearchResultsReceived with the results on TenantSearchActions.searchButtonClicked dispatch', (done) => {
     const tenants = {
       stream: [
         {
-          id: "1",
+          id: '1',
         },
         {
-          id: "2",
+          id: '2',
         },
       ],
       totalElements: 2,
     };
     jest
-      .spyOn(mockedTenantService, "searchTenants")
+      .spyOn(mockedTenantService, 'searchTenants')
       .mockReturnValue(of(tenants) as any);
 
     const effects = initEffects();
@@ -536,8 +536,8 @@ describe("TenantSearchEffects:", () => {
     (activatedRouteMock.queryParams as ReplaySubject<any>).next({});
     effectsActions.next(
       TenantSearchActions.searchButtonClicked({
-        searchCriteria: { orgId: "" },
-      })
+        searchCriteria: { orgId: '' },
+      }),
     );
 
     effects.searchButtonClicked$.subscribe(() => ({}));
@@ -552,35 +552,35 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should not dispatch any searchByUrl related action on TenantSearchActions.resetButtonClicked dispatch", () => {
+  it('should not dispatch any searchByUrl related action on TenantSearchActions.resetButtonClicked dispatch', () => {
     const effects = initEffects();
     mockedRouter.routeFor(TenantSearchComponent);
     (activatedRouteMock.queryParams as ReplaySubject<any>).next({});
     effectsActions.next(
-      hot("-a", {
+      hot('-a', {
         a: TenantSearchActions.resetButtonClicked(),
-      })
+      }),
     );
 
     effects.resetButtonClicked$.subscribe(() => ({}));
 
-    expect(effects.searchByUrl$).toBeObservable(hot("--"));
+    expect(effects.searchByUrl$).toBeObservable(hot('--'));
   });
 
-  it("should dispatch TenantSearchActions.tenantSearchResultsReceived with the results on TenantSearchActions.searchConfigReceived dispatch", (done) => {
+  it('should dispatch TenantSearchActions.tenantSearchResultsReceived with the results on TenantSearchActions.searchConfigReceived dispatch', (done) => {
     const tenants = {
       stream: [
         {
-          id: "1",
+          id: '1',
         },
         {
-          id: "2",
+          id: '2',
         },
       ],
       totalElements: 2,
     };
     jest
-      .spyOn(mockedTenantService, "searchTenants")
+      .spyOn(mockedTenantService, 'searchTenants')
       .mockReturnValue(of(tenants) as any);
 
     const effects = initEffects();
@@ -591,10 +591,10 @@ describe("TenantSearchEffects:", () => {
       TenantSearchActions.searchConfigReceived({
         searchConfig: {
           values: {
-            orgId: "",
+            orgId: '',
           },
         } as any,
-      })
+      }),
     );
 
     effects.searchConfigReceived$.subscribe(() => ({}));
@@ -609,41 +609,41 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should not dispatch any searchByUrl related action on TenantSearchActions.searchConfigInfoDeselected dispatch", () => {
+  it('should not dispatch any searchByUrl related action on TenantSearchActions.searchConfigInfoDeselected dispatch', () => {
     const effects = initEffects();
     mockedRouter.routeFor(TenantSearchComponent);
     (activatedRouteMock.queryParams as ReplaySubject<any>).next({});
     effectsActions.next(
-      hot("-a", {
+      hot('-a', {
         a: TenantSearchActions.searchConfigInfoDeselected(),
-      })
+      }),
     );
 
     effects.resetButtonClicked$.subscribe(() => ({}));
 
-    expect(effects.searchByUrl$).toBeObservable(hot("--"));
+    expect(effects.searchByUrl$).toBeObservable(hot('--'));
   });
 
-  it("should open dialog on TenantSearchActions.createSearchConfigClicked", (done) => {
+  it('should open dialog on TenantSearchActions.createSearchConfigClicked', (done) => {
     const effects = initEffects();
     effectsActions.next(TenantSearchActions.createSearchConfigClicked());
 
     effects.createSearchConfig$.subscribe(() => {
       expect(mockedDialogService.openDialog).toHaveBeenLastCalledWith(
-        "TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG",
+        'TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
         CreateOrEditSearchConfigDialogComponent,
-        "TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM",
-        "TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL"
+        'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
+        'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigCreationCancelled if secondary dialog button clicked", (done) => {
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+  it('should dispatch TenantSearchActions.searchConfigCreationCancelled if secondary dialog button clicked', (done) => {
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "secondary",
-      } as any)
+        button: 'secondary',
+      } as any),
     );
 
     const effects = initEffects();
@@ -651,53 +651,53 @@ describe("TenantSearchEffects:", () => {
 
     effects.createSearchConfig$.subscribe((action) => {
       expect(action).toEqual(
-        TenantSearchActions.searchConfigCreationCancelled()
+        TenantSearchActions.searchConfigCreationCancelled(),
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigCreatedSuccessfully if primary dialog button clicked and config was created", (done) => {
+  it('should dispatch TenantSearchActions.searchConfigCreatedSuccessfully if primary dialog button clicked and config was created', (done) => {
     const configs = {
       totalElements: 2,
       configs: [
         {
-          id: "1",
-          name: "config_1",
+          id: '1',
+          name: 'config_1',
         },
         {
-          id: "2",
-          name: "config_2",
+          id: '2',
+          name: 'config_2',
         },
       ],
     };
     jest
-      .spyOn(mockedSearchConfigService, "createSearchConfig")
+      .spyOn(mockedSearchConfigService, 'createSearchConfig')
       .mockReturnValue(of(configs as any));
 
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "primary",
+        button: 'primary',
         result: {
-          searchConfigName: "chosen_config",
+          searchConfigName: 'chosen_config',
           saveColumns: true,
           saveInputValues: true,
         },
-      } as any)
+      } as any),
     );
 
     store.overrideSelector(selectSearchConfigViewState, {
-      viewMode: "advanced",
+      viewMode: 'advanced',
       columns: [
         {
-          id: "1",
+          id: '1',
         },
         {
-          id: "col_2",
+          id: 'col_2',
         },
       ],
       searchCriteria: {
-        orgId: "my_org_id",
+        orgId: 'my_org_id',
       },
     } as any);
 
@@ -706,42 +706,42 @@ describe("TenantSearchEffects:", () => {
 
     effects.createSearchConfig$.subscribe((action) => {
       expect(
-        mockedSearchConfigService.createSearchConfig
+        mockedSearchConfigService.createSearchConfig,
       ).toHaveBeenLastCalledWith({
-        page: "tenant",
+        page: 'tenant',
         fieldListVersion: 0,
-        name: "chosen_config",
+        name: 'chosen_config',
         isReadonly: false,
         isAdvanced: true,
-        columns: ["1", "col_2"],
+        columns: ['1', 'col_2'],
         values: {
-          orgId: "my_org_id",
+          orgId: 'my_org_id',
         },
       });
       expect(action).toEqual(
         TenantSearchActions.searchConfigCreatedSuccessfully({
           searchConfigInfos: configs.configs as any,
-        })
+        }),
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigCreationFailed if primary dialog button clicked and config was not created", (done) => {
-    const error = "No connection";
+  it('should dispatch TenantSearchActions.searchConfigCreationFailed if primary dialog button clicked and config was not created', (done) => {
+    const error = 'No connection';
     jest
-      .spyOn(mockedSearchConfigService, "createSearchConfig")
+      .spyOn(mockedSearchConfigService, 'createSearchConfig')
       .mockReturnValue(throwError(() => error));
 
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "primary",
+        button: 'primary',
         result: {
-          searchConfigName: "chosen_config",
+          searchConfigName: 'chosen_config',
           saveColumns: true,
           saveInputValues: true,
         },
-      } as any)
+      } as any),
     );
 
     const effects = initEffects();
@@ -751,21 +751,21 @@ describe("TenantSearchEffects:", () => {
       expect(action).toEqual(
         TenantSearchActions.searchConfigCreationFailed({
           error: error,
-        })
+        }),
       );
       done();
     });
   });
 
-  it("should open dialog with config data on TenantSearchActions.updateSearchConfigClicked", (done) => {
+  it('should open dialog with config data on TenantSearchActions.updateSearchConfigClicked', (done) => {
     store.overrideSelector(tenantSearchSelectors.selectSelectedSearchConfig, {
-      name: "config_name",
+      name: 'config_name',
       values: {
-        org_id: "",
+        org_id: '',
       },
       columns: [
         {
-          id: "col_1",
+          id: 'col_1',
         },
       ],
     } as any);
@@ -774,27 +774,27 @@ describe("TenantSearchEffects:", () => {
 
     effects.updateSearchConfig$.subscribe(() => {
       expect(mockedDialogService.openDialog).toHaveBeenLastCalledWith(
-        "CONSTRUCTION_TASK_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG",
+        'CONSTRUCTION_TASK_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
         {
           type: CreateOrEditSearchConfigDialogComponent,
           inputs: {
-            searchConfigName: "config_name",
+            searchConfigName: 'config_name',
             saveInputValues: true,
             saveColumns: true,
           },
         },
-        "TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM",
-        "TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL"
+        'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
+        'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigUpdateCancelled if secondary dialog button clicked", (done) => {
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+  it('should dispatch TenantSearchActions.searchConfigUpdateCancelled if secondary dialog button clicked', (done) => {
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "secondary",
-      } as any)
+        button: 'secondary',
+      } as any),
     );
 
     const effects = initEffects();
@@ -806,47 +806,47 @@ describe("TenantSearchEffects:", () => {
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigUpdatedSuccessfully if primary dialog button clicked and config was updated", (done) => {
+  it('should dispatch TenantSearchActions.searchConfigUpdatedSuccessfully if primary dialog button clicked and config was updated', (done) => {
     const configs = {
       totalElements: 2,
       configs: [
         {
-          id: "1",
-          name: "config_1",
+          id: '1',
+          name: 'config_1',
         },
         {
-          id: "2",
-          name: "config_2",
+          id: '2',
+          name: 'config_2',
         },
       ],
     };
     jest
-      .spyOn(mockedSearchConfigService, "createSearchConfig")
+      .spyOn(mockedSearchConfigService, 'createSearchConfig')
       .mockReturnValue(of(configs as any));
 
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "primary",
+        button: 'primary',
         result: {
-          searchConfigName: "chosen_config",
+          searchConfigName: 'chosen_config',
           saveColumns: true,
           saveInputValues: true,
         },
-      } as any)
+      } as any),
     );
 
     store.overrideSelector(selectSearchConfigViewState, {
-      viewMode: "advanced",
+      viewMode: 'advanced',
       columns: [
         {
-          id: "1",
+          id: '1',
         },
         {
-          id: "col_2",
+          id: 'col_2',
         },
       ],
       searchCriteria: {
-        orgId: "my_org_id",
+        orgId: 'my_org_id',
       },
     } as any);
 
@@ -855,42 +855,42 @@ describe("TenantSearchEffects:", () => {
 
     effects.updateSearchConfig$.subscribe((action) => {
       expect(
-        mockedSearchConfigService.createSearchConfig
+        mockedSearchConfigService.createSearchConfig,
       ).toHaveBeenLastCalledWith({
-        page: "tenant",
+        page: 'tenant',
         fieldListVersion: 0,
-        name: "chosen_config",
+        name: 'chosen_config',
         isReadonly: false,
         isAdvanced: true,
-        columns: ["1", "col_2"],
+        columns: ['1', 'col_2'],
         values: {
-          orgId: "my_org_id",
+          orgId: 'my_org_id',
         },
       });
       expect(action).toEqual(
         TenantSearchActions.searchConfigUpdatedSuccessfully({
           searchConfigInfos: configs.configs as any,
-        })
+        }),
       );
       done();
     });
   });
 
-  it("should dispatch TenantSearchActions.searchConfigCreationFailed if primary dialog button clicked and config was not created", (done) => {
-    const error = "No connection";
+  it('should dispatch TenantSearchActions.searchConfigCreationFailed if primary dialog button clicked and config was not created', (done) => {
+    const error = 'No connection';
     jest
-      .spyOn(mockedSearchConfigService, "createSearchConfig")
+      .spyOn(mockedSearchConfigService, 'createSearchConfig')
       .mockReturnValue(throwError(() => error));
 
-    jest.spyOn(mockedDialogService, "openDialog").mockReturnValue(
+    jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(
       of({
-        button: "primary",
+        button: 'primary',
         result: {
-          searchConfigName: "chosen_config",
+          searchConfigName: 'chosen_config',
           saveColumns: true,
           saveInputValues: true,
         },
-      } as any)
+      } as any),
     );
 
     const effects = initEffects();
@@ -900,7 +900,7 @@ describe("TenantSearchEffects:", () => {
       expect(action).toEqual(
         TenantSearchActions.searchConfigUpdateFailed({
           error: error,
-        })
+        }),
       );
       done();
     });

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
-import { concatLatestFrom } from '@ngrx/operators'
+import { concatLatestFrom } from '@ngrx/operators';
 
 import {
   CreateOrEditSearchConfigDialogComponent,
@@ -42,7 +42,7 @@ export class TenantSearchEffects {
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,
-    private portalDialogService: PortalDialogService
+    private portalDialogService: PortalDialogService,
   ) {}
 
   pageName = 'tenant';
@@ -55,7 +55,7 @@ export class TenantSearchEffects {
           'TENANT_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
           CreateOrEditSearchConfigDialogComponent,
           'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
-          'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL'
+          'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
         );
       }),
       concatLatestFrom(() => this.store.select(selectSearchConfigViewState)),
@@ -79,7 +79,7 @@ export class TenantSearchEffects {
                   (viewState?.searchCriteria as Record<string, any>)[
                     k
                   ].toString(),
-                ])
+                ]),
               )
             : {},
         };
@@ -88,7 +88,7 @@ export class TenantSearchEffects {
             return TenantSearchActions.searchConfigCreatedSuccessfully({
               searchConfigInfos: configs,
             });
-          })
+          }),
         );
       }),
 
@@ -96,9 +96,9 @@ export class TenantSearchEffects {
         of(
           TenantSearchActions.searchConfigCreationFailed({
             error,
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   });
 
@@ -106,7 +106,7 @@ export class TenantSearchEffects {
     return this.actions$.pipe(
       ofType(TenantSearchActions.updateSearchConfigClicked),
       concatLatestFrom(() =>
-        this.store.select(tenantSearchSelectors.selectSelectedSearchConfig)
+        this.store.select(tenantSearchSelectors.selectSelectedSearchConfig),
       ),
       mergeMap(([, selectedSearchConfig]) => {
         return this.portalDialogService.openDialog<CreateOrEditSearchDialogContent>(
@@ -121,7 +121,7 @@ export class TenantSearchEffects {
             },
           },
           'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
-          'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL'
+          'TENANT_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
         );
       }),
       concatLatestFrom(() => this.store.select(selectSearchConfigViewState)),
@@ -145,7 +145,7 @@ export class TenantSearchEffects {
                   (viewState?.searchCriteria as Record<string, any>)[
                     k
                   ].toString(),
-                ])
+                ]),
               )
             : {},
         };
@@ -154,7 +154,7 @@ export class TenantSearchEffects {
             return TenantSearchActions.searchConfigUpdatedSuccessfully({
               searchConfigInfos: configs,
             });
-          })
+          }),
         );
       }),
 
@@ -162,9 +162,9 @@ export class TenantSearchEffects {
         of(
           TenantSearchActions.searchConfigUpdateFailed({
             error,
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   });
 
@@ -173,7 +173,7 @@ export class TenantSearchEffects {
     TenantSearchActions.searchConfigInfoDeselected,
     this.router,
     this.route,
-    () => ({})
+    () => ({}),
   );
 
   resetButtonClicked$ = createQueryParamsEffect(
@@ -181,7 +181,7 @@ export class TenantSearchEffects {
     TenantSearchActions.resetButtonClicked,
     this.router,
     this.route,
-    () => ({})
+    () => ({}),
   );
 
   searchButtonClicked$ = createQueryParamsEffect(
@@ -192,7 +192,7 @@ export class TenantSearchEffects {
     (state, action) => ({
       ...state,
       ...action.searchCriteria,
-    })
+    }),
   );
 
   searchConfigReceived$ = createQueryParamsEffect(
@@ -203,7 +203,7 @@ export class TenantSearchEffects {
     (state, action) => ({
       ...state,
       ...(action.searchConfig.values ?? {}),
-    })
+    }),
   );
 
   searchByUrl$ = createEffect(() => {
@@ -213,7 +213,7 @@ export class TenantSearchEffects {
       filterOutQueryParamsHaveNotChanged(
         this.router,
         tenantSearchCriteriasSchema,
-        true
+        true,
       ),
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
       switchMap(([, searchCriteria]) =>
@@ -222,17 +222,17 @@ export class TenantSearchEffects {
             TenantSearchActions.tenantSearchResultsReceived({
               results: stream,
               totalElements,
-            })
+            }),
           ),
           catchError((error) =>
             of(
               TenantSearchActions.tenantSearchResultsLoadingFailed({
                 error,
-              })
-            )
-          )
-        )
-      )
+              }),
+            ),
+          ),
+        ),
+      ),
     );
   });
 
@@ -244,7 +244,7 @@ export class TenantSearchEffects {
           results: [],
           totalElements: 0,
         });
-      })
+      }),
     );
   });
 
@@ -256,17 +256,17 @@ export class TenantSearchEffects {
           map(({ config }) =>
             TenantSearchActions.searchConfigReceived({
               searchConfig: config,
-            })
+            }),
           ),
           catchError((error) =>
             of(
               TenantSearchActions.searchConfigsLoadingFailed({
                 error,
-              })
-            )
-          )
-        )
-      )
+              }),
+            ),
+          ),
+        ),
+      ),
     );
   });
 
@@ -280,10 +280,10 @@ export class TenantSearchEffects {
           map(({ configs }) =>
             TenantSearchActions.searchConfigInfosReceived({
               searchConfigInfos: configs,
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     );
   });
 
@@ -295,8 +295,8 @@ export class TenantSearchEffects {
       map(() =>
         TenantSearchActions.chartVisibilityRehydrated({
           visible: localStorage.getItem('tenantChartVisibility') === 'true',
-        })
-      )
+        }),
+      ),
     );
   });
 
@@ -305,14 +305,14 @@ export class TenantSearchEffects {
       return this.actions$.pipe(
         ofType(TenantSearchActions.chartVisibilityToggled),
         concatLatestFrom(() =>
-          this.store.select(tenantSearchSelectors.selectChartVisible)
+          this.store.select(tenantSearchSelectors.selectChartVisible),
         ),
         tap(([, chartVisible]) => {
           localStorage.setItem('tenantChartVisibility', String(chartVisible));
-        })
+        }),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   errorMessages: { action: Action; key: string }[] = [
@@ -335,14 +335,14 @@ export class TenantSearchEffects {
       return this.actions$.pipe(
         tap((action) => {
           const e = this.errorMessages.find(
-            (e) => e.action.type === action.type
+            (e) => e.action.type === action.type,
           );
           if (e) {
             this.messageService.error({ summaryKey: e.key });
           }
-        })
+        }),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 }
