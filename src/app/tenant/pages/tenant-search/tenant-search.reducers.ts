@@ -23,21 +23,21 @@ export const tenantSearchReducer = createReducer(
       ...state,
       results: initialState.results,
       selectedSearchConfig: initialState.selectedSearchConfig,
-    })
+    }),
   ),
   on(
     TenantSearchActions.tenantSearchResultsReceived,
     (state: TenantSearchState, { results }): TenantSearchState => ({
       ...state,
       results,
-    })
+    }),
   ),
   on(
     TenantSearchActions.tenantSearchResultsLoadingFailed,
     (state: TenantSearchState): TenantSearchState => ({
       ...state,
       results: [],
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigInfosReceived,
@@ -46,21 +46,21 @@ export const tenantSearchReducer = createReducer(
       searchConfigs: searchConfigInfos,
       searchConfigEnabled: true,
       selectedSearchConfig: null,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigReceived,
     (state: TenantSearchState, { searchConfig }): TenantSearchState => ({
       ...state,
       selectedSearchConfig: searchConfig,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigInfoDeselected,
     (state: TenantSearchState): TenantSearchState => ({
       ...state,
       selectedSearchConfig: null,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigReceived,
@@ -70,14 +70,14 @@ export const tenantSearchReducer = createReducer(
       displayedColumns: searchConfig.columns.length
         ? searchConfig.columns
         : state.displayedColumns,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigCreatedSuccessfully,
     (state: TenantSearchState, { searchConfigInfos }): TenantSearchState => ({
       ...state,
       searchConfigs: searchConfigInfos,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchConfigInfoDeselected,
@@ -85,7 +85,7 @@ export const tenantSearchReducer = createReducer(
       ...state,
       results: initialState.results,
       selectedSearchConfig: initialState.selectedSearchConfig,
-    })
+    }),
   ),
   on(
     TenantSearchActions.searchButtonClicked,
@@ -98,38 +98,38 @@ export const tenantSearchReducer = createReducer(
         Object.keys(searchCriteria).every(
           (k) =>
             state.selectedSearchConfig?.values[k] ===
-            searchCriteria[k as keyof TenantSearchCriteria]
+            searchCriteria[k as keyof TenantSearchCriteria],
         )
           ? state.selectedSearchConfig
           : null,
-    })
+    }),
   ),
   on(
     TenantSearchActions.chartVisibilityRehydrated,
     (state: TenantSearchState, { visible }): TenantSearchState => ({
       ...state,
       chartVisible: visible,
-    })
+    }),
   ),
   on(
     TenantSearchActions.chartVisibilityToggled,
     (state: TenantSearchState): TenantSearchState => ({
       ...state,
       chartVisible: !state.chartVisible,
-    })
+    }),
   ),
   on(
     TenantSearchActions.viewModeChanged,
     (state: TenantSearchState, { viewMode }): TenantSearchState => ({
       ...state,
       viewMode: viewMode,
-    })
+    }),
   ),
   on(
     TenantSearchActions.displayedColumnsChanged,
     (state: TenantSearchState, { displayedColumns }) => ({
       ...state,
       displayedColumns: displayedColumns.map((c) => c.id),
-    })
-  )
+    }),
+  ),
 );
