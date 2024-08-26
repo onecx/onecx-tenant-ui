@@ -1,43 +1,36 @@
-# Copy of .gitignore AND removed "dist" directory
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
 # dist
 tmp
 out-tsc
-reports
 
 # dependencies
 node_modules
-
-# profiling files
-chrome-profiler-events*.json
-speed-measure-plugin*.json
 
 # IDEs and editors
 .idea
 .project
 .classpath
-.c9/
+.c9
 *.launch
-.settings/
+.settings
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+.vscode
+.history
 
 # misc
+.nx
 .angular
 .eslintcache
-.husky/_
 .sass-cache
-.gitlab*
+.husky/_
 .scannerwork
 connect.lock
+coverage
+reports
 typings
 *.log
 *.sh
@@ -45,3 +38,4 @@ typings
 # System Files
 .DS_Store
 Thumbs.db
+

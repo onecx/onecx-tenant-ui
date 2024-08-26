@@ -2,9 +2,9 @@
   "root": true,
   "ignorePatterns": [
     ".nx/**",
+    ".angular/**",
     ".husky/**",
     ".github/**",
-    ".scannerwork/**",
     "reports/**",
     "dist/**",
     "helm/**",
@@ -14,28 +14,28 @@
     "src/**/*.ico",
     "src/**/*.svg"
   ],
+  "plugins": ["@nx"],
   "overrides": [
     {
-      "files": ["*.ts", "*.js"],
-      "env": { "es6": true },
-      "globals": {
-        "__dirname": true
-      },
-      "parserOptions": {
-        "ecmaVersion": "latest",
-        "project": "**/tsconfig.json",
-        "tsconfigRootDir": "",
-        "createDefaultProgram": true,
-        "EXPERIMENTAL_useProjectService": true
-      },
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts"],
       "extends": [
-        "plugin:@angular-eslint/recommended",
+        "plugin:@nx/angular",
         "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:@typescript-eslint/recommended"
       ],
       "rules": {
-        // "semi": ["error", "never"],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -45,7 +45,7 @@
           }
         ],
         "@angular-eslint/component-selector": [
-          "warn",
+          "error",
           {
             "type": "element",
             "prefix": "app",
@@ -59,10 +59,7 @@
           }
         ],
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          { "vars": "all", "args": "none" }
-        ],
+        "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "none" }],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-types": [
           "error",
@@ -80,6 +77,7 @@
       "files": ["*.html"],
       "excludedFiles": ["*inline-template-*.component.html"],
       "extends": [
+        "plugin:@nx/angular-template",
         "plugin:@angular-eslint/template/recommended",
         "plugin:prettier/recommended"
       ],

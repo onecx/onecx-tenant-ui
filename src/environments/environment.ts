@@ -9,8 +9,8 @@ export const environment = {
   KEYCLOAK_CLIENT_ID: 'portal-mf-shell',
   TKIT_PORTAL_ID: 'ADMIN',
   skipRemoteConfigLoad: true,
-  apiPrefix: 'bff',
-};
+  apiPrefix: 'bff'
+}
 
 /*
  * For easier debugging in development mode, you can import the following file
