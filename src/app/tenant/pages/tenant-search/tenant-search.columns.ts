@@ -1,4 +1,4 @@
-import { ColumnType, DataTableColumn } from '@onecx/portal-integration-angular';
+import { ColumnType, DataTableColumn } from '@onecx/portal-integration-angular'
 
 export const tenantSearchColumns: DataTableColumn[] = [
   {
@@ -10,8 +10,8 @@ export const tenantSearchColumns: DataTableColumn[] = [
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
-    ],
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
+    ]
   },
   {
     columnType: ColumnType.STRING,
@@ -22,8 +22,8 @@ export const tenantSearchColumns: DataTableColumn[] = [
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
-    ],
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
+    ]
   },
   {
     columnType: ColumnType.STRING,
@@ -34,8 +34,8 @@ export const tenantSearchColumns: DataTableColumn[] = [
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
-    ],
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
+    ]
   },
   {
     columnType: ColumnType.DATE,
@@ -46,8 +46,8 @@ export const tenantSearchColumns: DataTableColumn[] = [
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
-    ],
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
+    ]
   },
   {
     columnType: ColumnType.DATE,
@@ -58,7 +58,7 @@ export const tenantSearchColumns: DataTableColumn[] = [
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL',
-    ],
-  },
-];
+      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
+    ]
+  }
+]

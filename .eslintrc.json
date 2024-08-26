@@ -1,6 +1,19 @@
 {
   "root": true,
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": [
+    ".nx/**",
+    ".angular/**",
+    ".husky/**",
+    ".github/**",
+    "reports/**",
+    "dist/**",
+    "helm/**",
+    "node_modules/**",
+    "src/app/shared/generated/**",
+    "src/assets/api/*",
+    "src/**/*.ico",
+    "src/**/*.svg"
+  ],
   "plugins": ["@nx"],
   "overrides": [
     {
@@ -17,7 +30,10 @@
       "files": ["*.ts"],
       "extends": [
         "plugin:@nx/angular",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/recommended",
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -35,13 +51,45 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "singleQuote": true
+          }
+        ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "none" }],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "extendDefaults": true,
+            "types": {
+              "{}": false
+            }
+          }
+        ],
+        "@typescript-eslint/no-var-requires": 0
       }
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@nx/angular-template"],
-      "rules": {}
+      "excludedFiles": ["*inline-template-*.component.html"],
+      "extends": [
+        "plugin:@nx/angular-template",
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "prettier/prettier": [
+          "error",
+          {
+            "singleQuote": true,
+            "parser": "angular"
+          }
+        ]
+      }
     }
   ]
 }

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
 
-import { TenantBffService, TenantSearchResponse } from '../generated';
+import { TenantBffService, TenantSearchResponse } from '../generated'
 
 @Injectable()
 export class TenantService {
@@ -11,7 +11,7 @@ export class TenantService {
     return this.tenantAPIService.searchTenants({
       orgId: searchString,
       pageNumber: 1,
-      pageSize: 10,
-    });
+      pageSize: 10
+    })
   }
 }

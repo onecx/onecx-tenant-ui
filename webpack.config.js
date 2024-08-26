@@ -1,98 +1,91 @@
-const {
-  ModifyEntryPlugin,
-} = require('@angular-architects/module-federation/src/utils/modify-entry-plugin');
-const {
-  share,
-  withModuleFederationPlugin,
-} = require('@angular-architects/module-federation/webpack');
+const { ModifyEntryPlugin } = require('@angular-architects/module-federation/src/utils/modify-entry-plugin')
+const { share, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
 const config = withModuleFederationPlugin({
   name: 'onecx-tenant-ui',
   filename: 'remoteEntry.js',
   exposes: {
-    './OneCXTenantModule': './src/bootstrap.ts',
+    './OneCXTenantModule': './src/bootstrap.ts'
   },
   shared: share({
     '@angular/core': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@angular/forms': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@angular/common': {
       requiredVersion: 'auto',
       includeSecondaries: {
-        skip: ['@angular/common/http/testing'],
-      },
+        skip: ['@angular/common/http/testing']
+      }
     },
     '@angular/common/http': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@angular/router': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     rxjs: {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@ngx-translate/core': { requiredVersion: 'auto' },
     '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-auth': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/angular-webcomponents': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/integration-interface': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/angular-integration-interface': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/keycloak-auth': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/nx-plugin': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-integration-angular': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
+      includeSecondaries: true
     },
     '@onecx/portal-layout-styles': {
       requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
+      includeSecondaries: true
+    }
   }),
 
-  sharedMappings: [],
-});
+  sharedMappings: []
+})
 
-module.exports = config;
+module.exports = config
 
-const plugins = config.plugins.filter(
-  (plugin) => !(plugin instanceof ModifyEntryPlugin),
-);
+const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))
 
 module.exports = {
   ...config,
   plugins,
   output: {
     uniqueName: 'onecx-tenant-ui',
-    publicPath: 'auto',
+    publicPath: 'auto'
   },
   experiments: {
     ...config.experiments,
-    topLevelAwait: true,
+    topLevelAwait: true
   },
   optimization: {
     runtimeChunk: false,
-    splitChunks: false,
-  },
-};
+    splitChunks: false
+  }
+}

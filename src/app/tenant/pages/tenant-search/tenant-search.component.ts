@@ -1,34 +1,29 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core'
+import { FormBuilder, FormGroup } from '@angular/forms'
+import { Store } from '@ngrx/store'
 import {
   Action,
   BreadcrumbService,
   DataTableColumn,
   ExportDataService,
-  PortalDialogService,
-} from '@onecx/portal-integration-angular';
-import { PrimeIcons } from 'primeng/api';
-import { first, map, Observable } from 'rxjs';
-import { SearchConfigInfo } from 'src/app/shared/generated';
-import { isValidDate } from '../../../shared/utils/isValidDate.utils';
-import { TenantSearchActions } from './tenant-search.actions';
-import {
-  TenantSearchCriteria,
-  tenantSearchCriteriasSchema,
-} from './tenant-search.parameters';
-import { selectTenantSearchViewModel } from './tenant-search.selectors';
-import { TenantSearchViewModel } from './tenant-search.viewmodel';
+  PortalDialogService
+} from '@onecx/portal-integration-angular'
+import { PrimeIcons } from 'primeng/api'
+import { first, map, Observable } from 'rxjs'
+import { SearchConfigInfo } from 'src/app/shared/generated'
+import { isValidDate } from '../../../shared/utils/isValidDate.utils'
+import { TenantSearchActions } from './tenant-search.actions'
+import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
+import { selectTenantSearchViewModel } from './tenant-search.selectors'
+import { TenantSearchViewModel } from './tenant-search.viewmodel'
 
 @Component({
   selector: 'app-tenant-search',
   templateUrl: './tenant-search.component.html',
-  styleUrls: ['./tenant-search.component.scss'],
+  styleUrls: ['./tenant-search.component.scss']
 })
 export class TenantSearchComponent implements OnInit {
-  viewModel$: Observable<TenantSearchViewModel> = this.store.select(
-    selectTenantSearchViewModel
-  );
+  viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel)
 
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
@@ -38,7 +33,7 @@ export class TenantSearchComponent implements OnInit {
           icon: PrimeIcons.DOWNLOAD,
           titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
-          actionCallback: () => this.exportItems(),
+          actionCallback: () => this.exportItems()
         },
         {
           labelKey: vm.chartVisible
@@ -49,26 +44,24 @@ export class TenantSearchComponent implements OnInit {
             ? 'TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART'
             : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           show: 'asOverflow',
-          actionCallback: () => this.toggleChartVisibility(),
-        },
-      ];
-      return actions;
+          actionCallback: () => this.toggleChartVisibility()
+        }
+      ]
+      return actions
     })
-  );
+  )
 
-  diagramColumnId = 'tenantId';
+  diagramColumnId = 'tenantId'
   diagramColumn$ = this.viewModel$.pipe(
-    map(
-      (vm) =>
-        vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn
-    )
-  );
+    map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
+  )
 
   public tenantSearchFormGroup: FormGroup = this.formBuilder.group({
-    ...(Object.fromEntries(
-      tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])
-    ) as Record<keyof TenantSearchCriteria, unknown>),
-  } satisfies Record<keyof TenantSearchCriteria, unknown>);
+    ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
+      keyof TenantSearchCriteria,
+      unknown
+    >)
+  } satisfies Record<keyof TenantSearchCriteria, unknown>)
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -84,9 +77,9 @@ export class TenantSearchComponent implements OnInit {
       {
         titleKey: 'TENANT_SEARCH.BREADCRUMB',
         labelKey: 'TENANT_SEARCH.BREADCRUMB',
-        routerLink: '/tenant',
-      },
-    ]);
+        routerLink: '/tenant'
+      }
+    ])
   }
 
   search(formValue: FormGroup) {
@@ -104,64 +97,56 @@ export class TenantSearchComponent implements OnInit {
                 value.getSeconds()
               )
             ).toISOString()
-          : value || undefined,
+          : value || undefined
       }),
       {}
-    );
-    this.store.dispatch(
-      TenantSearchActions.searchButtonClicked({ searchCriteria })
-    );
+    )
+    this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
   resetSearch() {
-    this.store.dispatch(TenantSearchActions.resetButtonClicked());
+    this.store.dispatch(TenantSearchActions.resetButtonClicked())
   }
 
   exportItems() {
     this.viewModel$.pipe(first()).subscribe((data) => {
-      this.exportDataService.exportCsv(
-        data.displayedColumns,
-        data.results,
-        'tenant.csv'
-      );
-    });
+      this.exportDataService.exportCsv(data.displayedColumns, data.results, 'tenant.csv')
+    })
   }
 
   searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
     if (searchConfigInfo) {
       this.store.dispatch(
         TenantSearchActions.selectedSearchConfigInfo({
-          searchConfigInfo: searchConfigInfo,
+          searchConfigInfo: searchConfigInfo
         })
-      );
+      )
     } else {
-      this.store.dispatch(TenantSearchActions.searchConfigInfoDeselected());
+      this.store.dispatch(TenantSearchActions.searchConfigInfoDeselected())
     }
   }
 
   viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
-        viewMode: viewMode,
+        viewMode: viewMode
       })
-    );
+    )
   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
-    this.store.dispatch(
-      TenantSearchActions.displayedColumnsChanged({ displayedColumns })
-    );
+    this.store.dispatch(TenantSearchActions.displayedColumnsChanged({ displayedColumns }))
   }
 
   toggleChartVisibility() {
-    this.store.dispatch(TenantSearchActions.chartVisibilityToggled());
+    this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
   }
 
   createSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.createSearchConfigClicked());
+    this.store.dispatch(TenantSearchActions.createSearchConfigClicked())
   }
 
   updateSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.updateSearchConfigClicked());
+    this.store.dispatch(TenantSearchActions.updateSearchConfigClicked())
   }
 }
