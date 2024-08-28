@@ -29,6 +29,8 @@ export class TenantSearchComponent implements OnInit {
     selectTenantSearchViewModel,
   );
 
+  pageName = 'PAGE_TENANT_SEARCH';
+
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
@@ -135,11 +137,10 @@ export class TenantSearchComponent implements OnInit {
     inputValues: Record<string, any>;
     displayedColumns: string[];
   }) {
-    console.log('config changed', searchConfig);
     if (searchConfig) {
       Object.entries(searchConfig.inputValues).forEach(
         ([inputKey, inputValue]) => {
-          this.tenantSearchFormGroup.get(inputKey)?.setValue(inputValue)
+          this.tenantSearchFormGroup.get(inputKey)?.setValue(inputValue);
         },
       );
       this.viewModel$.pipe(first()).subscribe((data) => {
