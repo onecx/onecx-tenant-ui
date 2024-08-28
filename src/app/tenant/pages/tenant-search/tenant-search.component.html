@@ -6,8 +6,6 @@
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
-    (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
-    [searchConfigs]="vm.searchConfigs"
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="tenantSearchFormGroup">

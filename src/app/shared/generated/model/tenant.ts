@@ -12,7 +12,7 @@
 
 
 export interface Tenant { 
-    modificationCount: number;
+    modificationCount?: number;
     creationDate?: string;
     creationUser?: string;
     modificationDate?: string;

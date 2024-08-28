@@ -1,225 +1,207 @@
----
-openapi: 3.0.3
+openapi: '3.0.2'
 info:
   title: onecx-tenant-bff
   version: '1.0'
-
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: tenant
+    description: OneCX Tenant BFF
 paths:
   /tenants/search:
-    post:
-      operationId: searchTenants
-      tags:
-        - Tenant
-      description: This operation performs a search based on provided search criteria. Search for tenant results.
-      requestBody:
-        content:
-          application/json:
+      post:
+        x-onecx:
+          permissions:
+            tenant:
+              - read
+        tags:
+          - tenant
+        summary: Search tenants by criteria
+        operationId: searchTenants
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantSearchCriteria'
+        responses:
+          "200":
+            description: OK
+            content:
+              "application/json":
+                schema:
+                  $ref: "#/components/schemas/TenantPageResult"
+          "400":
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ProblemDetailResponse'
+  /tenants:
+      post:
+        x-onecx:
+          permissions:
+            tenant:
+              - write
+        tags:
+          - tenant
+        summary: Create new tenant
+        operationId: createTenant
+        requestBody:
+          required: true
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/CreateTenantRequest'
+        responses:
+          "201":
+            description: Created
+            headers:
+              Location:
+                required: true
+                schema:
+                  type: string
+                  format: url
+          "400":
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ProblemDetailResponse'
+          "404":
+            description: Not found
+  /tenants/{id}:
+      get:
+        x-onecx:
+          permissions:
+            tenant:
+              - read
+        tags:
+          - tenant
+        summary: Get Tenant by id
+        operationId: getTenant
+        parameters:
+          - name: id
+            in: path
+            required: true
             schema:
-              $ref: '#/components/schemas/TenantSearchRequest'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantSearchResponse'
-        '400':
-          description: Bad request
-        '500':
-          description: Something went wrong
-
-  /searchConfig/{configId}:
-    put:
-      x-onecx:
-        permissions:
-          tenant:
-            - write
-      tags:
-        - SearchConfig
-      summary: Updates the search config specified by the configId
-      description: Updates the search config and returns the updated list of search configs  by page
-      operationId: updateSearchConfig
-      parameters:
-        - name: configId
-          in: path
-          description: ConfigId for the search config to be updated
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Updated values for the specified search config
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateSearchConfigRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateSearchConfigResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-    delete:
-      x-onecx:
-        permissions:
-          tenant:
-            - delete
-      tags:
-        - SearchConfig
-      summary: Deletes the search config
-      description: Deletes the search config
-      operationId: deleteSearchConfig
-      parameters:
-        - name: configId
-          in: path
-          description: ConfigId for the searchConfig to be deleted
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-  /searchConfig/infos/{page}:
-    get:
-      x-onecx:
-        permissions:
-          tenant:
-            - read
-      tags:
-        - SearchConfig
-      summary: Gets the search config infos for the specified page.
-      description: The search config infos for the page is returned.
-      operationId: getSearchConfigInfos
-      parameters:
-        - name: page
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSearchConfigInfosResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-  /searchConfig/{id}:
-    get:
-      tags:
-        - SearchConfig
-      summary: Gets the search config infos for the specified page.
-      description: The search config for the page is returned.
-      operationId: getSearchConfig
-      parameters:
+              type: string
+        responses:
+          "200":
+            description: OK
+            content:
+              "application/json":
+                schema:
+                  $ref: "#/components/schemas/Tenant"
+          "404":
+            description: Not found
+      put:
+        x-onecx:
+          permissions:
+            tenant:
+              - write
+        tags:
+          - tenant
+        summary: Update tenant
+        operationId: updateTenant
+        parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSearchConfigResponse'
-        '404':
-          description: Not found
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-
-  /searchConfig/:
-    post:
-      x-onecx:
-        permissions:
-          tenant:
-            - write
-      tags:
-        - SearchConfig
-      summary: Creates a new search config
-      description: Creates a new search config and returns the updated list of search configs by page
-      operationId: createSearchConfig
-      requestBody:
-        description: Creates a new search config
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSearchConfigRequest'
-        required: true
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateSearchConfigResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-
+        requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UpdateTenantRequest'
+        responses:
+          "200":
+            description: OK
+            content:
+              "application/json":
+                schema:
+                  $ref: "#/components/schemas/Tenant"
+          "400":
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ProblemDetailResponse'
+          "404":
+            description: Not found
 components:
   schemas:
+    TenantSearchCriteria:
+      type: object
+      properties:
+        orgId:
+          nullable: true
+          type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 100
+          maximum: 1000
+          type: integer
+    CreateTenantRequest:
+      type: object
+      required:
+        - orgId
+        - tenantId
+      properties:
+        orgId:
+          type: string
+          description: Id of the organization
+        tenantId:
+          type: string
+          description: Id of the tenant
+        description:
+          type: string
+          description: Description of the tenant
+    UpdateTenantRequest:
+      type: object
+      required:
+        - orgId
+      properties:
+        orgId:
+          type: string
+          description: Id of the organization
+        description:
+          type: string
+          description: Description of the tenant
+    TenantPageResult:
+      type: object
+      required:
+        - stream
+        - totalElements
+      properties:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
     Tenant:
       type: object
       required:
-        - 'modificationCount'
-        - 'id'
+        - id
       properties:
         modificationCount:
           format: int32
@@ -243,182 +225,6 @@ components:
         description:
           type: string
           description: Description of the tenant
-
-    TenantSearchRequest:
-      type: object
-      properties:
-        orgId:
-          nullable: true
-          type: string
-        pageNumber:
-          format: int32
-          description: The number of page.
-          default: 0
-          type: integer
-        pageSize:
-          format: int32
-          description: The size of page
-          default: 100
-          maximum: 1000
-          type: integer
-
-    TenantSearchResponse:
-      type: object
-      required:
-        - 'stream'
-        - 'totalElements'
-      properties:
-        totalElements:
-          format: int64
-          description: The total elements in the resource.
-          type: integer
-        number:
-          format: int32
-          type: integer
-        size:
-          format: int32
-          type: integer
-        totalPages:
-          format: int64
-          type: integer
-        stream:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tenant'
-
-    TenantSearchResult:
-      type: object
-      required:
-        - 'tenant'
-      properties:
-        tenant:
-          $ref: '#/components/schemas/Tenant'
-
-    SearchConfigInfo:
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-
-    SearchConfig:
-      allOf:
-        - $ref: '#/components/schemas/SearchConfigInfo'
-      type: object
-      required:
-        - name
-        - modificationCount
-        - fieldListVersion
-        - isReadonly
-        - isAdvanced
-        - columns
-        - values
-      properties:
-        id:
-          type: string
-        page:
-          type: string
-        name:
-          type: string
-        modificationCount:
-          type: integer
-        fieldListVersion:
-          type: integer
-          description: Version increment of the fields in the UI which you should use when you are making incompatible changes to those fields.
-        isReadonly:
-          type: boolean
-          description: Defines whether this config can be changed in the UI
-        isAdvanced:
-          type: boolean
-          description: Indicates whether the advanced mode should be displayed
-        columns:
-          type: array
-          items:
-            type: string
-        values:
-          type: object
-          additionalProperties:
-            type: string
-
-    GetSearchConfigInfosResponse:
-      allOf:
-        - $ref: '#/components/schemas/SearchConfigInfoList'
-
-    GetSearchConfigResponse:
-      type: object
-      required:
-        - config
-      properties:
-        config:
-          $ref: '#/components/schemas/SearchConfig'
-
-    CreateSearchConfigRequest:
-      type: object
-      required:
-        - 'page'
-        - 'name'
-        - 'fieldListVersion'
-        - 'isReadonly'
-        - 'isAdvanced'
-        - 'columns'
-        - 'values'
-      properties:
-        page:
-          type: string
-        name:
-          type: string
-        fieldListVersion:
-          type: integer
-          description: Version increment of the fields in the UI which you should use when you are making incompatible changes to those fields.
-        isReadonly:
-          type: boolean
-          description: Defines whether this config can be changed in the UI
-        isAdvanced:
-          type: boolean
-          description: Indicates whether the advanced mode should be displayed
-        columns:
-          type: array
-          items:
-            type: string
-        values:
-          type: object
-          additionalProperties:
-            type: string
-
-    CreateSearchConfigResponse:
-      allOf:
-        - $ref: '#/components/schemas/SearchConfigInfoList'
-
-    UpdateSearchConfigRequest:
-      type: object
-      required:
-        - searchConfig
-      properties:
-        searchConfig:
-          $ref: '#/components/schemas/SearchConfig'
-
-    UpdateSearchConfigResponse:
-      allOf:
-        - $ref: '#/components/schemas/SearchConfigInfoList'
-
-    SearchConfigInfoList:
-      type: object
-      required:
-        - totalElements
-        - configs
-      properties:
-        totalElements:
-          format: int64
-          description: The total elements in the resource.
-          type: integer
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchConfigInfo'
-
     ProblemDetailResponse:
       type: object
       properties:
@@ -434,7 +240,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProblemDetailInvalidParam'
-
     ProblemDetailParam:
       type: object
       properties:
@@ -442,7 +247,6 @@ components:
           type: string
         value:
           type: string
-
     ProblemDetailInvalidParam:
       type: object
       properties:
@@ -450,7 +254,6 @@ components:
           type: string
         message:
           type: string
-
     OffsetDateTime:
       format: date-time
       type: string

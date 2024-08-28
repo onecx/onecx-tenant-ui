@@ -35,6 +35,7 @@ const config = withModuleFederationPlugin({
     },
     '@ngx-translate/core': { requiredVersion: 'auto' },
     '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
+    '@onecx/ngrx-accelerator': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-auth': {
       requiredVersion: 'auto',
       includeSecondaries: true
