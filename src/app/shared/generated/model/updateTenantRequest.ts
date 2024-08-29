@@ -9,10 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Tenant } from './tenant';
 
 
-export interface TenantSearchResult { 
-    tenant: Tenant;
+export interface UpdateTenantRequest { 
+    /**
+     * Id of the organization
+     */
+    orgId: string;
+    /**
+     * Description of the tenant
+     */
+    description?: string;
 }
 

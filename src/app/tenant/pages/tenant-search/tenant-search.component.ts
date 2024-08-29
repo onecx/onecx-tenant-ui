@@ -10,7 +10,6 @@ import {
 } from '@onecx/portal-integration-angular'
 import { PrimeIcons } from 'primeng/api'
 import { first, map, Observable } from 'rxjs'
-import { SearchConfigInfo } from 'src/app/shared/generated'
 import { isValidDate } from '../../../shared/utils/isValidDate.utils'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
@@ -114,18 +113,6 @@ export class TenantSearchComponent implements OnInit {
     })
   }
 
-  searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
-    if (searchConfigInfo) {
-      this.store.dispatch(
-        TenantSearchActions.selectedSearchConfigInfo({
-          searchConfigInfo: searchConfigInfo
-        })
-      )
-    } else {
-      this.store.dispatch(TenantSearchActions.searchConfigInfoDeselected())
-    }
-  }
-
   viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
@@ -140,13 +127,5 @@ export class TenantSearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
-  }
-
-  createSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.createSearchConfigClicked())
-  }
-
-  updateSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.updateSearchConfigClicked())
   }
 }

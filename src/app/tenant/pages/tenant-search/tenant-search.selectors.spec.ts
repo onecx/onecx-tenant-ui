@@ -1,4 +1,4 @@
-import { ColumnType, DataTableColumn, RowListGridData, SearchConfigInfo } from '@onecx/portal-integration-angular'
+import { ColumnType, DataTableColumn, RowListGridData } from '@onecx/portal-integration-angular'
 import { selectTenantSearchViewModel, selectDisplayedColumns, selectResults } from './tenant-search.selectors'
 
 describe('Tenant search selectors:', () => {
@@ -45,8 +45,6 @@ describe('Tenant search selectors:', () => {
         orgId: '1'
       }
       const results: RowListGridData[] = [{ id: 1, imagePath: '' }]
-      const searchConfigs: SearchConfigInfo[] = [{ id: '1', name: 'test1' }]
-      const selectedSearchConfig = null
       const displayedColumns: DataTableColumn[] = [
         {
           columnType: ColumnType.STRING,
@@ -75,29 +73,22 @@ describe('Tenant search selectors:', () => {
       ]
       const viewMode = 'advanced' as 'basic' | 'advanced'
       const chartVisible = false
-      const searchConfigEnabled = true
       expect(
         selectTenantSearchViewModel.projector(
           columns,
           searchCriteria,
           results,
-          searchConfigs,
-          selectedSearchConfig,
           displayedColumns,
           viewMode,
-          chartVisible,
-          searchConfigEnabled
+          chartVisible
         )
       ).toEqual({
         columns: columns,
         searchCriteria: searchCriteria,
         results: results,
-        searchConfigs: searchConfigs,
-        selectedSearchConfig: selectedSearchConfig,
         displayedColumns: displayedColumns,
         viewMode: viewMode,
-        chartVisible: chartVisible,
-        searchConfigEnabled: searchConfigEnabled
+        chartVisible: chartVisible
       })
     })
   })

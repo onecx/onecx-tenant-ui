@@ -9,14 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SearchConfigInfo } from './searchConfigInfo';
 
 
-export interface GetSearchConfigInfosResponse { 
+export interface CreateTenantRequest { 
     /**
-     * The total elements in the resource.
+     * Id of the organization
      */
-    totalElements: number;
-    configs: Array<SearchConfigInfo>;
+    orgId: string;
+    /**
+     * Id of the tenant
+     */
+    tenantId: string;
+    /**
+     * Description of the tenant
+     */
+    description?: string;
 }
 

@@ -1,4 +1,4 @@
-import { TenantSearchRequest } from 'src/app/shared/generated'
+import { TenantSearchCriteria as TenantSearchRequest } from 'src/app/shared/generated'
 import { z, ZodTypeAny } from 'zod'
 
 export const tenantSearchCriteriasSchema = z.object({

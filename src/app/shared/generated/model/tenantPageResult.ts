@@ -9,17 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Tenant } from './tenant';
 
 
-export interface TenantSearchRequest { 
-    orgId?: string | null;
+export interface TenantPageResult { 
     /**
-     * The number of page.
+     * The total elements in the resource.
      */
-    pageNumber?: number;
-    /**
-     * The size of page
-     */
-    pageSize?: number;
+    totalElements: number;
+    number?: number;
+    size?: number;
+    totalPages?: number;
+    stream: Array<Tenant>;
 }
 
