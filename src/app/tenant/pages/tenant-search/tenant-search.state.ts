@@ -8,7 +8,6 @@ export interface TenantSearchState {
   displayedColumns: string[] | null
   viewMode: 'basic' | 'advanced'
   chartVisible: boolean
-  searchConfigEnabled: boolean
 }
 
 export interface TenantSearchConfigState {
@@ -16,5 +15,4 @@ export interface TenantSearchConfigState {
   displayedColumns: DataTableColumn[]
   viewMode: 'basic' | 'advanced'
   searchCriteria: TenantSearchCriteria
-  searchConfigEnabled: boolean
 }

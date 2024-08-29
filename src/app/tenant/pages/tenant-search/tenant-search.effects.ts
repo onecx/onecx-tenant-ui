@@ -11,7 +11,7 @@ import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged
-} from '@onecx/ngrx-accelerator'
+} from '@onecx/portal-integration-angular/ngrx'
 import { catchError, map, of, switchMap, tap } from 'rxjs'
 import { TenantBffService } from '../../../shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
@@ -57,8 +57,8 @@ export class TenantSearchEffects {
       filterForNavigatedTo(this.router, TenantSearchComponent),
       filterOutQueryParamsHaveNotChanged(this.router, tenantSearchCriteriasSchema, true),
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-      switchMap(([, searchCriteria]) =>
-        this.tenantService.searchTenants(searchCriteria).pipe(
+      switchMap(([, searchCriteria]) => {
+        return this.tenantService.searchTenants(searchCriteria).pipe(
           map(({ stream, totalElements }) =>
             TenantSearchActions.tenantSearchResultsReceived({
               results: stream,
@@ -73,7 +73,7 @@ export class TenantSearchEffects {
             )
           )
         )
-      )
+      })
     )
   })
 

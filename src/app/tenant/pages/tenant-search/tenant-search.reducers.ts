@@ -8,8 +8,7 @@ export const initialState: TenantSearchState = {
   results: [],
   displayedColumns: null,
   viewMode: 'basic',
-  chartVisible: false,
-  searchConfigEnabled: false
+  chartVisible: false
 }
 
 export const tenantSearchReducer = createReducer(

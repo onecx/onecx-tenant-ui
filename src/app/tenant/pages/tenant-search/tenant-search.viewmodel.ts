@@ -8,5 +8,4 @@ export interface TenantSearchViewModel {
   displayedColumns: DataTableColumn[]
   viewMode: 'basic' | 'advanced'
   chartVisible: boolean
-  searchConfigEnabled: boolean
 }
