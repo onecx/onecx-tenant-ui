@@ -11,7 +11,7 @@ import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged
-} from '@onecx/portal-integration-angular/ngrx'
+} from '@onecx/ngrx-accelerator'
 import { catchError, map, of, switchMap, tap } from 'rxjs'
 import { TenantBffService } from '../../../shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
