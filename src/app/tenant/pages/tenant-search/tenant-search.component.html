@@ -6,15 +6,16 @@
   <ocx-search-header
     [headline]="'TENANT_SEARCH.HEADER' | translate"
     [subheader]="'TENANT_SEARCH.SUB_HEADER' | translate"
-    (searched)="search(tenantSearchFormGroup)"
+    (searched)="search(vm.formValues)"
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
     (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
+    [viewMode]="vm.viewMode"
     (viewModeChanged)="viewModeChanged($event)"
     [pageName]="pageName"
     [displayedColumns]="vm.displayedColumns"
-    [currentInputFieldValues]="(formValues$ | async) ?? {}"
+    [currentInputFieldValues]="vm.formValues"
   >
     <form [formGroup]="tenantSearchFormGroup">
       <div class="grid mt-0 p-fluid">
@@ -26,13 +27,29 @@
               type="text"
               class="w-18rem"
               formControlName="orgId"
-              [(ngModel)]="vm.searchCriteria.orgId"
               [pTooltip]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
             />
             <label for="tenant_search_orgId" style="white-space: nowrap">{{
               'TENANT_SEARCH.CRITERIA.ORGID' | translate
+            }}</label>
+          </span>
+        </div>
+        <div class="col-12 md:col-3" *ocxAdvanced>
+          <span class="p-float-label">
+            <input
+              pInputText
+              id="tenant_search_id"
+              type="text"
+              class="w-18rem"
+              formControlName="id"
+              [pTooltip]="'TENANT_SEARCH.TOOLTIPS.ID' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+            />
+            <label for="tenant_search_id" style="white-space: nowrap">{{
+              'TENANT_SEARCH.CRITERIA.ID' | translate
             }}</label>
           </span>
         </div>

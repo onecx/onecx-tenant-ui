@@ -11,13 +11,23 @@ import {
   tenantSearchCriteriasSchema,
 } from './tenant-search.parameters';
 import { initialState } from './tenant-search.reducers';
-import { TenantSearchConfigState } from './tenant-search.state';
 import { TenantSearchViewModel } from './tenant-search.viewmodel';
 
 export const tenantSearchSelectors = createChildSelectors(
   tenantFeature.selectSearch,
-  initialState
+  initialState,
 );
+
+export const selectFormValues = createSelector(
+  tenantSearchSelectors.selectFormValues,
+  (formValues): TenantSearchCriteria => formValues,
+);
+
+export const selectConfigValues = createSelector(
+  tenantSearchSelectors.selectConfigValues,
+  (values): TenantSearchCriteria => values,
+);
+
 export const selectSearchCriteria = createSelector(
   selectQueryParams,
   (queryParams): TenantSearchCriteria => {
@@ -25,8 +35,25 @@ export const selectSearchCriteria = createSelector(
     if (results.success) {
       return results.data as TenantSearchCriteria;
     }
+    // let customResults: TenantSearchCriteria = {};
+    // if (queryParams['orgId']) {
+    //   customResults['orgId'] = queryParams['orgId'];
+    // }
+    // if (queryParams['id']) {
+    //   customResults['id'] = queryParams['id'];
+    // }
+    // if (queryParams['id']) {
+    //   customResults['id'] = queryParams['id'];
+    // }
+    // if (queryParams['pageNumber']) {
+    //   customResults['pageNumber'] = Number(queryParams['pageNumber']);
+    // }
+    // if (queryParams['pageSize']) {
+    //   customResults['pageSize'] = Number(queryParams['pageSize']);
+    // }
+    // return customResults;
     return {};
-  }
+  },
 );
 
 export const selectResults = createSelector(
@@ -37,7 +64,7 @@ export const selectResults = createSelector(
       ...item,
       // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
     }));
-  }
+  },
 );
 
 export const selectDisplayedColumns = createSelector(
@@ -49,65 +76,29 @@ export const selectDisplayedColumns = createSelector(
         ?.map((d) => columns.find((c) => c.id === d))
         .filter((d) => d) as DataTableColumn[]) ?? []
     );
-  }
+  },
 );
 
 export const selectTenantSearchViewModel = createSelector(
   tenantSearchSelectors.selectColumns,
-  selectSearchCriteria,
+  tenantSearchSelectors.selectFormValues,
   selectResults,
-  tenantSearchSelectors.selectSearchConfigs,
-  tenantSearchSelectors.selectSelectedSearchConfig,
   selectDisplayedColumns,
   tenantSearchSelectors.selectViewMode,
   tenantSearchSelectors.selectChartVisible,
-  tenantSearchSelectors.selectSearchConfigEnabled,
   (
     columns,
-    searchCriteria,
+    formValues,
     results,
-    searchConfigs,
-    selectedSearchConfig,
     displayedColumns,
     viewMode,
     chartVisible,
-    searchConfigEnabled
   ): TenantSearchViewModel => ({
     columns,
-    searchCriteria,
+    formValues,
     results,
-    searchConfigs,
-    selectedSearchConfig,
     displayedColumns,
     viewMode,
     chartVisible,
-    searchConfigEnabled,
-  })
-);
-
-export const selectSearchConfigViewState = createSelector(
-  tenantSearchSelectors.selectColumns,
-  tenantSearchSelectors.selectSearchConfigs,
-  tenantSearchSelectors.selectSelectedSearchConfig,
-  selectDisplayedColumns,
-  tenantSearchSelectors.selectViewMode,
-  selectSearchCriteria,
-  tenantSearchSelectors.selectSearchConfigEnabled,
-  (
-    columns,
-    searchConfigs,
-    selectedSearchConfig,
-    displayedColumns,
-    viewMode,
-    searchCriteria,
-    searchConfigEnabled
-  ): TenantSearchConfigState => ({
-    columns,
-    searchConfigs,
-    selectedSearchConfig,
-    displayedColumns,
-    viewMode,
-    searchCriteria,
-    searchConfigEnabled,
-  })
+  }),
 );

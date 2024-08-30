@@ -9,14 +9,28 @@ import {
   PortalDialogService,
 } from '@onecx/portal-integration-angular';
 import { PrimeIcons } from 'primeng/api';
-import { first, map, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  first,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  withLatestFrom,
+} from 'rxjs';
 import { isValidDate } from '../../../shared/utils/isValidDate.utils';
 import { TenantSearchActions } from './tenant-search.actions';
 import {
   TenantSearchCriteria,
   tenantSearchCriteriasSchema,
 } from './tenant-search.parameters';
-import { selectTenantSearchViewModel } from './tenant-search.selectors';
+import {
+  selectConfigValues,
+  selectFormValues,
+  selectSearchCriteria,
+  selectTenantSearchViewModel,
+} from './tenant-search.selectors';
 import { TenantSearchViewModel } from './tenant-search.viewmodel';
 
 @Component({
@@ -73,9 +87,6 @@ export class TenantSearchComponent implements OnInit {
     ) as Record<keyof TenantSearchCriteria, unknown>),
   } satisfies Record<keyof TenantSearchCriteria, unknown>);
 
-  formValues$: Observable<{ [key: string]: unknown }> =
-    this.tenantSearchFormGroup.valueChanges;
-
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     private readonly store: Store,
@@ -83,7 +94,50 @@ export class TenantSearchComponent implements OnInit {
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
     private portalDialogService: PortalDialogService,
-  ) {}
+  ) {
+    this.store
+      .select(selectFormValues)
+      .pipe(filter((values) => Object.keys(values).length == 0))
+      .subscribe(() => {
+        this.tenantSearchFormGroup.patchValue(
+          Object.fromEntries(
+            tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null]),
+          ),
+        );
+      });
+
+    this.store.select(selectConfigValues).subscribe((values) => {
+      this.tenantSearchFormGroup.patchValue(
+        Object.fromEntries(
+          tenantSearchCriteriasSchema
+            .keyof()
+            .options.map((k) => [k, values[k]]),
+        ),
+      );
+    });
+
+    this.tenantSearchFormGroup.valueChanges.subscribe((v) => {
+      const values = Object.entries(v).reduce(
+        (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
+          ...acc,
+          [key]: isValidDate(value)
+            ? new Date(
+                Date.UTC(
+                  value.getFullYear(),
+                  value.getMonth(),
+                  value.getDay(),
+                  value.getHours(),
+                  value.getMinutes(),
+                  value.getSeconds(),
+                ),
+              ).toISOString()
+            : value || undefined,
+        }),
+        {},
+      );
+      this.store.dispatch(TenantSearchActions.formValuesChanged({ values }));
+    });
+  }
 
   ngOnInit() {
     this.breadcrumbService.setItems([
@@ -95,27 +149,9 @@ export class TenantSearchComponent implements OnInit {
     ]);
   }
 
-  search(formValue: FormGroup) {
-    const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
-      (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
-        ...acc,
-        [key]: isValidDate(value)
-          ? new Date(
-              Date.UTC(
-                value.getFullYear(),
-                value.getMonth(),
-                value.getDay(),
-                value.getHours(),
-                value.getMinutes(),
-                value.getSeconds(),
-              ),
-            ).toISOString()
-          : value || undefined,
-      }),
-      {},
-    );
+  search(formValue: TenantSearchCriteria) {
     this.store.dispatch(
-      TenantSearchActions.searchButtonClicked({ searchCriteria }),
+      TenantSearchActions.searchButtonClicked({ searchCriteria: formValue }),
     );
   }
 
@@ -136,22 +172,33 @@ export class TenantSearchComponent implements OnInit {
   searchConfigInfoSelectionChanged(searchConfig: {
     inputValues: Record<string, any>;
     displayedColumns: string[];
+    viewMode: 'basic' | 'advanced';
   }) {
     if (searchConfig) {
-      Object.entries(searchConfig.inputValues).forEach(
-        ([inputKey, inputValue]) => {
-          this.tenantSearchFormGroup.get(inputKey)?.setValue(inputValue);
-        },
+      this.store.dispatch(
+        TenantSearchActions.searchConfigSelected({
+          viewMode: searchConfig.viewMode,
+          displayedColumns: searchConfig.displayedColumns,
+          values: Object.entries(searchConfig.inputValues).reduce(
+            (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
+              ...acc,
+              [key]: isValidDate(value)
+                ? new Date(
+                    Date.UTC(
+                      value.getFullYear(),
+                      value.getMonth(),
+                      value.getDay(),
+                      value.getHours(),
+                      value.getMinutes(),
+                      value.getSeconds(),
+                    ),
+                  ).toISOString()
+                : value || undefined,
+            }),
+            {},
+          ),
+        }),
       );
-      this.viewModel$.pipe(first()).subscribe((data) => {
-        this.store.dispatch(
-          TenantSearchActions.displayedColumnsChanged({
-            displayedColumns: data.columns.filter((column) =>
-              searchConfig.displayedColumns.includes(column.id),
-            ),
-          }),
-        );
-      });
     }
   }
 
@@ -171,13 +218,5 @@ export class TenantSearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled());
-  }
-
-  createSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.createSearchConfigClicked());
-  }
-
-  updateSearchConfig(): void {
-    this.store.dispatch(TenantSearchActions.updateSearchConfigClicked());
   }
 }
