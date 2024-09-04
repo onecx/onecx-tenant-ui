@@ -24,6 +24,8 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel'
 export class TenantSearchComponent implements OnInit {
   viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel)
 
+  pageName = 'PAGE_TENANT_SEARCH'
+
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
@@ -81,6 +83,41 @@ export class TenantSearchComponent implements OnInit {
     ])
   }
 
+  searchConfigInfoSelectionChanged(searchConfig: {
+    fieldValues: Record<string, string>
+    displayedColumnsIds: string[]
+    viewMode: 'basic' | 'advanced'
+  }) {
+    // if (searchConfig) {
+    //   this.store.dispatch(
+    //     TenantSearchActions.searchConfigSelected({
+    //       viewMode: searchConfig.viewMode,
+    //       displayedColumnIds: searchConfig.displayedColumnsIds,
+    //       // TODO: fix with parse mechanism
+    //       fieldValues: Object.entries(searchConfig.inputValues).reduce(
+    //         (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
+    //           ...acc,
+    //           [key]: isValidDate(value)
+    //             ? new Date(
+    //                 Date.UTC(
+    //                   value.getFullYear(),
+    //                   value.getMonth(),
+    //                   value.getDate(),
+    //                   value.getHours(),
+    //                   value.getMinutes(),
+    //                   value.getSeconds()
+    //                 )
+    //               ).toISOString()
+    //             : value || undefined
+    //         }),
+    //         {}
+    //       )
+    //     })
+    //   )
+    // }
+  }
+
+  //TODO: Fix
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({

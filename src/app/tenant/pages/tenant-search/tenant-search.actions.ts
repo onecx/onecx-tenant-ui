@@ -10,7 +10,11 @@ export const TenantSearchActions = createActionGroup({
       searchCriteria: TenantSearchCriteria
     }>(),
     'Reset button clicked': emptyProps(),
-
+    'Search config selected': props<{
+      viewMode: 'advanced' | 'basic'
+      displayedColumnIds: string[]
+      fieldValues: { [key: string]: string }
+    }>(),
     'tenant search results received': props<{
       results: Tenant[]
       totalElements: number

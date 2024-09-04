@@ -6,6 +6,9 @@
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
+    [viewMode]="vm.viewMode"
+    [pageName]="pageName"
+    [displayedColumns]="vm.displayedColumns"
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="tenantSearchFormGroup">
@@ -27,6 +30,23 @@
           </span>
         </div>
       </div>
+      <div class="col-12 md:col-3" *ocxAdvanced>
+        <span class="p-float-label">
+          <input
+            pInputText
+            id="tenant_search_id"
+            type="text"
+            class="w-18rem"
+            formControlName="id"
+            [pTooltip]="'TENANT_SEARCH.TOOLTIPS.ID' | translate"
+            tooltipPosition="top"
+            tooltipEvent="hover"
+          />
+          <label for="tenant_search_id" style="white-space: nowrap"
+            >{{ 'TENANT_SEARCH.CRITERIA.ID' | translate }}</label
+          >
+        </span>
+      </div>
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
@@ -36,6 +56,7 @@
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
         [listGridPaginator]="false"
+        [pageName]="pageName"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
         [supportedViewLayouts]="['table']"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
