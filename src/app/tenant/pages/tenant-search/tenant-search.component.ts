@@ -1,5 +1,5 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import {
   Action,
@@ -64,6 +64,8 @@ export class TenantSearchComponent implements OnInit {
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
 
+  @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     private readonly store: Store,
@@ -117,23 +119,30 @@ export class TenantSearchComponent implements OnInit {
     // }
   }
 
-  //TODO: Fix
+  private isVisible(control: string) {
+    return this.visibleFormControls.some(
+      (formControl) => formControl.name !== null && String(formControl.name) === control
+    )
+  }
+
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
         ...acc,
-        [key]: isValidDate(value)
-          ? new Date(
-              Date.UTC(
-                value.getFullYear(),
-                value.getMonth(),
-                value.getDay(),
-                value.getHours(),
-                value.getMinutes(),
-                value.getSeconds()
-              )
-            ).toISOString()
-          : value || undefined
+        [key]: this.isVisible(key)
+          ? isValidDate(value)
+            ? new Date(
+                Date.UTC(
+                  value.getFullYear(),
+                  value.getMonth(),
+                  value.getDay(),
+                  value.getHours(),
+                  value.getMinutes(),
+                  value.getSeconds()
+                )
+              ).toISOString()
+            : value || undefined
+          : undefined
       }),
       {}
     )
