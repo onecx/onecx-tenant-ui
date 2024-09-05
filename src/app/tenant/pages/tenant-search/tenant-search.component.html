@@ -10,6 +10,7 @@
     [pageName]="pageName"
     [displayedColumns]="vm.displayedColumns"
     (viewModeChanged)="viewModeChanged($event)"
+    (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
   >
     <form [formGroup]="tenantSearchFormGroup">
       <div class="grid mt-0 p-fluid">
@@ -20,9 +21,10 @@
               id="tenant_search_orgId"
               type="text"
               class="w-18rem"
-              [title]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
               formControlName="orgId"
-              [(ngModel)]="vm.searchCriteria.orgId"
+              [pTooltip]="'TENANT_SEARCH.TOOLTIPS.ORGID' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
             />
             <label for="tenant_search_orgId" style="white-space: nowrap">
               {{ 'TENANT_SEARCH.CRITERIA.ORGID' | translate }}</label
@@ -56,7 +58,6 @@
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
         [listGridPaginator]="false"
-        [pageName]="pageName"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
         [supportedViewLayouts]="['table']"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"

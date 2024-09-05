@@ -13,7 +13,7 @@ export const TenantSearchActions = createActionGroup({
     'Search config selected': props<{
       viewMode: 'advanced' | 'basic'
       displayedColumnIds: string[]
-      fieldValues: { [key: string]: string }
+      fieldValues: TenantSearchCriteria
     }>(),
     'tenant search results received': props<{
       results: Tenant[]

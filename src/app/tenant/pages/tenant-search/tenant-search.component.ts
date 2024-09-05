@@ -83,6 +83,29 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
+
+    this.viewModel$.subscribe((vm) =>
+      this.patchOrResetForm(this.tenantSearchFormGroup, vm.searchCriteria ?? ({} as TenantSearchCriteria))
+    )
+  }
+
+  patchOrResetForm(
+    form: FormGroup,
+    value: TenantSearchCriteria,
+    options: {
+      onlySelf?: boolean
+      emitEvent?: boolean
+    } = {}
+  ) {
+    Object.keys(form.controls).forEach((key) => {
+      const c = form.get(key)
+      if (Object.keys(value).includes(key)) {
+        c?.patchValue(value[key as keyof TenantSearchCriteria])
+      } else {
+        c?.reset()
+      }
+    })
+    form.updateValueAndValidity(options)
   }
 
   searchConfigInfoSelectionChanged(searchConfig: {
@@ -90,33 +113,20 @@ export class TenantSearchComponent implements OnInit {
     displayedColumnsIds: string[]
     viewMode: 'basic' | 'advanced'
   }) {
-    // if (searchConfig) {
-    //   this.store.dispatch(
-    //     TenantSearchActions.searchConfigSelected({
-    //       viewMode: searchConfig.viewMode,
-    //       displayedColumnIds: searchConfig.displayedColumnsIds,
-    //       // TODO: fix with parse mechanism
-    //       fieldValues: Object.entries(searchConfig.inputValues).reduce(
-    //         (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
-    //           ...acc,
-    //           [key]: isValidDate(value)
-    //             ? new Date(
-    //                 Date.UTC(
-    //                   value.getFullYear(),
-    //                   value.getMonth(),
-    //                   value.getDate(),
-    //                   value.getHours(),
-    //                   value.getMinutes(),
-    //                   value.getSeconds()
-    //                 )
-    //               ).toISOString()
-    //             : value || undefined
-    //         }),
-    //         {}
-    //       )
-    //     })
-    //   )
-    // }
+    const results = tenantSearchCriteriasSchema.safeParse(searchConfig.fieldValues)
+    if (results.success) {
+      this.store.dispatch(
+        TenantSearchActions.searchConfigSelected({
+          fieldValues: results.data,
+          displayedColumnIds: searchConfig.displayedColumnsIds,
+          viewMode: searchConfig.viewMode
+        })
+      )
+      this.tenantSearchFormGroup.patchValue(results.data)
+    } else {
+      // TODO: Info of unsuccessfull config parse
+      console.log('parse failed')
+    }
   }
 
   private isVisible(control: string) {
@@ -135,17 +145,17 @@ export class TenantSearchComponent implements OnInit {
                 Date.UTC(
                   value.getFullYear(),
                   value.getMonth(),
-                  value.getDay(),
+                  value.getDate(),
                   value.getHours(),
                   value.getMinutes(),
                   value.getSeconds()
                 )
-              ).toISOString()
-            : value || undefined
-          : undefined
+              )
+            : value || null
+          : null
       }),
       {}
-    )
+    ) as TenantSearchCriteria
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 

@@ -4,15 +4,9 @@ import { TenantSearchCriteria } from './tenant-search.parameters'
 
 export interface TenantSearchState {
   columns: DataTableColumn[]
+  criteria: TenantSearchCriteria
   results: Tenant[]
   displayedColumns: string[] | null
   viewMode: 'basic' | 'advanced'
   chartVisible: boolean
-}
-
-export interface TenantSearchConfigState {
-  columns: DataTableColumn[]
-  displayedColumns: DataTableColumn[]
-  viewMode: 'basic' | 'advanced'
-  searchCriteria: TenantSearchCriteria
 }
