@@ -4,7 +4,7 @@ version: 0.0.0
 description: onecx-tenant UI
 home: https://github.com/onecx/onecx-tenant-ui
 keywords:
-  - onecx-tenant
+  - tenant
 sources:
   - https://github.com/onecx/onecx-tenant-ui
 maintainers:
