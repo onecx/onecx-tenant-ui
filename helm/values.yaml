@@ -12,7 +12,7 @@ app:
         main:
           exposedModule: './OneCXTenantModule'
           description: 'OneCX Tenant UI'
-          note: 'OneCX OneCXTenant UI module auto import via MF operator'
+          note: 'OneCX Tenant UI module auto import via MF operator'
           type: MODULE
           technology: WEBCOMPONENTMODULE
           remoteName: onecx-tenant
@@ -22,9 +22,8 @@ app:
       spec:
         permissions:
           TENANT:
-            CREATE: Create tenant
-            EDIT: Edit tenant
-            DELETE: Delete tenant
-            SAVE: Update and save tenant
-            VIEW: View mode for tenant
-            SEARCH: Seaarch tenant
+            CREATE: 'Create tenant'
+            EDIT: 'Edit tenant'
+            DELETE: 'Delete tenant'
+            VIEW: 'View tenant details'
+            SEARCH: 'Search tenants'
