@@ -29,12 +29,16 @@ export const tenantSearchReducer = createReducer(
   on(
     TenantSearchActions.searchConfigSelected,
     (state: TenantSearchState, { fieldValues, displayedColumnIds, viewMode }): TenantSearchState => {
-      return {
-        ...state,
-        criteria: fieldValues,
-        displayedColumns: displayedColumnIds,
-        viewMode: viewMode
+      const results = tenantSearchCriteriasSchema.safeParse(fieldValues)
+      if (results.success) {
+        return {
+          ...state,
+          criteria: results.data,
+          displayedColumns: displayedColumnIds,
+          viewMode: viewMode
+        }
       }
+      return state
     }
   ),
   on(

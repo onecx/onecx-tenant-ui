@@ -84,28 +84,7 @@ export class TenantSearchComponent implements OnInit {
       }
     ])
 
-    this.viewModel$.subscribe((vm) =>
-      this.patchOrResetForm(this.tenantSearchFormGroup, vm.searchCriteria ?? ({} as TenantSearchCriteria))
-    )
-  }
-
-  patchOrResetForm(
-    form: FormGroup,
-    value: TenantSearchCriteria,
-    options: {
-      onlySelf?: boolean
-      emitEvent?: boolean
-    } = {}
-  ) {
-    Object.keys(form.controls).forEach((key) => {
-      const c = form.get(key)
-      if (Object.keys(value).includes(key)) {
-        c?.patchValue(value[key as keyof TenantSearchCriteria])
-      } else {
-        c?.reset()
-      }
-    })
-    form.updateValueAndValidity(options)
+    this.viewModel$.subscribe((vm) => this.tenantSearchFormGroup.reset(vm.searchCriteria))
   }
 
   searchConfigInfoSelectionChanged(searchConfig: {
@@ -113,20 +92,13 @@ export class TenantSearchComponent implements OnInit {
     displayedColumnsIds: string[]
     viewMode: 'basic' | 'advanced'
   }) {
-    const results = tenantSearchCriteriasSchema.safeParse(searchConfig.fieldValues)
-    if (results.success) {
-      this.store.dispatch(
-        TenantSearchActions.searchConfigSelected({
-          fieldValues: results.data,
-          displayedColumnIds: searchConfig.displayedColumnsIds,
-          viewMode: searchConfig.viewMode
-        })
-      )
-      this.tenantSearchFormGroup.patchValue(results.data)
-    } else {
-      // TODO: Info of unsuccessfull config parse
-      console.log('parse failed')
-    }
+    this.store.dispatch(
+      TenantSearchActions.searchConfigSelected({
+        fieldValues: searchConfig.fieldValues,
+        displayedColumnIds: searchConfig.displayedColumnsIds,
+        viewMode: searchConfig.viewMode
+      })
+    )
   }
 
   private isVisible(control: string) {
