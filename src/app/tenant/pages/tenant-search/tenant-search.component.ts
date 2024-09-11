@@ -13,7 +13,7 @@ import { first, map, Observable } from 'rxjs'
 import { isValidDate } from '../../../shared/utils/isValidDate.utils'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
-import { selectTenantSearchViewModel } from './tenant-search.selectors'
+import { selectTenantSearchViewModel, tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
 
 @Component({
@@ -84,21 +84,29 @@ export class TenantSearchComponent implements OnInit {
       }
     ])
 
-    this.viewModel$.subscribe((vm) => this.tenantSearchFormGroup.reset(vm.searchCriteria))
+    this.store
+      .select(tenantSearchSelectors.selectCriteria)
+      .subscribe((criteria) => this.tenantSearchFormGroup.reset(criteria))
   }
 
-  searchConfigInfoSelectionChanged(searchConfig: {
-    fieldValues: Record<string, string>
-    displayedColumnsIds: string[]
-    viewMode: 'basic' | 'advanced'
-  }) {
-    this.store.dispatch(
-      TenantSearchActions.searchConfigSelected({
-        fieldValues: searchConfig.fieldValues,
-        displayedColumnIds: searchConfig.displayedColumnsIds,
-        viewMode: searchConfig.viewMode
-      })
-    )
+  searchConfigInfoSelectionChanged(
+    searchConfig:
+      | {
+          fieldValues: Record<string, string>
+          displayedColumnsIds: string[]
+          viewMode: 'basic' | 'advanced'
+        }
+      | undefined
+  ) {
+    if (searchConfig) {
+      this.store.dispatch(
+        TenantSearchActions.searchConfigSelected({
+          fieldValues: searchConfig.fieldValues,
+          displayedColumnIds: searchConfig.displayedColumnsIds,
+          viewMode: searchConfig.viewMode
+        })
+      )
+    }
   }
 
   private isVisible(control: string) {
