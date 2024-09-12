@@ -1,0 +1,4 @@
+
+== onecx-tenant-ui
+
+include::onecx-tenant-ui-docs.adoc[opts=optional]

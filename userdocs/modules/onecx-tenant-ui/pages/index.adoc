@@ -1,0 +1,3 @@
+== onecx-tenant-ui
+
+include::onecx-tenant-ui-userdocs.adoc[opts=optional]
