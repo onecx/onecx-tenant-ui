@@ -4,7 +4,7 @@ const config = withModuleFederationPlugin({
   name: 'onecx-tenant-ui',
   filename: 'remoteEntry.js',
   exposes: {
-    './OneCXTenantModule': './src/bootstrap.ts'
+    './OneCXTenantModule': './src/main.ts'
   },
   shared: share({
     '@angular/core': {
