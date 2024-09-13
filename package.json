@@ -89,7 +89,7 @@
     "@nx/angular": "19.5.3",
     "@nx/eslint": "19.6.2",
     "@nx/eslint-plugin": "19.6.2",
-    "@nx/jest": "19.5.3",
+    "@nx/jest": "19.7.3",
     "@nx/js": "19.5.3",
     "@nx/workspace": "19.5.3",
     "@openapitools/openapi-generator-cli": "^2.13.5",
