@@ -24,8 +24,6 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel'
 export class TenantSearchComponent implements OnInit {
   viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel)
 
-  pageName = 'PAGE_TENANT_SEARCH'
-
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
@@ -109,12 +107,6 @@ export class TenantSearchComponent implements OnInit {
     }
   }
 
-  private isVisible(control: string) {
-    return this.visibleFormControls.some(
-      (formControl) => formControl.name !== null && String(formControl.name) === control
-    )
-  }
-
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
@@ -163,5 +155,11 @@ export class TenantSearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
+  }
+
+  private isVisible(control: string) {
+    return this.visibleFormControls.some(
+      (formControl) => formControl.name !== null && String(formControl.name) === control
+    )
   }
 }
