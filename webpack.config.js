@@ -64,6 +64,10 @@ const config = withModuleFederationPlugin({
     '@onecx/portal-layout-styles': {
       requiredVersion: 'auto',
       includeSecondaries: true
+    },
+    '@onecx/angular-accelerator': {
+      requiredVersion: 'auto',
+      includeSecondaries: true
     }
   }),
 
