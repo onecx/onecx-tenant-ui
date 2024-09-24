@@ -26,21 +26,19 @@ export const tenantSearchReducer = createReducer(
     }
     return state
   }),
-  on(
-    TenantSearchActions.searchConfigSelected,
-    (state: TenantSearchState, { fieldValues, displayedColumnIds, viewMode }): TenantSearchState => {
-      const results = tenantSearchCriteriasSchema.safeParse(fieldValues)
-      if (results.success) {
-        return {
-          ...state,
-          criteria: results.data,
-          displayedColumns: displayedColumnIds,
-          viewMode: viewMode
-        }
+  on(TenantSearchActions.searchConfigSelected, (state: TenantSearchState, { searchConfig }): TenantSearchState => {
+    if (!searchConfig) return state
+    const results = tenantSearchCriteriasSchema.safeParse(searchConfig.fieldValues)
+    if (results.success) {
+      return {
+        ...state,
+        criteria: results.data,
+        displayedColumns: searchConfig.displayedColumnsIds,
+        viewMode: searchConfig.viewMode
       }
-      return state
     }
-  ),
+    return state
+  }),
   on(
     TenantSearchActions.searchButtonClicked,
     (state: TenantSearchState, { searchCriteria }): TenantSearchState => ({

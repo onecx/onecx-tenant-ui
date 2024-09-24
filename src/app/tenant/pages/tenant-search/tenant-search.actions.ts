@@ -11,9 +11,13 @@ export const TenantSearchActions = createActionGroup({
     }>(),
     'Reset button clicked': emptyProps(),
     'Search config selected': props<{
-      viewMode: 'advanced' | 'basic'
-      displayedColumnIds: string[]
-      fieldValues: TenantSearchCriteria
+      searchConfig:
+        | {
+            viewMode: 'advanced' | 'basic'
+            displayedColumnsIds: string[]
+            fieldValues: TenantSearchCriteria
+          }
+        | undefined
     }>(),
     'tenant search results received': props<{
       results: Tenant[]

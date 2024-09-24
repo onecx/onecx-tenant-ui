@@ -96,15 +96,11 @@ export class TenantSearchComponent implements OnInit {
         }
       | undefined
   ) {
-    if (searchConfig) {
-      this.store.dispatch(
-        TenantSearchActions.searchConfigSelected({
-          fieldValues: searchConfig.fieldValues,
-          displayedColumnIds: searchConfig.displayedColumnsIds,
-          viewMode: searchConfig.viewMode
-        })
-      )
-    }
+    this.store.dispatch(
+      TenantSearchActions.searchConfigSelected({
+        searchConfig: searchConfig
+      })
+    )
   }
 
   search(formValue: FormGroup) {
