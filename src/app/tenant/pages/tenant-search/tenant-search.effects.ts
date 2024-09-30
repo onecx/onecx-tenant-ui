@@ -22,12 +22,12 @@ import { selectSearchCriteria, tenantSearchSelectors } from './tenant-search.sel
 @Injectable()
 export class TenantSearchEffects {
   constructor(
-    private actions$: Actions,
-    @SkipSelf() private route: ActivatedRoute,
-    private tenantService: TenantBffService,
-    private router: Router,
-    private store: Store,
-    private messageService: PortalMessageService
+    private readonly actions$: Actions,
+    @SkipSelf() private readonly route: ActivatedRoute,
+    private readonly tenantService: TenantBffService,
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly messageService: PortalMessageService
   ) {}
 
   pageName = 'tenant'
