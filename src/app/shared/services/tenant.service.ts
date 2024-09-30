@@ -5,7 +5,7 @@ import { TenantBffService, TenantSearchResponse } from '../generated'
 
 @Injectable()
 export class TenantService {
-  constructor(private tenantAPIService: TenantBffService) {}
+  constructor(private readonly tenantAPIService: TenantBffService) {}
 
   search(searchString: string): Observable<TenantSearchResponse> {
     return this.tenantAPIService.searchTenants({

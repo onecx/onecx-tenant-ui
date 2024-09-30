@@ -68,7 +68,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
-    private portalDialogService: PortalDialogService
+    private readonly portalDialogService: PortalDialogService
   ) {}
 
   ngOnInit() {
