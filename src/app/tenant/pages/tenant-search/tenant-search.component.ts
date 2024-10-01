@@ -6,7 +6,8 @@ import {
   BreadcrumbService,
   DataTableColumn,
   ExportDataService,
-  PortalDialogService
+  PortalDialogService,
+  SearchConfigData
 } from '@onecx/portal-integration-angular'
 import { PrimeIcons } from 'primeng/api'
 import { first, map, Observable } from 'rxjs'
@@ -87,15 +88,7 @@ export class TenantSearchComponent implements OnInit {
       .subscribe((criteria) => this.tenantSearchFormGroup.reset(criteria))
   }
 
-  searchConfigInfoSelectionChanged(
-    searchConfig:
-      | {
-          fieldValues: Record<string, string>
-          displayedColumnsIds: string[]
-          viewMode: 'basic' | 'advanced'
-        }
-      | undefined
-  ) {
+  searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
     this.store.dispatch(
       TenantSearchActions.searchConfigSelected({
         searchConfig: searchConfig
