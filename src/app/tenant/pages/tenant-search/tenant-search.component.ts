@@ -10,7 +10,7 @@ import {
   SearchConfigData
 } from '@onecx/portal-integration-angular'
 import { PrimeIcons } from 'primeng/api'
-import { first, map, Observable, tap } from 'rxjs'
+import { first, map, Observable } from 'rxjs'
 import { isValidDate } from '../../../shared/utils/isValidDate.utils'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
@@ -23,11 +23,7 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel'
   styleUrls: ['./tenant-search.component.scss']
 })
 export class TenantSearchComponent implements OnInit {
-  viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel).pipe(
-    tap((vm) => {
-      this.tenantSearchFormGroup.reset(vm.searchCriteria)
-    })
-  )
+  viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel)
 
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
@@ -86,6 +82,10 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
+
+    this.viewModel$.subscribe((vm) => {
+      this.tenantSearchFormGroup.reset(vm.searchCriteria)
+    })
   }
 
   searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {

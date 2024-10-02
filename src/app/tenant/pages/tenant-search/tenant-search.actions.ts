@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store'
-import { DataTableColumn } from '@onecx/angular-accelerator'
+import { DataTableColumn, SearchConfigData } from '@onecx/angular-accelerator'
 import { Tenant } from '../../../shared/generated'
 import { TenantSearchCriteria } from './tenant-search.parameters'
 
@@ -11,13 +11,7 @@ export const TenantSearchActions = createActionGroup({
     }>(),
     'Reset button clicked': emptyProps(),
     'Search config selected': props<{
-      searchConfig:
-        | {
-            viewMode: 'advanced' | 'basic'
-            displayedColumnsIds: string[]
-            fieldValues: TenantSearchCriteria
-          }
-        | undefined
+      searchConfig: SearchConfigData | undefined
     }>(),
     'tenant search results received': props<{
       results: Tenant[]
