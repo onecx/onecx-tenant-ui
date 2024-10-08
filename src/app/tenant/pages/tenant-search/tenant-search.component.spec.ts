@@ -81,6 +81,11 @@ describe('TenantSearchComponent', () => {
       changeMe: '123'
     })
     component.tenantSearchFormGroup = formValue
+    component.visibleFormControls = [
+      {
+        name: 'changeMe'
+      }
+    ] as any
 
     store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
       expect(a.searchCriteria).toEqual({ changeMe: '123' })
