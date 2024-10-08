@@ -84,7 +84,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
   ]
 })
 export class OneCXTenantModule implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  constructor(private readonly injector: Injector) {}
 
   ngDoBootstrap(): void {
     createAppEntrypoint(AppEntrypointComponent, 'ocx-tenant-component', this.injector)
