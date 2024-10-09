@@ -213,7 +213,7 @@ describe('TenantSearchEffects:', () => {
     })
   })
 
-  it('should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria', (done) => {
+  fit('should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria', (done) => {
     const tenants = {
       stream: [
         {
@@ -227,16 +227,21 @@ describe('TenantSearchEffects:', () => {
     }
     jest.spyOn(mockedTenantService, 'searchTenants').mockReturnValue(of(tenants) as any)
 
-    const previousSearchCriteria = {
+    const previousSearchCriteriaParams = {
       orgId: 'prev_org_id',
+      pageNumber: '1',
+      pageSize: '1'
+    }
+    const newSearchCriteriaParams = {
+      orgId: 'org_id',
       pageNumber: '1',
       pageSize: '1'
     }
     const newSearchCriteria = {
       orgId: 'org_id',
-      pageNumber: '1',
-      pageSize: '1'
-    } as any
+      pageNumber: 1,
+      pageSize: 1
+    }
     store.overrideSelector(tenantSearchSelectors.selectCriteria, newSearchCriteria)
 
     const effects = initEffects()
@@ -245,7 +250,7 @@ describe('TenantSearchEffects:', () => {
       type: ROUTER_NAVIGATED
     } as RouterNavigatedAction
     mockedRouter.routeFor(TenantSearchComponent)
-    mockedRouter.configureQueryParams(routerNavigatedAction, previousSearchCriteria, newSearchCriteria)
+    mockedRouter.configureQueryParams(routerNavigatedAction, previousSearchCriteriaParams, newSearchCriteriaParams)
     mockedRouter.simulateNavigation(routerNavigatedAction)
 
     effects.searchByUrl$.subscribe((action) => {
@@ -265,16 +270,21 @@ describe('TenantSearchEffects:', () => {
     }
     jest.spyOn(mockedTenantService, 'searchTenants').mockReturnValue(throwError(() => error))
 
-    const previousSearchCriteria = {
+    const previousSearchCriteriaParams = {
       orgId: 'prev_org_id',
+      pageNumber: '1',
+      pageSize: '1'
+    }
+    const newSearchCriteriaParams = {
+      orgId: 'org_id',
       pageNumber: '1',
       pageSize: '1'
     }
     const newSearchCriteria = {
       orgId: 'org_id',
-      pageNumber: '1',
-      pageSize: '1'
-    } as any
+      pageNumber: 1,
+      pageSize: 1
+    }
     store.overrideSelector(tenantSearchSelectors.selectCriteria, newSearchCriteria)
 
     const effects = initEffects()
@@ -283,7 +293,7 @@ describe('TenantSearchEffects:', () => {
       type: ROUTER_NAVIGATED
     } as RouterNavigatedAction
     mockedRouter.routeFor(TenantSearchComponent)
-    mockedRouter.configureQueryParams(routerNavigatedAction, previousSearchCriteria, newSearchCriteria)
+    mockedRouter.configureQueryParams(routerNavigatedAction, previousSearchCriteriaParams, newSearchCriteriaParams)
     mockedRouter.simulateNavigation(routerNavigatedAction)
 
     effects.searchByUrl$.subscribe((action) => {
