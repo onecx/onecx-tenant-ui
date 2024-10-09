@@ -213,7 +213,7 @@ describe('TenantSearchEffects:', () => {
     })
   })
 
-  fit('should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria', (done) => {
+  it('should dispatch TenantSearchActions.tenantSearchResultsReceived with search results on new search criteria', (done) => {
     const tenants = {
       stream: [
         {
