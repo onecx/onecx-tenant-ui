@@ -1,20 +1,22 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import {
   Action,
   BreadcrumbService,
   DataTableColumn,
   ExportDataService,
-  PortalDialogService
+  PortalDialogService,
+  SearchConfigData
 } from '@onecx/portal-integration-angular'
 import { PrimeIcons } from 'primeng/api'
-import { first, map, Observable } from 'rxjs'
+import { distinctUntilChanged, first, map, Observable } from 'rxjs'
 import { isValidDate } from '../../../shared/utils/isValidDate.utils'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
+import * as deepEqual from 'fast-deep-equal'
 
 @Component({
   selector: 'app-tenant-search',
@@ -62,6 +64,8 @@ export class TenantSearchComponent implements OnInit {
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
 
+  @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     private readonly store: Store,
@@ -79,27 +83,46 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
+
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.searchCriteria),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe((sc) => {
+        this.tenantSearchFormGroup.reset(sc)
+      })
+  }
+
+  searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
+    this.store.dispatch(
+      TenantSearchActions.searchConfigSelected({
+        searchConfig: searchConfig
+      })
+    )
   }
 
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
         ...acc,
-        [key]: isValidDate(value)
-          ? new Date(
-              Date.UTC(
-                value.getFullYear(),
-                value.getMonth(),
-                value.getDay(),
-                value.getHours(),
-                value.getMinutes(),
-                value.getSeconds()
+        [key]: this.isVisible(key)
+          ? isValidDate(value)
+            ? new Date(
+                Date.UTC(
+                  value.getFullYear(),
+                  value.getMonth(),
+                  value.getDate(),
+                  value.getHours(),
+                  value.getMinutes(),
+                  value.getSeconds()
+                )
               )
-            ).toISOString()
-          : value || undefined
+            : value || null
+          : null
       }),
       {}
-    )
+    ) as TenantSearchCriteria
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
@@ -127,5 +150,11 @@ export class TenantSearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
+  }
+
+  private isVisible(control: string) {
+    return this.visibleFormControls.some(
+      (formControl) => formControl.name !== null && String(formControl.name) === control
+    )
   }
 }

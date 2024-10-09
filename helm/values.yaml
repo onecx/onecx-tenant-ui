@@ -27,3 +27,4 @@ app:
             DELETE: 'Delete tenant'
             VIEW: 'View tenant details'
             SEARCH: 'Search tenants'
+            USE_SEARCHCONFIGS: 'Use search configs in tenant'

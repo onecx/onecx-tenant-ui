@@ -7,7 +7,6 @@ import { concatLatestFrom } from '@ngrx/operators'
 
 import { PortalMessageService } from '@onecx/portal-integration-angular'
 import {
-  createQueryParamsEffect,
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged
@@ -17,7 +16,8 @@ import { TenantBffService } from '../../../shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
-import { selectSearchCriteria, tenantSearchSelectors } from './tenant-search.selectors'
+import { tenantSearchSelectors } from './tenant-search.selectors'
+import * as equal from 'fast-deep-equal'
 
 @Injectable()
 export class TenantSearchEffects {
@@ -32,23 +32,28 @@ export class TenantSearchEffects {
 
   pageName = 'tenant'
 
-  resetButtonClicked$ = createQueryParamsEffect(
-    this.actions$,
-    TenantSearchActions.resetButtonClicked,
-    this.router,
-    this.route,
-    () => ({})
-  )
-
-  searchButtonClicked$ = createQueryParamsEffect(
-    this.actions$,
-    TenantSearchActions.searchButtonClicked,
-    this.router,
-    this.route,
-    (state, action) => ({
-      ...state,
-      ...action.searchCriteria
-    })
+  syncParamsToUrl$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(TenantSearchActions.searchButtonClicked, TenantSearchActions.resetButtonClicked),
+        concatLatestFrom(() => [this.store.select(tenantSearchSelectors.selectCriteria), this.route.queryParams]),
+        tap(([, criteria, queryParams]) => {
+          const results = tenantSearchCriteriasSchema.safeParse(queryParams)
+          if (!results.success || !equal(criteria, results.data)) {
+            const params = {
+              ...criteria
+            }
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: params,
+              replaceUrl: true,
+              onSameUrlNavigation: 'ignore'
+            })
+          }
+        })
+      )
+    },
+    { dispatch: false }
   )
 
   searchByUrl$ = createEffect(() => {
@@ -56,7 +61,7 @@ export class TenantSearchEffects {
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, TenantSearchComponent),
       filterOutQueryParamsHaveNotChanged(this.router, tenantSearchCriteriasSchema, true),
-      concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+      concatLatestFrom(() => this.store.select(tenantSearchSelectors.selectCriteria)),
       switchMap(([, searchCriteria]) => {
         return this.tenantService.searchTenants(searchCriteria).pipe(
           map(({ stream, totalElements }) =>

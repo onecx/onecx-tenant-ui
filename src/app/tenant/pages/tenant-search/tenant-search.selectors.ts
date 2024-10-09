@@ -1,20 +1,11 @@
 import { createSelector } from '@ngrx/store'
 import { DataTableColumn, RowListGridData } from '@onecx/portal-integration-angular'
 import { createChildSelectors } from '@onecx/ngrx-accelerator'
-import { selectQueryParams } from 'src/app/shared/selectors/router.selectors'
 import { tenantFeature } from '../../tenant.reducers'
-import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { initialState } from './tenant-search.reducers'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
 
 export const tenantSearchSelectors = createChildSelectors(tenantFeature.selectSearch, initialState)
-export const selectSearchCriteria = createSelector(selectQueryParams, (queryParams): TenantSearchCriteria => {
-  const results = tenantSearchCriteriasSchema.safeParse(queryParams)
-  if (results.success) {
-    return results.data as TenantSearchCriteria
-  }
-  return {}
-})
 
 export const selectResults = createSelector(tenantSearchSelectors.selectResults, (results): RowListGridData[] => {
   return results.map((item) => ({
@@ -34,7 +25,7 @@ export const selectDisplayedColumns = createSelector(
 
 export const selectTenantSearchViewModel = createSelector(
   tenantSearchSelectors.selectColumns,
-  selectSearchCriteria,
+  tenantSearchSelectors.selectCriteria,
   selectResults,
   selectDisplayedColumns,
   tenantSearchSelectors.selectViewMode,

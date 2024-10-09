@@ -2,22 +2,55 @@ import { createReducer, on } from '@ngrx/store'
 import { TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchColumns } from './tenant-search.columns'
 import { TenantSearchState } from './tenant-search.state'
+import { RouterNavigatedAction, routerNavigatedAction } from '@ngrx/router-store'
+import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 
 export const initialState: TenantSearchState = {
   columns: tenantSearchColumns,
   results: [],
   displayedColumns: null,
   viewMode: 'basic',
-  chartVisible: false
+  chartVisible: false,
+  criteria: {}
 }
 
 export const tenantSearchReducer = createReducer(
   initialState,
+  on(routerNavigatedAction, (state: TenantSearchState, action: RouterNavigatedAction) => {
+    const results = tenantSearchCriteriasSchema.safeParse(action.payload.routerState.root.queryParams)
+    if (results.success) {
+      return {
+        ...state,
+        criteria: results.data
+      }
+    }
+    return state
+  }),
+  on(TenantSearchActions.searchConfigSelected, (state: TenantSearchState, { searchConfig }): TenantSearchState => {
+    if (!searchConfig) return state
+    const results = tenantSearchCriteriasSchema.safeParse(searchConfig.fieldValues)
+    if (results.success) {
+      return {
+        ...state,
+        criteria: results.data,
+        displayedColumns: searchConfig.displayedColumnsIds,
+        viewMode: searchConfig.viewMode
+      }
+    }
+    return state
+  }),
+  on(
+    TenantSearchActions.searchButtonClicked,
+    (state: TenantSearchState, { searchCriteria }): TenantSearchState => ({
+      ...state,
+      criteria: searchCriteria
+    })
+  ),
   on(
     TenantSearchActions.resetButtonClicked,
     (state: TenantSearchState): TenantSearchState => ({
       ...state,
-      results: initialState.results
+      criteria: {}
     })
   ),
   on(
