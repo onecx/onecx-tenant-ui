@@ -17,7 +17,7 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { tenantSearchSelectors } from './tenant-search.selectors'
-import equal from 'fast-deep-equal'
+import * as equal from 'fast-deep-equal'
 
 @Injectable()
 export class TenantSearchEffects {
