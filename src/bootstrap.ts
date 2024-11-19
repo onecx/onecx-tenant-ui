@@ -1,5 +1,6 @@
-import { bootstrapModule } from '@onecx/angular-webcomponents'
-import { environment } from './environments/environment'
-import { OneCXTenantModule } from './app/onecx-tenant-ui.remote.module'
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { StandaloneWrapperModule } from './app/standalone.module'
 
-bootstrapModule(OneCXTenantModule, 'microfrontend', environment.production)
+platformBrowserDynamic()
+  .bootstrapModule(StandaloneWrapperModule)
+  .catch((err) => console.error(err))
