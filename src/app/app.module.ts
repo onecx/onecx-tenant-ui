@@ -28,6 +28,7 @@ import { metaReducers, reducers } from './app.reducers'
 
 import { Configuration } from './shared/generated'
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils'
+import { ShellCoreModule } from '@onecx/shell-core'
 
 export const commonImports = [CommonModule]
 
@@ -35,6 +36,7 @@ export const commonImports = [CommonModule]
   declarations: [AppComponent],
   imports: [
     ...commonImports,
+    ShellCoreModule,
     KeycloakAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -50,7 +52,7 @@ export const commonImports = [CommonModule]
       traceLimit: 75
     }),
     EffectsModule.forRoot([]),
-    PortalCoreModule.forRoot('onecx-tenant-ui'),
+    PortalCoreModule.forMicroFrontend(),
     TranslateModule.forRoot({
       extend: true,
       loader: {

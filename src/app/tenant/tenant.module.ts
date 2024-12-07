@@ -8,7 +8,6 @@ import { EffectsModule } from '@ngrx/effects'
 import { StoreModule } from '@ngrx/store'
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import {
-  addInitializeModuleGuard,
   AppStateService,
   createTranslateLoader,
   PortalCoreModule,
@@ -20,6 +19,7 @@ import { TenantSearchComponent } from './pages/tenant-search/tenant-search.compo
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
 import { tenantFeature } from './tenant.reducers'
 import { routes } from './tenant.routes'
+import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 
 @NgModule({
   declarations: [TenantSearchComponent],
