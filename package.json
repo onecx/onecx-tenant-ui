@@ -89,7 +89,7 @@
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@nx/angular": "19.8.2",
-    "@nx/eslint": "19.8.2",
+    "@nx/eslint": "20.2.2",
     "@nx/eslint-plugin": "19.6.2",
     "@nx/jest": "19.8.2",
     "@nx/js": "19.8.2",
