@@ -66,6 +66,8 @@
     "@onecx/nx-plugin": "1.8.1",
     "@onecx/portal-integration-angular": "^5.23.2",
     "@onecx/portal-layout-styles": "^5.23.2",
+    "@onecx/standalone-shell": "^5.23.2",
+    "@onecx/angular-utils": "^5.23.2",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "fast-deep-equal": "^3.1.3",
     "keycloak-angular": "^16.0.1",

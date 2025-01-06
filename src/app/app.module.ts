@@ -14,13 +14,13 @@ import {
   AppStateService,
   APP_CONFIG,
   ConfigurationService,
-  createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
   translateServiceInitializer,
   UserService,
   providePortalDialogService
 } from '@onecx/portal-integration-angular'
+import { StandaloneShellModule } from '@onecx/standalone-shell'
 import { environment } from 'src/environments/environment'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -28,6 +28,7 @@ import { metaReducers, reducers } from './app.reducers'
 
 import { Configuration } from './shared/generated'
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils'
+import { createTranslateLoader } from '@onecx/angular-utils'
 
 export const commonImports = [CommonModule]
 
@@ -40,6 +41,8 @@ export const commonImports = [CommonModule]
     BrowserAnimationsModule,
     AppRoutingModule,
     LetDirective,
+    StandaloneShellModule,
+    AppRoutingModule,
     StoreRouterConnectingModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({

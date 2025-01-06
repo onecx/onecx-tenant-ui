@@ -1,25 +1,19 @@
 import { CommonModule } from '@angular/common'
-import { HttpClient } from '@angular/common/http'
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { LetDirective } from '@ngrx/component'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreModule } from '@ngrx/store'
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core'
-import {
-  addInitializeModuleGuard,
-  AppStateService,
-  createTranslateLoader,
-  PortalCoreModule,
-  PortalMissingTranslationHandler
-} from '@onecx/portal-integration-angular'
+import { PortalCoreModule } from '@onecx/portal-integration-angular'
 import { CalendarModule } from 'primeng/calendar'
 import { SharedModule } from '../shared/shared.module'
 import { TenantSearchComponent } from './pages/tenant-search/tenant-search.component'
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
 import { tenantFeature } from './tenant.reducers'
 import { routes } from './tenant.routes'
+import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
+import { StandaloneShellModule } from '@onecx/standalone-shell'
 
 @NgModule({
   declarations: [TenantSearchComponent],
@@ -35,19 +29,8 @@ import { routes } from './tenant.routes'
     CalendarModule,
     StoreModule.forFeature(tenantFeature),
     EffectsModule.forFeature([TenantSearchEffects]),
-    TranslateModule.forRoot({
-      extend: true,
-      isolate: false,
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
-      },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: PortalMissingTranslationHandler
-      }
-    })
+    // Workaround to get standalone permissions working in app using PortalCoreModule
+    StandaloneShellModule
   ]
 })
 export class TenantModule {}
