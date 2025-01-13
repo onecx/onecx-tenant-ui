@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core'
+import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { LetDirective } from '@ngrx/component'
@@ -13,11 +13,9 @@ import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects
 import { tenantFeature } from './tenant.reducers'
 import { routes } from './tenant.routes'
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
-import { StandaloneShellModule } from '@onecx/standalone-shell'
 
 @NgModule({
   declarations: [TenantSearchComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     SharedModule,
@@ -28,9 +26,7 @@ import { StandaloneShellModule } from '@onecx/standalone-shell'
     ReactiveFormsModule,
     CalendarModule,
     StoreModule.forFeature(tenantFeature),
-    EffectsModule.forFeature([TenantSearchEffects]),
-    // Workaround to get standalone permissions working in app using PortalCoreModule
-    StandaloneShellModule
+    EffectsModule.forFeature([TenantSearchEffects])
   ]
 })
 export class TenantModule {}

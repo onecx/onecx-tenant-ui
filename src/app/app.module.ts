@@ -41,7 +41,6 @@ export const commonImports = [CommonModule]
     BrowserAnimationsModule,
     AppRoutingModule,
     LetDirective,
-    StandaloneShellModule,
     AppRoutingModule,
     StoreRouterConnectingModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -59,13 +58,14 @@ export const commonImports = [CommonModule]
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
+        deps: [HttpClient]
       },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
         useClass: PortalMissingTranslationHandler
       }
-    })
+    }),
+    StandaloneShellModule
   ],
   providers: [
     providePortalDialogService(),
