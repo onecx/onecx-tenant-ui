@@ -121,5 +121,8 @@
     "ts-jest": "^29.2.3",
     "ts-node": "10.9.2",
     "typescript": "~5.5"
+  },
+  "overrides": {
+    "http-proxy-middleware": "^3.0.3"
   }
 }
