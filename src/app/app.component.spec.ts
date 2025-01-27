@@ -4,7 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { AUTH_SERVICE, MockAuthModule, PortalCoreModule } from '@onecx/portal-integration-angular'
 import { AppComponent } from './app.component'
 import { TranslateTestingModule } from 'ngx-translate-testing'
-import { StandaloneShellModule } from '@onecx/standalone-shell'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -14,8 +13,7 @@ describe('AppComponent', () => {
         RouterTestingModule,
         PortalCoreModule.forRoot('test'),
         HttpClientTestingModule,
-        TranslateTestingModule.withTranslations('en', {}),
-        StandaloneShellModule
+        TranslateTestingModule.withTranslations('en', {})
       ],
       providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }]
     }).compileComponents()

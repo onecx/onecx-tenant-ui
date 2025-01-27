@@ -20,7 +20,6 @@ import {
   UserService,
   providePortalDialogService
 } from '@onecx/portal-integration-angular'
-import { StandaloneShellModule } from '@onecx/standalone-shell'
 import { environment } from 'src/environments/environment'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -64,8 +63,7 @@ export const commonImports = [CommonModule]
         provide: MissingTranslationHandler,
         useClass: PortalMissingTranslationHandler
       }
-    }),
-    StandaloneShellModule
+    })
   ],
   providers: [
     providePortalDialogService(),
