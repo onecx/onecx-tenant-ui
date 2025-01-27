@@ -9,7 +9,6 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import {
   AppStateService,
   ConfigurationService,
-  createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
   providePortalDialogService
@@ -26,6 +25,7 @@ import { createAppEntrypoint, initializeRouter } from '@onecx/angular-webcompone
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LetDirective } from '@ngrx/component'
+import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils'
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -44,7 +44,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
+        deps: [HttpClient]
       },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
@@ -73,6 +73,12 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       provide: Configuration,
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService]
+    },
+    {
+      provide: TRANSLATION_PATH,
+      useFactory: (appStateService: AppStateService) => translationPathFactory('assets/i18n/')(appStateService),
+      multi: true,
+      deps: [AppStateService]
     },
     {
       provide: APP_INITIALIZER,
