@@ -1,4 +1,4 @@
-FROM ghcr.io/onecx/docker-spa-base:1.10.0
+FROM ghcr.io/onecx/docker-spa-base:1.11.0-rc.4
 
 # Copy nginx configuration
 COPY nginx/locations.conf $DIR_LOCATION/locations.conf
@@ -13,4 +13,3 @@ ENV BFF_URL http://onecx-tenant-bff:8080/
 ENV APP_BASE_HREF /
 
 RUN chmod 775 -R "$DIR_HTML"/assets
-USER 1001
