@@ -13,3 +13,4 @@ ENV BFF_URL http://onecx-tenant-bff:8080/
 ENV APP_BASE_HREF /
 
 RUN chmod 775 -R "$DIR_HTML"/assets
+USER 1001
