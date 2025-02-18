@@ -77,11 +77,7 @@ export class TenantSearchComponent implements OnInit {
 
   ngOnInit() {
     this.breadcrumbService.setItems([
-      {
-        titleKey: 'TENANT_SEARCH.BREADCRUMB',
-        labelKey: 'TENANT_SEARCH.BREADCRUMB',
-        routerLink: '/tenant'
-      }
+      { titleKey: 'TENANT_SEARCH.BREADCRUMB', labelKey: 'TENANT_SEARCH.BREADCRUMB', routerLink: '/tenant' }
     ])
 
     this.viewModel$
@@ -95,11 +91,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
-    this.store.dispatch(
-      TenantSearchActions.searchConfigSelected({
-        searchConfig: searchConfig
-      })
-    )
+    this.store.dispatch(TenantSearchActions.searchConfigSelected({ searchConfig: searchConfig }))
   }
 
   search(formValue: FormGroup) {
@@ -137,11 +129,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   viewModeChanged(viewMode: 'basic' | 'advanced') {
-    this.store.dispatch(
-      TenantSearchActions.viewModeChanged({
-        viewMode: viewMode
-      })
-    )
+    this.store.dispatch(TenantSearchActions.viewModeChanged({ viewMode: viewMode }))
   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
