@@ -1,4 +1,4 @@
 import { Component } from '@angular/core'
 
-@Component({ selector: 'app-root', templateUrl: './app.component.html' })
+@Component({ standalone: false, selector: 'app-root', templateUrl: './app.component.html' })
 export class AppComponent {}

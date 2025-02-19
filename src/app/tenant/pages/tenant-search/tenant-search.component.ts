@@ -19,6 +19,7 @@ import { TenantSearchViewModel } from './tenant-search.viewmodel'
 import * as deepEqual from 'fast-deep-equal'
 
 @Component({
+  standalone: false,
   selector: 'app-tenant-search',
   templateUrl: './tenant-search.component.html',
   styleUrls: ['./tenant-search.component.scss']
