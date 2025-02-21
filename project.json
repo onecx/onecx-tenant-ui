@@ -30,6 +30,7 @@
           "node_modules/primeicons/primeicons.css",
           "node_modules/@onecx/portal-integration-angular/assets/styles.scss"
         ],
+        "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
         "customWebpackConfig": { "path": "webpack.config.js" }
       },
       "configurations": {
