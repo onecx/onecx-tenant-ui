@@ -14,7 +14,6 @@ import {
   AppStateService,
   APP_CONFIG,
   ConfigurationService,
-  createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
   translateServiceInitializer,
@@ -28,6 +27,7 @@ import { metaReducers, reducers } from './app.reducers'
 
 import { Configuration } from './shared/generated'
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils'
+import { createTranslateLoader } from '@onecx/angular-utils'
 
 export const commonImports = [CommonModule]
 
@@ -40,6 +40,7 @@ export const commonImports = [CommonModule]
     BrowserAnimationsModule,
     AppRoutingModule,
     LetDirective,
+    AppRoutingModule,
     StoreRouterConnectingModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({
@@ -56,7 +57,7 @@ export const commonImports = [CommonModule]
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
+        deps: [HttpClient]
       },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
