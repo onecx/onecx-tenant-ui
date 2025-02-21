@@ -9,11 +9,11 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import {
   AppStateService,
   ConfigurationService,
-  createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler,
   providePortalDialogService
 } from '@onecx/portal-integration-angular'
+import { TRANSLATION_PATH, createTranslateLoader, translationPathFactory } from '@onecx/angular-utils'
 import { AngularAuthModule } from '@onecx/angular-auth'
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 import { routes } from './app-routing.module'
@@ -44,7 +44,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
+        deps: [HttpClient]
       },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
@@ -80,7 +80,13 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       multi: true,
       deps: [Router, AppStateService]
     },
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: TRANSLATION_PATH,
+      useFactory: (appStateService: AppStateService) => translationPathFactory('assets/i18n/')(appStateService),
+      multi: true,
+      deps: [AppStateService]
+    }
   ]
 })
 export class OneCXTenantModule implements DoBootstrap {

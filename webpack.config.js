@@ -27,6 +27,7 @@ const config = withModuleFederationPlugin({
     '@onecx/keycloak-auth': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/ngrx-accelerator': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-integration-angular': { requiredVersion: 'auto', includeSecondaries: true },
+    '@onecx/angular-utils': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-layout-styles': { requiredVersion: 'auto', includeSecondaries: true }
   }),
 
