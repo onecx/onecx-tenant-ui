@@ -9,8 +9,6 @@ import { StoreModule } from '@ngrx/store'
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import {
   addInitializeModuleGuard,
-  AppStateService,
-  createTranslateLoader,
   PortalCoreModule,
   PortalMissingTranslationHandler
 } from '@onecx/portal-integration-angular'
@@ -20,6 +18,7 @@ import { TenantSearchComponent } from './pages/tenant-search/tenant-search.compo
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
 import { tenantFeature } from './tenant.reducers'
 import { routes } from './tenant.routes'
+import { createTranslateLoader } from '@onecx/angular-utils'
 
 @NgModule({
   declarations: [TenantSearchComponent],
@@ -38,11 +37,7 @@ import { routes } from './tenant.routes'
     TranslateModule.forRoot({
       extend: true,
       isolate: false,
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService]
-      },
+      loader: { provide: TranslateLoader, useFactory: createTranslateLoader, deps: [HttpClient] },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
         useClass: PortalMissingTranslationHandler
