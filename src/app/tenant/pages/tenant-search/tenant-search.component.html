@@ -15,7 +15,7 @@
     <form [formGroup]="tenantSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
             <input
               pInputText
               id="tenant_search_orgId"
@@ -29,7 +29,7 @@
             <label for="tenant_search_orgId" style="white-space: nowrap">
               {{ 'TENANT_SEARCH.CRITERIA.ORGID' | translate }}</label
             >
-          </span>
+          </p-floatlabel>
         </div>
       </div>
     </form>
@@ -51,17 +51,17 @@
       </ocx-interactive-data-view>
     </ocx-content>
     @if (vm.results.length > 0 && vm.chartVisible && (diagramColumn$ | async)) {
-      <ocx-content class="w-full lg:w-3">
-        <div class="flex flex-column md:flex-row lg:flex-column justify-content-center">
-          @if (diagramColumn$ | async; as diagramColumn) {
-            <ocx-group-by-count-diagram
-              [data]="vm.results"
-              [column]="diagramColumn"
-              sumKey="TENANT_SEARCH.DIAGRAM.SUM"
-            ></ocx-group-by-count-diagram>
-          }
-        </div>
-      </ocx-content>
+    <ocx-content class="w-full lg:w-3">
+      <div class="flex flex-column md:flex-row lg:flex-column justify-content-center">
+        @if (diagramColumn$ | async; as diagramColumn) {
+        <ocx-group-by-count-diagram
+          [data]="vm.results"
+          [column]="diagramColumn"
+          sumKey="TENANT_SEARCH.DIAGRAM.SUM"
+        ></ocx-group-by-count-diagram>
+        }
+      </div>
+    </ocx-content>
     }
   </ocx-content-container>
 </ocx-portal-page>

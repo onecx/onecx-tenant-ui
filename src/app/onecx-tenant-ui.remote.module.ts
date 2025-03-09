@@ -27,6 +27,8 @@ import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LetDirective } from '@ngrx/component'
 
+import Nora from '@primeng/themes/nora'
+
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
 const effectProvidersForWorkaround = [EffectsRunner, EffectSources, Actions]
@@ -86,7 +88,12 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       useFactory: (appStateService: AppStateService) => translationPathFactory('assets/i18n/')(appStateService),
       multi: true,
       deps: [AppStateService]
-    }
+    },
+    provideThemeConfig(),
+    // {
+    //   provide: THEME_OVERRIDES,
+    //   useValue: Nora
+    // }
   ]
 })
 export class OneCXTenantModule implements DoBootstrap {

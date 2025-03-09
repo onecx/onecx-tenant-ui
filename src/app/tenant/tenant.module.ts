@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects'
 import { StoreModule } from '@ngrx/store'
 import { addInitializeModuleGuard, PortalCoreModule } from '@onecx/portal-integration-angular'
 import { CalendarModule } from 'primeng/calendar'
+import {FloatLabelModule} from 'primeng/floatlabel'
 import { SharedModule } from '../shared/shared.module'
 import { TenantSearchComponent } from './pages/tenant-search/tenant-search.component'
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
@@ -24,6 +25,7 @@ import { routes } from './tenant.routes'
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
+    FloatLabelModule,
     StoreModule.forFeature(tenantFeature),
     EffectsModule.forFeature([TenantSearchEffects])
   ]
