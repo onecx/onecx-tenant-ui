@@ -13,7 +13,12 @@ import {
   PortalMissingTranslationHandler,
   providePortalDialogService
 } from '@onecx/portal-integration-angular'
-import { TRANSLATION_PATH, createTranslateLoader, translationPathFactory } from '@onecx/angular-utils'
+import {
+  TRANSLATION_PATH,
+  createTranslateLoader,
+  provideThemeConfig,
+  translationPathFactory
+} from '@onecx/angular-utils'
 import { AngularAuthModule } from '@onecx/angular-auth'
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 import { routes } from './app-routing.module'
@@ -89,11 +94,10 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       multi: true,
       deps: [AppStateService]
     },
-    provideThemeConfig(),
-    // {
-    //   provide: THEME_OVERRIDES,
-    //   useValue: Nora
-    // }
+    // provideThemeConfig({
+    //   overrides: Nora
+    // }),
+    provideThemeConfig()
   ]
 })
 export class OneCXTenantModule implements DoBootstrap {
