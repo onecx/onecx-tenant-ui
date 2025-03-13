@@ -24,7 +24,6 @@ const config = withModuleFederationPlugin({
     '@onecx/angular-testing': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-webcomponents': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/integration-interface': { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/keycloak-auth': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/ngrx-accelerator': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-integration-angular': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-utils': { requiredVersion: 'auto', includeSecondaries: true },

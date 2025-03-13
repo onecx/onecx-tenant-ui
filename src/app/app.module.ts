@@ -9,7 +9,6 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core'
-import { KeycloakAuthModule } from '@onecx/keycloak-auth'
 import {
   AppStateService,
   APP_CONFIG,
@@ -35,7 +34,6 @@ export const commonImports = [CommonModule]
   declarations: [AppComponent],
   imports: [
     ...commonImports,
-    KeycloakAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
