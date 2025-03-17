@@ -15,8 +15,10 @@ import {
 } from '@onecx/portal-integration-angular'
 import {
   TRANSLATION_PATH,
+  createPalette,
   createTranslateLoader,
   provideThemeConfig,
+  standardColorAdjustment,
   translationPathFactory
 } from '@onecx/angular-utils'
 import { AngularAuthModule } from '@onecx/angular-auth'
@@ -31,8 +33,6 @@ import { createAppEntrypoint, initializeRouter } from '@onecx/angular-webcompone
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LetDirective } from '@ngrx/component'
-
-import Nora from '@primeng/themes/nora'
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -94,10 +94,31 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
       multi: true,
       deps: [AppStateService]
     },
-    // provideThemeConfig({
-    //   overrides: Nora
-    // }),
-    provideThemeConfig()
+
+    provideThemeConfig({
+      overrides: {
+        semantic: {
+          extend: {
+            onecx: {
+              topbarBgColor: 'red'
+            },
+            tenant: {
+              myVar: 'blue'
+            }
+          },
+          primary: {
+            ...createPalette('#ff00ff', standardColorAdjustment)
+          },
+          colorScheme: {
+            light: {
+              primary: {
+                ...createPalette('#ff00ff', standardColorAdjustment)
+              }
+            }
+          }
+        }
+      }
+    })
   ]
 })
 export class OneCXTenantModule implements DoBootstrap {
