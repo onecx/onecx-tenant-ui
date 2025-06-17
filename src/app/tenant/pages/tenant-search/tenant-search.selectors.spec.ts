@@ -1,4 +1,6 @@
-import { ColumnType, DataTableColumn, RowListGridData } from '@onecx/portal-integration-angular'
+import { DataTableColumn, RowListGridData } from '@onecx/angular-accelerator'
+import { ColumnType } from '@onecx/portal-integration-angular'
+
 import { selectTenantSearchViewModel, selectDisplayedColumns, selectResults } from './tenant-search.selectors'
 
 describe('Tenant search selectors:', () => {

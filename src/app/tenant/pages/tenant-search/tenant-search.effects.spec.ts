@@ -11,7 +11,9 @@ import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store'
 import { MockStore, createMockStore } from '@ngrx/store/testing'
 import { ReplaySubject, of, throwError } from 'rxjs'
 import { hot } from 'jest-marbles'
-import { PortalMessageService } from '@onecx/portal-integration-angular'
+
+import { PortalMessageService } from '@onecx/angular-integration-interface'
+
 import { TenantBffService } from 'src/app/shared/generated'
 import { TenantSearchEffects } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'

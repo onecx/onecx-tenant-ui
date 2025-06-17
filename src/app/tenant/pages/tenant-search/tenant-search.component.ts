@@ -1,9 +1,9 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
+
+import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
 import {
-  Action,
-  BreadcrumbService,
   DataTableColumn,
   ExportDataService,
   PortalDialogService,

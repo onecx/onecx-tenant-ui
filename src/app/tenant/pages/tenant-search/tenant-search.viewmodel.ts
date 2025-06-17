@@ -1,4 +1,5 @@
-import { DataTableColumn, RowListGridData } from '@onecx/portal-integration-angular'
+import { DataTableColumn, RowListGridData } from '@onecx/angular-accelerator'
+
 import { TenantSearchCriteria } from './tenant-search.parameters'
 
 export interface TenantSearchViewModel {
