@@ -1,14 +1,17 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { provideHttpClient } from '@angular/common/http'
+import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { LetDirective } from '@ngrx/component'
 import { ofType } from '@ngrx/effects'
 import { Store, StoreModule } from '@ngrx/store'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
-import { PortalCoreModule } from '@onecx/portal-integration-angular'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { DialogService } from 'primeng/dynamicdialog'
+
+import { PortalCoreModule } from '@onecx/portal-integration-angular'
+
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { initialState } from './tenant-search.reducers'
@@ -49,11 +52,12 @@ describe('TenantSearchComponent', () => {
         TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json')).withTranslations(
           'de',
           require('./../../../../assets/i18n/de.json')
-        ),
-        HttpClientTestingModule
+        )
       ],
       providers: [
         DialogService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         provideMockStore({
           initialState: { tenant: { search: initialState } }
         }),
