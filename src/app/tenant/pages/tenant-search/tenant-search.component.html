@@ -2,8 +2,8 @@
   <ocx-search-header
     [headline]="'TENANT_SEARCH.HEADER' | translate"
     [subheader]="'TENANT_SEARCH.SUB_HEADER' | translate"
-    (searched)="search(tenantSearchForm)"
-    (resetted)="resetSearch()"
+    (searched)="onSearch(tenantSearchForm)"
+    (resetted)="onResetSearchCriteria()"
     [manualBreadcrumbs]="false"
     [actions]="(headerActions$ | async) ?? []"
     searchConfigPermission="SEARCHCONFIG#USE"

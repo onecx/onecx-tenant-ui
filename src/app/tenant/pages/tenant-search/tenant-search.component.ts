@@ -31,7 +31,7 @@ export class TenantSearchComponent implements OnInit {
           icon: PrimeIcons.DOWNLOAD,
           titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
-          actionCallback: () => this.exportItems()
+          actionCallback: () => this.onExportItems()
         },
         {
           labelKey: vm.chartVisible
@@ -71,7 +71,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly exportDataService: ExportDataService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.breadcrumbService.setItems([
       {
         titleKey: 'TENANT_SEARCH.BREADCRUMB',
@@ -90,7 +90,7 @@ export class TenantSearchComponent implements OnInit {
       })
   }
 
-  searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
+  public searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
     this.store.dispatch(
       TenantSearchActions.searchConfigSelected({
         searchConfig: searchConfig
@@ -98,7 +98,7 @@ export class TenantSearchComponent implements OnInit {
     )
   }
 
-  search(formValue: FormGroup) {
+  public onSearch(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
         ...acc,
@@ -122,11 +122,11 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
-  resetSearch() {
+  public onResetSearchCriteria() {
     this.store.dispatch(TenantSearchActions.resetButtonClicked())
   }
 
-  exportItems() {
+  public onExportItems() {
     this.viewModel$.pipe(first()).subscribe((data) => {
       this.exportDataService.exportCsv(data.displayedColumns, data.results, 'tenant.csv')
     })
