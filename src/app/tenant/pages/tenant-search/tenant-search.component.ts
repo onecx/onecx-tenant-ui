@@ -1,22 +1,19 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
+import { distinctUntilChanged, first, map, Observable } from 'rxjs'
+import { PrimeIcons } from 'primeng/api'
+import * as deepEqual from 'fast-deep-equal'
 
 import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
-import {
-  DataTableColumn,
-  ExportDataService,
-  PortalDialogService,
-  SearchConfigData
-} from '@onecx/portal-integration-angular'
-import { PrimeIcons } from 'primeng/api'
-import { distinctUntilChanged, first, map, Observable } from 'rxjs'
-import { isValidDate } from '../../../shared/utils/isValidDate.utils'
+import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
+
+import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
+
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
-import * as deepEqual from 'fast-deep-equal'
 
 @Component({
   selector: 'app-tenant-search',
@@ -71,8 +68,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService,
-    private readonly portalDialogService: PortalDialogService
+    private readonly exportDataService: ExportDataService
   ) {}
 
   ngOnInit() {
