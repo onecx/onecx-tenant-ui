@@ -4,20 +4,21 @@ import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
+import { catchError, map, of, switchMap, tap } from 'rxjs'
+import * as equal from 'fast-deep-equal'
 
-import { PortalMessageService } from '@onecx/portal-integration-angular'
+import { PortalMessageService } from '@onecx/angular-integration-interface'
 import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator'
-import { catchError, map, of, switchMap, tap } from 'rxjs'
+
 import { TenantBffService } from '../../../shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { tenantSearchSelectors } from './tenant-search.selectors'
-import * as equal from 'fast-deep-equal'
 
 @Injectable()
 export class TenantSearchEffects {

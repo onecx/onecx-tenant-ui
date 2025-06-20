@@ -1,22 +1,19 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
-import {
-  Action,
-  BreadcrumbService,
-  DataTableColumn,
-  ExportDataService,
-  PortalDialogService,
-  SearchConfigData
-} from '@onecx/portal-integration-angular'
-import { PrimeIcons } from 'primeng/api'
 import { distinctUntilChanged, first, map, Observable } from 'rxjs'
-import { isValidDate } from '../../../shared/utils/isValidDate.utils'
+import { PrimeIcons } from 'primeng/api'
+import * as deepEqual from 'fast-deep-equal'
+
+import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
+import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
+
+import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
+
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
-import * as deepEqual from 'fast-deep-equal'
 
 @Component({
   selector: 'app-tenant-search',
@@ -34,7 +31,7 @@ export class TenantSearchComponent implements OnInit {
           icon: PrimeIcons.DOWNLOAD,
           titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
-          actionCallback: () => this.exportItems()
+          actionCallback: () => this.onExportItems()
         },
         {
           labelKey: vm.chartVisible
@@ -57,7 +54,7 @@ export class TenantSearchComponent implements OnInit {
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
 
-  public tenantSearchFormGroup: FormGroup = this.formBuilder.group({
+  public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
       keyof TenantSearchCriteria,
       unknown
@@ -71,11 +68,10 @@ export class TenantSearchComponent implements OnInit {
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService,
-    private readonly portalDialogService: PortalDialogService
+    private readonly exportDataService: ExportDataService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.breadcrumbService.setItems([
       {
         titleKey: 'TENANT_SEARCH.BREADCRUMB',
@@ -90,11 +86,11 @@ export class TenantSearchComponent implements OnInit {
         distinctUntilChanged(deepEqual)
       )
       .subscribe((sc) => {
-        this.tenantSearchFormGroup.reset(sc)
+        this.tenantSearchForm.reset(sc)
       })
   }
 
-  searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
+  public searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
     this.store.dispatch(
       TenantSearchActions.searchConfigSelected({
         searchConfig: searchConfig
@@ -102,7 +98,7 @@ export class TenantSearchComponent implements OnInit {
     )
   }
 
-  search(formValue: FormGroup) {
+  public onSearch(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
         ...acc,
@@ -126,11 +122,11 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
-  resetSearch() {
+  public onResetSearchCriteria() {
     this.store.dispatch(TenantSearchActions.resetButtonClicked())
   }
 
-  exportItems() {
+  public onExportItems() {
     this.viewModel$.pipe(first()).subscribe((data) => {
       this.exportDataService.exportCsv(data.displayedColumns, data.results, 'tenant.csv')
     })

@@ -1,4 +1,5 @@
-import { ColumnType, DataTableColumn } from '@onecx/portal-integration-angular'
+import { DataTableColumn } from '@onecx/angular-accelerator'
+import { ColumnType } from '@onecx/portal-integration-angular'
 
 export const tenantSearchColumns: DataTableColumn[] = [
   {

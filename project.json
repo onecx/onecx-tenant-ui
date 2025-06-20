@@ -17,8 +17,8 @@
         "tsConfig": "./tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "./src/favicon.ico",
-          "./src/assets",
+          "src/favicon.ico",
+          "src/assets",
           {
             "glob": "**/*",
             "input": "./node_modules/@onecx/portal-integration-angular/assets/",
@@ -30,12 +30,7 @@
             "output": "/onecx-angular-accelerator/assets/"
           }
         ],
-        "styles": [
-          "./src/styles.scss",
-          "node_modules/primeicons/primeicons.css",
-          "node_modules/primeng/resources/primeng.min.css",
-          "node_modules/@onecx/portal-integration-angular/assets/styles.scss"
-        ],
+        "styles": ["src/styles.scss"],
         "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
         "customWebpackConfig": {
           "path": "webpack.config.js"
@@ -46,12 +41,12 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1mb",
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
+              "maximumWarning": "3kb",
               "maximumError": "4kb"
             }
           ],
@@ -81,10 +76,10 @@
       "executor": "@nx/angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "onecx-tenant-ui:build:production"
+          "buildTarget": "onecx-tenant-ui:build:production"
         },
         "development": {
-          "browserTarget": "onecx-tenant-ui:build:development"
+          "buildTarget": "onecx-tenant-ui:build:development"
         }
       },
       "defaultConfiguration": "development",
@@ -97,7 +92,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "onecx-tenant-ui:build"
+        "buildTarget": "onecx-tenant-ui:build"
       }
     },
     "lint": {
