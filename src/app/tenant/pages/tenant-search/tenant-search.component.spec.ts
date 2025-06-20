@@ -96,14 +96,14 @@ describe('TenantSearchComponent', () => {
       done()
     })
 
-    component.search(formValue)
+    component.onSearch(formValue)
   })
 
-  it('should dispatch resetButtonClicked action on resetSearch', (done) => {
+  it('should dispatch resetButtonClicked action on reset search', (done) => {
     store.scannedActions$.pipe(ofType(TenantSearchActions.resetButtonClicked)).subscribe(() => {
       done()
     })
 
-    component.resetSearch()
+    component.onResetSearchCriteria()
   })
 })

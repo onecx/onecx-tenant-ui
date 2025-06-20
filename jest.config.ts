@@ -4,6 +4,7 @@ import type { Config } from 'jest'
 const config: Config = {
   displayName: 'onecx-tenant-ui',
   verbose: false,
+  //  automock: true,
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   testMatch: ['<rootDir>/src/app/**/*.spec.ts'],
