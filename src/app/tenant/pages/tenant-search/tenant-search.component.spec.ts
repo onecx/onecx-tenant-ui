@@ -84,7 +84,7 @@ describe('TenantSearchComponent', () => {
     const formValue = formBuilder.group({
       changeMe: '123'
     })
-    component.tenantSearchFormGroup = formValue
+    component.tenantSearchForm = formValue
     component.visibleFormControls = [
       {
         name: 'changeMe'

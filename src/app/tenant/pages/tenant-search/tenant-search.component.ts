@@ -54,7 +54,7 @@ export class TenantSearchComponent implements OnInit {
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
 
-  public tenantSearchFormGroup: FormGroup = this.formBuilder.group({
+  public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
       keyof TenantSearchCriteria,
       unknown
@@ -86,7 +86,7 @@ export class TenantSearchComponent implements OnInit {
         distinctUntilChanged(deepEqual)
       )
       .subscribe((sc) => {
-        this.tenantSearchFormGroup.reset(sc)
+        this.tenantSearchForm.reset(sc)
       })
   }
 
