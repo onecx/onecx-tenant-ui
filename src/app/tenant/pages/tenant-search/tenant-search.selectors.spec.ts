@@ -14,6 +14,22 @@ describe('Tenant search selectors:', () => {
     })
   })
 
+  it('should filter out undefined columns when displayedColumns contains unknown ids', () => {
+    const columns: DataTableColumn[] = [
+      { id: 'name', nameKey: 'Name', columnType: ColumnType.STRING },
+      { id: 'email', nameKey: 'Email', columnType: ColumnType.STRING }
+    ]
+
+    const displayedColumns = ['name', 'unknown', 'email']
+
+    const result = selectDisplayedColumns.projector(columns, displayedColumns)
+
+    expect(result).toEqual([
+      { id: 'name', nameKey: 'Name', columnType: ColumnType.STRING },
+      { id: 'email', nameKey: 'Email', columnType: ColumnType.STRING }
+    ])
+  })
+
   describe('selectTenantSearchViewModel', () => {
     it('should combine the input to be the viewmodel', () => {
       const columns: DataTableColumn[] = [
@@ -92,6 +108,20 @@ describe('Tenant search selectors:', () => {
         viewMode: viewMode,
         chartVisible: chartVisible
       })
+    })
+
+    it('should map results and add imagePath', () => {
+      const input = [
+        { id: '1', name: 'Tenant A' },
+        { id: '2', name: 'Tenant B' }
+      ]
+
+      const result = selectResults.projector(input)
+
+      expect(result).toEqual([
+        { imagePath: '', id: '1', name: 'Tenant A' },
+        { imagePath: '', id: '2', name: 'Tenant B' }
+      ])
     })
   })
 })
