@@ -195,6 +195,8 @@ describe('TenantSearchComponent', () => {
     })
     store.refreshState()
 
+    await tenantSearch.getHeader()
+
     expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.viewModeChanged({ viewMode: 'advanced' }))
   })
 
