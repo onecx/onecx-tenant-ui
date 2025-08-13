@@ -69,7 +69,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
 })
 export class OneCXTenantModule implements DoBootstrap {
   constructor(private readonly injector: Injector) {
-    console.info('OneCX Workspace Module constructor')
+    console.info('OneCX Tenant Module constructor')
   }
 
   ngDoBootstrap(): void {
