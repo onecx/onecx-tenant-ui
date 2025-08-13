@@ -67,7 +67,7 @@
     "@onecx/integration-interface": "^5.47.5",
     "@onecx/keycloak-auth": "^5.47.5",
     "@onecx/ngrx-accelerator": "^5.47.5",
-    "@onecx/nx-plugin": "1.8.1",
+    "@onecx/nx-plugin": "1.11.0",
     "@onecx/portal-integration-angular": "^5.47.5",
     "@onecx/portal-layout-styles": "^5.47.5",
     "@swc-node/register": "1.10.10",
