@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": false,
     "declaration": false,
-    "module": "commonjs",
+    "outDir": "./dist/test",
     "types": ["jest", "node"],
     "target": "es2016",
     "useDefineForClassFields": false
