@@ -1,4 +1,4 @@
-import 'zone.js/testing'
+import 'zone.js'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
@@ -92,20 +92,15 @@ describe('TenantSearchComponent', () => {
     tenantSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, TenantSearchHarness)
     window.URL.createObjectURL = jest.fn()
   })
+
   it('should create the component', () => {
     expect(component).toBeTruthy()
   })
 
   it('should dispatch searchButtonClicked action on search', (done) => {
-    const formValue = formBuilder.group({
-      changeMe: '123'
-    })
+    const formValue = formBuilder.group({ changeMe: '123' })
     component.tenantSearchForm = formValue
-    component.visibleFormControls = [
-      {
-        name: 'changeMe'
-      }
-    ] as any
+    component.visibleFormControls = [{ name: 'changeMe' }] as any
 
     store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
       expect(a.searchCriteria).toEqual({ changeMe: '123' })
@@ -125,15 +120,9 @@ describe('TenantSearchComponent', () => {
 
   it('should dispatch searchButtonClicked action on search', (done) => {
     const date = new Date()
-    const formValue = formBuilder.group({
-      date: date
-    })
+    const formValue = formBuilder.group({ date: date })
     component.tenantSearchForm = formValue
-    component.visibleFormControls = [
-      {
-        name: 'changeMe'
-      }
-    ] as any
+    component.visibleFormControls = [{ name: 'changeMe' }] as any
 
     store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
       expect(a.searchCriteria).toEqual({ date: null })
