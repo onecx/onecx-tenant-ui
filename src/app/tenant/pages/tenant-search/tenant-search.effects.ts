@@ -5,7 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
 import { catchError, map, of, switchMap, tap } from 'rxjs'
-import * as equal from 'fast-deep-equal'
+import equal from 'fast-deep-equal'
 
 import { PortalMessageService } from '@onecx/angular-integration-interface'
 import {
@@ -14,7 +14,7 @@ import {
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator'
 
-import { TenantBffService } from '../../../shared/generated'
+import { TenantAPIService } from '../../../shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
@@ -25,7 +25,7 @@ export class TenantSearchEffects {
   constructor(
     private readonly actions$: Actions,
     @SkipSelf() private readonly route: ActivatedRoute,
-    private readonly tenantService: TenantBffService,
+    private readonly tenantService: TenantAPIService,
     private readonly router: Router,
     private readonly store: Store,
     private readonly messageService: PortalMessageService
@@ -64,7 +64,7 @@ export class TenantSearchEffects {
       filterOutQueryParamsHaveNotChanged(this.router, tenantSearchCriteriasSchema, true),
       concatLatestFrom(() => this.store.select(tenantSearchSelectors.selectCriteria)),
       switchMap(([, searchCriteria]) => {
-        return this.tenantService.searchTenants(searchCriteria).pipe(
+        return this.tenantService.searchTenants({tenantSearchCriteria: searchCriteria}).pipe(
           map(({ stream, totalElements }) =>
             TenantSearchActions.tenantSearchResultsReceived({
               results: stream,
