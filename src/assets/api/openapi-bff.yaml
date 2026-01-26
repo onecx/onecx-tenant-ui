@@ -1,135 +1,230 @@
 openapi: '3.0.2'
 info:
   title: onecx-tenant-bff
+  description: Backend-For-Frontend (BFF) service for onecx-tenant. This API provides endpoints to manage Tenants
   version: '1.0'
 servers:
-  - url: https://localhost:8080
+  - url: https://onecx-tenant-bff:8080
 tags:
   - name: tenant
-    description: OneCX Tenant BFF
+    description: Managing Tenants
+  - name: images
+    description: Managing Tenant Images
 paths:
   /tenants/search:
-      post:
-        x-onecx:
-          permissions:
-            tenant:
-              - read
-        tags:
-          - tenant
-        summary: Search tenants by criteria
-        operationId: searchTenants
-        requestBody:
-          required: true
+    post:
+      x-onecx:
+        permissions:
+          tenant:
+            - read
+      tags:
+        - tenant
+      description: Search for tenants by criteria
+      operationId: searchTenants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantSearchCriteria'
+      responses:
+        '200':
+          description: Tenant search results retrieved successfully
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TenantPageResult'
+        '400':
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TenantSearchCriteria'
-        responses:
-          '200':
-            description: OK
-            content:
-              'application/json':
-                schema:
-                  $ref: '#/components/schemas/TenantPageResult'
-          '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ProblemDetailResponse'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /tenants:
-      post:
-        x-onecx:
-          permissions:
-            tenant:
-              - write
-        tags:
-          - tenant
-        summary: Create new tenant
-        operationId: createTenant
-        requestBody:
-          required: true
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/CreateTenantRequest'
-        responses:
-          '201':
-            description: Created
-            headers:
-              Location:
-                required: true
-                schema:
-                  type: string
-                  format: url
-          '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ProblemDetailResponse'
-          '404':
-            description: Not found
-  /tenants/{id}:
-      get:
-        x-onecx:
-          permissions:
-            tenant:
-              - read
-        tags:
-          - tenant
-        summary: Get Tenant by id
-        operationId: getTenant
-        parameters:
-          - name: id
-            in: path
-            required: true
+    post:
+      x-onecx:
+        permissions:
+          tenant:
+            - write
+      tags:
+        - tenant
+      summary: Create a new tenant
+      operationId: createTenant
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
-              type: string
-        responses:
-          '200':
-            description: OK
-            content:
-              'application/json':
-                schema:
-                  $ref: '#/components/schemas/Tenant'
-          '404':
-            description: Not found
-      put:
-        x-onecx:
-          permissions:
-            tenant:
-              - write
-        tags:
-          - tenant
-        summary: Update tenant
-        operationId: updateTenant
-        parameters:
+              $ref: '#/components/schemas/CreateTenantRequest'
+      responses:
+        '201':
+          description: Tenant created successfully
+          headers:
+            Location:
+              required: true
+              schema:
+                type: string
+                format: url
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+  /tenants/{id}:
+    get:
+      x-onecx:
+        permissions:
+          tenant:
+            - read
+      tags:
+        - tenant
+      summary: Get a tenant by its id
+      operationId: getTenant
+      parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-        requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/UpdateTenantRequest'
-        responses:
-          '200':
-            description: OK
-            content:
-              'application/json':
-                schema:
-                  $ref: '#/components/schemas/Tenant'
-          '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ProblemDetailResponse'
-          '404':
-            description: Not found
+      responses:
+        '200':
+          description: Tenant retrieved successfully
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '404':
+          description: Tenant not found
+    put:
+      x-onecx:
+        permissions:
+          tenant:
+            - write
+      tags:
+        - tenant
+      description: Update a tenant by its id
+      operationId: updateTenant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: Tenant updated successfully
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        '404':
+          description: Tenant not found
+  /images/{refId}/{refType}:
+    post:
+      x-onecx:
+        permissions:
+          tenant:
+            - write
+      tags:
+        - images
+      description: Upload an images by its reference id and type
+      parameters:
+        - name: refId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: refType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefType"
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          image/*:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "201":
+          description: Image uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageInfo'
+        "400":
+          description: Bad Request
+    get:
+      x-onecx:
+        permissions:
+          tenant:
+            - read
+      tags:
+        - images
+      description: Get an image by its reference id and type
+      operationId: getImage
+      parameters:
+        - name: refId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: refType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefType"
+      responses:
+        "200":
+          description: Image retrieved successfully
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+    delete:
+      x-onecx:
+        permissions:
+          tenant:
+            - delete
+      tags:
+        - images
+      description: Delete an Image by its reference id and type
+      operationId: deleteImage
+      parameters:
+        - name: refId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: refType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefType"
+      responses:
+        "204":
+          description: Image deleted successfully
 components:
   schemas:
     TenantSearchCriteria:
@@ -225,6 +320,14 @@ components:
         description:
           type: string
           description: Description of the tenant
+    RefType:
+      type: string
+      enum: [ logo ]
+    ImageInfo:
+      type: object
+      properties:
+        id:
+          type: string
     ProblemDetailResponse:
       type: object
       properties:
