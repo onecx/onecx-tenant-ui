@@ -15,6 +15,7 @@ import { routes } from './tenant.routes'
 
 import { TenantSearchComponent } from './pages/tenant-search/tenant-search.component'
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
+import { CardModule } from 'primeng/card'
 
 @NgModule({
   providers: [providePortalDialogService()],
@@ -27,7 +28,8 @@ import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects
     PortalCoreModule.forMicroFrontend(),
     RouterModule.forChild(addInitializeModuleGuard(routes)),
     SharedModule,
-    StoreModule.forFeature(tenantFeature)
+    StoreModule.forFeature(tenantFeature),
+    CardModule
   ]
 })
 export class TenantModule {}
