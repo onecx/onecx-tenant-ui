@@ -1,4 +1,37 @@
 {
+  "TENANT_CREATE_UPDATE": {
+    "ACTION": {
+      "CREATE": "Erstellen"
+    },
+    "CREATE": {
+      "HEADER": "Neues Tenant erstellen",
+      "SUCCESS": "Erstellung erfolgreich",
+      "ERROR": "Erstellung fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
+    },
+    "UPDATE": {
+      "SUCCESS": "Aktualisierung erfolgreich",
+      "FAILED": "ACTION: Add Translation",
+      "ERROR": "Aktualisierung fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      },
+      "HEADER": "Tenant bearbeiten"
+    },
+    "FORM": {
+      "ORG_ID": "Organisations-ID",
+      "DESCRIPTION": "Beschreibung",
+      "TENANT_ID": "Mandanten-ID",
+      "CREATION_USER": "Erstellt von",
+      "CREATION_DATE": "Erstellt am",
+      "MODIFICATION_USER": "Geändert von",
+      "MODIFICATION_DATE": "Geändert am"
+    }
+  },
   "TENANT_SEARCH": {
     "HEADER": "Mandanten ",
     "SUB_HEADER": "Suchen und Anzeigen von Mandanten",

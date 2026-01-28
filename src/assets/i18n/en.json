@@ -1,4 +1,37 @@
 {
+  "TENANT_CREATE_UPDATE": {
+    "ACTION": {
+      "CREATE": "Create"
+    },
+    "CREATE": {
+      "HEADER": "Create Tenant",
+      "SUCCESS": "Creation succesful",
+      "ERROR": "Creation failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
+    },
+    "UPDATE": {
+      "SUCCESS": "Update successful",
+      "FAILED": "ACTION: Add Translation",
+      "ERROR": "Update failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      },
+      "HEADER": "Update Tenant"
+    },
+    "FORM": {
+      "ORG_ID": "Organization ID",
+      "DESCRIPTION": "Description",
+      "TENANT_ID": "Tenant ID",
+      "CREATION_USER": "Created by",
+      "CREATION_DATE": "Created on",
+      "MODIFICATION_USER": "Modified by",
+      "MODIFICATION_DATE": "Modified on"
+    }
+  },
   "TENANT_SEARCH": {
     "HEADER": "Tenants",
     "SUB_HEADER": "Search and display Tenants",

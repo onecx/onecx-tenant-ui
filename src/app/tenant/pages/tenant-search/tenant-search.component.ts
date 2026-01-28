@@ -174,7 +174,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   handleEditEntry(item: Tenant) {
-    console.log('Edit', item)
+    this.store.dispatch(TenantSearchActions.editTenantButtonClicked({ id: item.id }))
   }
 
   handleDeleteEntry(item: Tenant) {
