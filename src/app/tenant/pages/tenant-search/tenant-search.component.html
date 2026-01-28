@@ -37,13 +37,37 @@
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
         searchConfigPermission="SEARCHCONFIG#USE"
-        [listGridPaginator]="false"
+        [listGridPaginator]="true"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
-        [supportedViewLayouts]="['table']"
+        [supportedViewLayouts]="['list', 'grid']"
+        [layout]="layout"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
       >
+        <ng-template #gridItem let-item>
+          <p-card class="grid-item-card">
+            <ng-template pTemplate="header">
+              <span class="grid-item-title" (click)="handleOpenEntryDetails(item)">{{
+                item['tenantId'] | titlecase
+              }}</span>
+            </ng-template>
+            <div class="grid-item-content" (click)="handleOpenEntryDetails(item)">
+              <div>
+                <span>Org ID: </span>
+                <span>{{ item['orgId'] }}</span>
+              </div>
+              <div>
+                <span>{{ item['description'] }}</span>
+              </div>
+            </div>
+            <ng-template pTemplate="footer">
+              <p-toast />
+              <p-menu #menu [model]="cardMenuItems" [popup]="true" appendTo="body" />
+              <p-button (onClick)="openMenu(menu, $event, item)" icon="pi pi-ellipsis-v" />
+            </ng-template>
+          </p-card>
+        </ng-template>
       </ocx-interactive-data-view>
     </ocx-content>
 

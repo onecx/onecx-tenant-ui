@@ -2,8 +2,8 @@ import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { distinctUntilChanged, first, map, Observable } from 'rxjs'
-import { PrimeIcons } from 'primeng/api'
-import * as deepEqual from 'fast-deep-equal'
+import { MenuItem, PrimeIcons } from 'primeng/api'
+import deepEqual from 'fast-deep-equal'
 
 import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
 import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
@@ -14,6 +14,7 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
+import { Tenant } from 'src/app/shared/generated'
 
 @Component({
   selector: 'app-tenant-search',
@@ -49,10 +50,25 @@ export class TenantSearchComponent implements OnInit {
     })
   )
 
+  layout: 'list' | 'grid' = 'grid'
   diagramColumnId = 'tenantId'
   diagramColumn$ = this.viewModel$.pipe(
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
+
+  currentCardItem: Tenant | null = null
+  cardMenuItems: MenuItem[] = [
+    {
+      icon: PrimeIcons.FILE_EDIT,
+      label: 'Edit',
+      command: () => this.handleEditEntry(this.currentCardItem as Tenant)
+    },
+    {
+      icon: PrimeIcons.TRASH,
+      label: 'Delete',
+      command: () => this.handleDeleteEntry(this.currentCardItem as Tenant)
+    }
+  ]
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -146,6 +162,23 @@ export class TenantSearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
+  }
+
+  openMenu(menu: any, event: Event, item: Tenant) {
+    this.currentCardItem = item
+    menu.toggle(event)
+  }
+
+  handleOpenEntryDetails(item: Tenant) {
+    console.log('Details', item)
+  }
+
+  handleEditEntry(item: Tenant) {
+    console.log('Edit', item)
+  }
+
+  handleDeleteEntry(item: Tenant) {
+    console.log('Delete', item)
   }
 
   private isVisible(control: string) {

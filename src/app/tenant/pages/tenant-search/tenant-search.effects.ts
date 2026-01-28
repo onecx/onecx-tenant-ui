@@ -64,7 +64,7 @@ export class TenantSearchEffects {
       filterOutQueryParamsHaveNotChanged(this.router, tenantSearchCriteriasSchema, true),
       concatLatestFrom(() => this.store.select(tenantSearchSelectors.selectCriteria)),
       switchMap(([, searchCriteria]) => {
-        return this.tenantService.searchTenants({tenantSearchCriteria: searchCriteria}).pipe(
+        return this.tenantService.searchTenants({ tenantSearchCriteria: searchCriteria }).pipe(
           map(({ stream, totalElements }) =>
             TenantSearchActions.tenantSearchResultsReceived({
               results: stream,
