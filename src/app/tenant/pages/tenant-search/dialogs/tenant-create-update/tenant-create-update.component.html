@@ -95,7 +95,7 @@
       </span>
     </div>
   </div>
-  <div class="image-container">
+  <div class="image-container" *ngIf="vm.itemToEdit">
     <p-fileUpload
       name="tenantImage"
       mode="advanced"

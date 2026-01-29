@@ -44,6 +44,13 @@ export class TenantSearchComponent implements OnInit {
             : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility()
+        },
+        {
+          labelKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          icon: PrimeIcons.PLUS,
+          titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          show: 'asOverflow',
+          actionCallback: () => this.onCreateTenant()
         }
       ]
       return actions
@@ -62,11 +69,6 @@ export class TenantSearchComponent implements OnInit {
       icon: PrimeIcons.FILE_EDIT,
       label: 'Edit',
       command: () => this.handleEditEntry(this.currentCardItem as Tenant)
-    },
-    {
-      icon: PrimeIcons.TRASH,
-      label: 'Delete',
-      command: () => this.handleDeleteEntry(this.currentCardItem as Tenant)
     }
   ]
   imageBasePath = this.imageService.configuration.basePath!
@@ -193,12 +195,12 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.editTenantButtonClicked({ id: item.id }))
   }
 
-  handleDeleteEntry(item: Tenant) {
-    console.log('Delete', item)
-  }
-
   showDefaultIcon(id: string): boolean {
     return this.failedImages.has(id)
+  }
+
+  onCreateTenant() {
+    this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
   }
 
   private isVisible(control: string) {
