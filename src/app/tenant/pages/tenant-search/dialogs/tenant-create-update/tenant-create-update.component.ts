@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, OnInit } from '@angular/core'
 import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/portal-integration-angular'
 
 import { FormBuilder, FormGroup } from '@angular/forms'
-import { TenantCreateUpdateViewModel } from './tenant-create-update.viewmodel'
-import { Tenant } from 'src/app/shared/generated'
+import { TenantCreateUpdateDialogResult, TenantCreateUpdateViewModel } from './tenant-create-update.types'
 import { map } from 'rxjs'
+import { FileSelectEvent } from 'primeng/fileupload'
 
 @Component({
   selector: 'app-tenant-create-update',
@@ -14,7 +14,7 @@ import { map } from 'rxjs'
 export class TenantCreateUpdateComponent
   implements
     DialogPrimaryButtonDisabled,
-    DialogResult<Tenant | undefined>,
+    DialogResult<TenantCreateUpdateDialogResult | undefined>,
     DialogButtonClicked<TenantCreateUpdateComponent>,
     OnInit
 {
@@ -25,7 +25,9 @@ export class TenantCreateUpdateComponent
   public formGroup!: FormGroup
 
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
-  dialogResult: Tenant | undefined = undefined
+  dialogResult: TenantCreateUpdateDialogResult | undefined = undefined
+
+  private uploadedFile: File | null = null
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -36,10 +38,23 @@ export class TenantCreateUpdateComponent
   }
 
   ocxDialogButtonClicked() {
+    console.log(this.uploadedFile)
     this.dialogResult = {
       ...this.vm.itemToEdit,
-      ...this.formGroup.value
+      ...this.formGroup.value,
+      image: this.uploadedFile
     }
+  }
+
+  handleImageSelect(event: FileSelectEvent) {
+    this.uploadedFile = event.files[0]
+    if (this.formGroup.valid) {
+      this.primaryButtonEnabled.next(true)
+    }
+  }
+
+  handleFileRemove() {
+    this.uploadedFile = null
   }
 
   private initForm() {

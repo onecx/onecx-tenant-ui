@@ -95,4 +95,18 @@
       </span>
     </div>
   </div>
+  <div class="image-container">
+    <p-fileUpload
+      name="tenantImage"
+      mode="advanced"
+      [showUploadButton]="false"
+      chooseLabel="Choose tenant image"
+      (onSelect)="handleImageSelect($event)"
+      (onRemove)="handleFileRemove()"
+      [multiple]="false"
+      accept="image/*"
+      maxFileSize="1000000"
+    >
+    </p-fileUpload>
+  </div>
 </form>
