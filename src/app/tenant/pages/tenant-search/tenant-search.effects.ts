@@ -1,6 +1,12 @@
 import { PortalDialogService } from '@onecx/portal-integration-angular'
-import { mergeMap } from 'rxjs'
-import { Tenant, CreateTenantRequest, UpdateTenantRequest } from 'src/app/shared/generated'
+import { forkJoin, mergeMap, Observable } from 'rxjs'
+import {
+  CreateTenantRequest,
+  UpdateTenantRequest,
+  ImagesAPIService,
+  UploadImageRequestParams,
+  RefType
+} from 'src/app/shared/generated'
 import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
 import { Injectable, SkipSelf } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -23,6 +29,7 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { tenantSearchSelectors } from './tenant-search.selectors'
+import { TenantCreateUpdateDialogResult } from './dialogs/tenant-create-update/tenant-create-update.types'
 
 @Injectable()
 export class TenantSearchEffects {
@@ -33,7 +40,8 @@ export class TenantSearchEffects {
     private readonly tenantService: TenantAPIService,
     private readonly router: Router,
     private readonly store: Store,
-    private readonly messageService: PortalMessageService
+    private readonly messageService: PortalMessageService,
+    private readonly imageService: ImagesAPIService
   ) {}
 
   pageName = 'tenant'
@@ -78,7 +86,7 @@ export class TenantSearchEffects {
         return results.find((item) => item.id == action.id)
       }),
       mergeMap((itemToEdit) => {
-        return this.portalDialogService.openDialog<Tenant | undefined>(
+        return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
           'TENANT_CREATE_UPDATE.UPDATE.HEADER',
           {
             type: TenantCreateUpdateComponent,
@@ -108,7 +116,18 @@ export class TenantSearchEffects {
           orgId: dialogResult.result.orgId!,
           description: dialogResult.result.description!
         }
-        return this.tenantService.updateTenant({ id: itemToEditId, updateTenantRequest: itemToEdit }).pipe(
+        const updateOperations: Observable<any>[] = [
+          this.tenantService.updateTenant({ id: itemToEditId, updateTenantRequest: itemToEdit })
+        ]
+        if (dialogResult.result.image) {
+          const uploadParams: UploadImageRequestParams = {
+            refId: itemToEditId,
+            refType: RefType.Logo,
+            body: dialogResult.result.image
+          }
+          updateOperations.push(this.imageService.uploadImage(uploadParams))
+        }
+        return forkJoin(updateOperations).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'TENANT_CREATE_UPDATE.UPDATE.SUCCESS'
@@ -134,7 +153,7 @@ export class TenantSearchEffects {
     return this.actions$.pipe(
       ofType(TenantSearchActions.createTenantButtonClicked),
       switchMap(() => {
-        return this.portalDialogService.openDialog<Tenant | undefined>(
+        return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
           'TENANT_CREATE_UPDATE.CREATE.HEADER',
           {
             type: TenantCreateUpdateComponent,
@@ -159,12 +178,12 @@ export class TenantSearchEffects {
         if (!dialogResult?.result) {
           throw new Error('DialogResult was not set as expected!')
         }
-        const toCreateItem: CreateTenantRequest = {
+        const itemToCreate: CreateTenantRequest = {
           orgId: dialogResult.result.orgId!,
           description: dialogResult.result.description!,
           tenantId: dialogResult.result.tenantId!
         }
-        return this.tenantService.createTenant({ createTenantRequest: toCreateItem }).pipe(
+        return this.tenantService.createTenant({ createTenantRequest: itemToCreate }).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'TENANT_CREATE_UPDATE.CREATE.SUCCESS'
