@@ -49,15 +49,39 @@
       transition: background-color 0.3s ease;
     }
   }
+
+  .p-card-footer {
+    display: flex;
+    justify-content: end;
+  }
+
+  .p-card {
+    width: 15rem;
+  }
 }
 
 .grid-item-title {
   font-weight: bold;
   padding: 0.5rem;
+  justify-content: center;
+  width: 100%;
+  font-size: large;
+  display: flex;
 }
 
 .grid-item-content {
   display: flex;
   flex-direction: column;
+  align-items: center;
   row-gap: 1rem;
+}
+
+.image-container {
+  height: 10rem;
+  width: 10rem;
+}
+
+.default-icon {
+  font-size: 5rem;
+  text-align: center;
 }
