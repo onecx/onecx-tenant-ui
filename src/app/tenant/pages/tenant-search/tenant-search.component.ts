@@ -14,7 +14,8 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
-import { ImagesAPIService, RefType, Tenant } from 'src/app/shared/generated'
+import { ImagesAPIService, Tenant } from 'src/app/shared/generated'
+import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-search',
@@ -49,7 +50,7 @@ export class TenantSearchComponent implements OnInit {
           labelKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
           icon: PrimeIcons.PLUS,
           titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
-          show: 'asOverflow',
+          show: 'always',
           actionCallback: () => this.onCreateTenant()
         }
       ]
@@ -155,7 +156,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   getImageUrl(objectId: string): string {
-    return `${this.imageBasePath}/images/${objectId}/${RefType.Logo}`
+    return getImageUrl(this.imageBasePath, objectId)
   }
 
   imageLoaded(id: string) {
@@ -188,7 +189,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   handleOpenEntryDetails(item: Tenant) {
-    console.log('Details', item)
+    this.store.dispatch(TenantSearchActions.openTenantDetailsButtonClicked({ id: item.id }))
   }
 
   handleEditEntry(item: Tenant) {

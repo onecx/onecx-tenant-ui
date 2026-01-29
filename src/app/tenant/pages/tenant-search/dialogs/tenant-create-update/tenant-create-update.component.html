@@ -1,112 +1,120 @@
-<form [formGroup]="formGroup">
-  <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
-    <!-- Editable fields -->
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input pInputText type="text" id="tenant_detail_form_orgId" class="w-full pt-3 pb-2" formControlName="orgId" />
-        <label for="tenant_detail_form_orgId"> {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label>
-      </span>
-    </div>
+<div class="form-grid-wrapper">
+  <form [formGroup]="formGroup">
+    <div class="form-fields-container">
+      <!-- Editable fields -->
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input pInputText type="text" id="tenant_detail_form_orgId" class="form-input" formControlName="orgId" />
+          <label for="tenant_detail_form_orgId"> {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label>
+        </span>
+      </div>
 
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_description"
-          class="w-full pt-3 pb-2"
-          formControlName="description"
-        />
-        <label for="tenant_detail_form_description"> {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label>
-      </span>
-    </div>
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_description"
+            class="form-input"
+            formControlName="description"
+          />
+          <label for="tenant_detail_form_description"> {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label>
+        </span>
+      </div>
 
-    <!-- Read-only fields -->
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_tenantId"
-          class="w-full pt-3 pb-2"
-          formControlName="tenantId"
-        />
-        <label for="tenant_detail_form_tenantId"> {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label>
-      </span>
-    </div>
+      <!-- Read-only fields -->
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_tenantId"
+            class="form-input"
+            formControlName="tenantId"
+          />
+          <label for="tenant_detail_form_tenantId"> {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label>
+        </span>
+      </div>
 
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_creationUser"
-          class="w-full pt-3 pb-2"
-          formControlName="creationUser"
-        />
-        <label for="tenant_detail_form_creationUser">
-          {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
-        >
-      </span>
-    </div>
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_creationUser"
+            class="form-input"
+            formControlName="creationUser"
+          />
+          <label for="tenant_detail_form_creationUser">
+            {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
+          >
+        </span>
+      </div>
 
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_creationDate"
-          class="w-full pt-3 pb-2"
-          formControlName="creationDate"
-        />
-        <label for="tenant_detail_form_creationDate">
-          {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
-        >
-      </span>
-    </div>
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_creationDate"
+            class="form-input"
+            formControlName="creationDate"
+          />
+          <label for="tenant_detail_form_creationDate">
+            {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
+          >
+        </span>
+      </div>
 
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_modificationUser"
-          class="w-full pt-3 pb-2"
-          formControlName="modificationUser"
-        />
-        <label for="tenant_detail_form_modificationUser">
-          {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
-        >
-      </span>
-    </div>
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_modificationUser"
+            class="form-input"
+            formControlName="modificationUser"
+          />
+          <label for="tenant_detail_form_modificationUser">
+            {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
+          >
+        </span>
+      </div>
 
-    <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate">
-      <span class="p-float-label" controlErrorAnchor>
-        <input
-          pInputText
-          type="text"
-          id="tenant_detail_form_modificationDate"
-          class="w-full pt-3 pb-2"
-          formControlName="modificationDate"
-        />
-        <label for="tenant_detail_form_modificationDate">
-          {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label
-        >
-      </span>
+      <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="tenant_detail_form_modificationDate"
+            class="form-input"
+            formControlName="modificationDate"
+          />
+          <label for="tenant_detail_form_modificationDate">
+            {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label
+          >
+        </span>
+      </div>
+    </div>
+    <div class="image-container" *ngIf="dialogMode === dialogModeEnum.UPDATE">
+      <p-fileUpload
+        name="tenantImage"
+        mode="advanced"
+        [showUploadButton]="false"
+        chooseLabel="Choose tenant image"
+        (onSelect)="handleImageSelect($event)"
+        (onRemove)="handleFileRemove()"
+        [multiple]="false"
+        accept="image/*"
+        maxFileSize="1000000"
+      >
+      </p-fileUpload>
+    </div>
+  </form>
+
+  <div class="image-preview-column">
+    <div class="image-preview" *ngIf="showImage">
+      <img alt="Tenant image preview" [ocxSrc]="getImageUrl()" (error)="handleLoadImageError()" />
     </div>
   </div>
-  <div class="image-container" *ngIf="vm.itemToEdit">
-    <p-fileUpload
-      name="tenantImage"
-      mode="advanced"
-      [showUploadButton]="false"
-      chooseLabel="Choose tenant image"
-      (onSelect)="handleImageSelect($event)"
-      (onRemove)="handleFileRemove()"
-      [multiple]="false"
-      accept="image/*"
-      maxFileSize="1000000"
-    >
-    </p-fileUpload>
-  </div>
-</form>
+</div>

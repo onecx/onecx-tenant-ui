@@ -22,6 +22,10 @@
       },
       "HEADER": "Update Tenant"
     },
+    "DETAILS": {
+      "HEADER": "Tenant Details",
+      "BUTTON": "OK"
+    },
     "FORM": {
       "ORG_ID": "Organization ID",
       "DESCRIPTION": "Description",

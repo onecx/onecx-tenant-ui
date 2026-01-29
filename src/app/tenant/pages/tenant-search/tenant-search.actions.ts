@@ -13,6 +13,9 @@ export const TenantSearchActions = createActionGroup({
     'Edit tenant button clicked': props<{
       id: number | string
     }>(),
+    'Open tenant details button clicked': props<{
+      id: number | string
+    }>(),
     'Create tenant cancelled': emptyProps(),
     'Update tenant cancelled': emptyProps(),
     'Create tenant succeeded': emptyProps(),
