@@ -54,6 +54,17 @@
               }}</span>
             </ng-template>
             <div class="grid-item-content" (click)="handleOpenEntryDetails(item)">
+              @if (showDefaultIcon(item['id'])) {
+                <span class="pi pi-image image-container default-icon"></span>
+              }
+              <img
+                *ngIf="!showDefaultIcon(item['id'])"
+                class="image-container"
+                (error)="imageLoadFailed(item['id'])"
+                (load)="imageLoaded(item['id'])"
+                [ocxSrc]="getImageUrl(item['id'])"
+                alt="Tenant logo"
+              />
               <div>
                 <span>Org ID: </span>
                 <span>{{ item['orgId'] }}</span>

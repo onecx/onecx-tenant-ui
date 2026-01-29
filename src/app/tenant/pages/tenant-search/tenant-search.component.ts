@@ -14,7 +14,7 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
-import { Tenant } from 'src/app/shared/generated'
+import { ImagesAPIService, RefType, Tenant } from 'src/app/shared/generated'
 
 @Component({
   selector: 'app-tenant-search',
@@ -69,6 +69,9 @@ export class TenantSearchComponent implements OnInit {
       command: () => this.handleDeleteEntry(this.currentCardItem as Tenant)
     }
   ]
+  imageBasePath = this.imageService.configuration.basePath!
+  private loadedImages = new Set()
+  private failedImages = new Set()
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -84,7 +87,8 @@ export class TenantSearchComponent implements OnInit {
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService
+    private readonly exportDataService: ExportDataService,
+    private readonly imageService: ImagesAPIService
   ) {}
 
   public ngOnInit() {
@@ -148,6 +152,18 @@ export class TenantSearchComponent implements OnInit {
     })
   }
 
+  getImageUrl(objectId: string): string {
+    return `${this.imageBasePath}/images/${objectId}/${RefType.Logo}`
+  }
+
+  imageLoaded(id: string) {
+    this.failedImages.delete(id)
+  }
+
+  imageLoadFailed(id: string) {
+    this.failedImages.add(id)
+  }
+
   viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
@@ -179,6 +195,10 @@ export class TenantSearchComponent implements OnInit {
 
   handleDeleteEntry(item: Tenant) {
     console.log('Delete', item)
+  }
+
+  showDefaultIcon(id: string): boolean {
+    return this.failedImages.has(id)
   }
 
   private isVisible(control: string) {
