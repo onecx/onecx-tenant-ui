@@ -22,6 +22,10 @@
       },
       "HEADER": "Tenant bearbeiten"
     },
+    "DETAILS": {
+      "HEADER": "Tenant Daten",
+      "BUTTON": "OK"
+    },
     "FORM": {
       "ORG_ID": "Organisations-ID",
       "DESCRIPTION": "Beschreibung",

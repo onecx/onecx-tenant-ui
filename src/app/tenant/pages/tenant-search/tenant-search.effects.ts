@@ -29,7 +29,10 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { tenantSearchSelectors } from './tenant-search.selectors'
-import { TenantCreateUpdateDialogResult } from './dialogs/tenant-create-update/tenant-create-update.types'
+import {
+  TenantCreateUpdateDialogResult,
+  TenantDialogMode
+} from './dialogs/tenant-create-update/tenant-create-update.types'
 
 @Injectable()
 export class TenantSearchEffects {
@@ -93,7 +96,8 @@ export class TenantSearchEffects {
             inputs: {
               vm: {
                 itemToEdit
-              }
+              },
+              dialogMode: TenantDialogMode.UPDATE
             }
           },
           'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
@@ -160,7 +164,8 @@ export class TenantSearchEffects {
             inputs: {
               vm: {
                 itemToEdit: undefined
-              }
+              },
+              dialogMode: TenantDialogMode.CREATE
             }
           },
           'TENANT_CREATE_UPDATE.CREATE.FORM.SAVE',
@@ -204,6 +209,39 @@ export class TenantSearchEffects {
       })
     )
   })
+
+  openDetailsButtonClicked$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(TenantSearchActions.openTenantDetailsButtonClicked),
+        concatLatestFrom(() => this.store.select(tenantSearchSelectors.selectResults)),
+        map(([action, results]) => {
+          return results.find((item) => item.id == action.id)
+        }),
+        switchMap((tenantDetails) => {
+          return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
+            'TENANT_CREATE_UPDATE.DETAILS.HEADER',
+            {
+              type: TenantCreateUpdateComponent,
+              inputs: {
+                vm: {
+                  itemToEdit: tenantDetails
+                },
+                dialogMode: TenantDialogMode.DETAILS
+              }
+            },
+            'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
+            undefined,
+            {
+              baseZIndex: 100,
+              width: '1000px'
+            }
+          )
+        })
+      )
+    },
+    { dispatch: false }
+  )
 
   searchByUrl$ = createEffect(() => {
     return this.actions$.pipe(

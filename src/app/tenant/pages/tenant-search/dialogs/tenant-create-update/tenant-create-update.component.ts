@@ -1,10 +1,16 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core'
 import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/portal-integration-angular'
 
-import { FormBuilder, FormGroup } from '@angular/forms'
-import { TenantCreateUpdateDialogResult, TenantCreateUpdateViewModel } from './tenant-create-update.types'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import {
+  TenantCreateUpdateDialogResult,
+  TenantCreateUpdateViewModel,
+  TenantDialogMode
+} from './tenant-create-update.types'
 import { map } from 'rxjs'
 import { FileSelectEvent } from 'primeng/fileupload'
+import { ImagesAPIService } from 'src/app/shared/generated'
+import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-create-update',
@@ -22,19 +28,31 @@ export class TenantCreateUpdateComponent
     itemToEdit: undefined
   }
 
+  @Input() public dialogMode: TenantDialogMode = TenantDialogMode.CREATE
+
   public formGroup!: FormGroup
 
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
   dialogResult: TenantCreateUpdateDialogResult | undefined = undefined
+  dialogModeEnum = TenantDialogMode
+  showImage = true
 
   private uploadedFile: File | null = null
+  private baseImagePath: string
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private imageService: ImagesAPIService
+  ) {
+    this.baseImagePath = this.imageService.configuration.basePath!
+  }
 
   ngOnInit() {
     this.initForm()
-    this.setUpdateMode()
-    this.makeSubscriptions()
+    this.adjustToDialogMode()
+    if (this.dialogMode !== TenantDialogMode.DETAILS) {
+      this.makeSubscriptions()
+    }
   }
 
   ocxDialogButtonClicked() {
@@ -56,11 +74,22 @@ export class TenantCreateUpdateComponent
     this.uploadedFile = null
   }
 
+  handleLoadImageError() {
+    this.showImage = false
+  }
+
+  getImageUrl(): string | undefined {
+    if (this.dialogMode === TenantDialogMode.CREATE) {
+      return undefined
+    }
+    return getImageUrl(this.baseImagePath, this.vm.itemToEdit!.id)
+  }
+
   private initForm() {
     this.formGroup = this.formBuilder.group({
-      orgId: [null],
+      orgId: [null, [Validators.required]],
       description: [null],
-      tenantId: [{ value: null, disabled: true }],
+      tenantId: [{ value: null, disabled: true }, [Validators.required]],
       modificationUser: [{ value: null, disabled: true }],
       modificationDate: [{ value: null, disabled: true }],
       creationUser: [{ value: null, disabled: true }],
@@ -68,14 +97,37 @@ export class TenantCreateUpdateComponent
     })
   }
 
-  private setUpdateMode() {
-    if (this.vm.itemToEdit) {
-      this.formGroup.patchValue({
-        ...this.vm.itemToEdit
-      })
-    } else {
-      this.formGroup.get('tenantId')!.enable({ emitEvent: false })
+  private adjustToDialogMode() {
+    switch (this.dialogMode) {
+      case TenantDialogMode.DETAILS:
+        this.setDetailsMode()
+        break
+      case TenantDialogMode.CREATE:
+        this.setCreateMode()
+        break
+      case TenantDialogMode.UPDATE:
+        this.setUpdateMode()
+        break
     }
+  }
+
+  private setCreateMode() {
+    this.showImage = false
+    this.formGroup.get('tenantId')!.enable({ emitEvent: false })
+  }
+
+  private setUpdateMode() {
+    this.formGroup.patchValue({
+      ...this.vm.itemToEdit
+    })
+  }
+
+  private setDetailsMode() {
+    this.formGroup.patchValue({
+      ...this.vm.itemToEdit
+    })
+    this.formGroup.disable()
+    this.primaryButtonEnabled.next(true)
   }
 
   private makeSubscriptions() {
