@@ -159,7 +159,7 @@ export class TenantSearchEffects {
             type: TenantCreateUpdateComponent,
             inputs: {
               vm: {
-                itemToEdit: {}
+                itemToEdit: undefined
               }
             }
           },

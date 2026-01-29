@@ -38,7 +38,6 @@ export class TenantCreateUpdateComponent
   }
 
   ocxDialogButtonClicked() {
-    console.log(this.uploadedFile)
     this.dialogResult = {
       ...this.vm.itemToEdit,
       ...this.formGroup.value,
