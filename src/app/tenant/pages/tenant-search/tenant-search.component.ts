@@ -51,6 +51,7 @@ export class TenantSearchComponent implements OnInit {
           icon: PrimeIcons.PLUS,
           titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
           show: 'always',
+          permission: 'ADMIN#CREATE',
           actionCallback: () => this.onCreateTenant()
         }
       ]

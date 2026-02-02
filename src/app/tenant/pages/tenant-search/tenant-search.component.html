@@ -95,7 +95,7 @@
                 <span>{{ item['description'] }}</span>
               </div>
             </div>
-            <ng-template pTemplate="footer">
+            <ng-template pTemplate="footer" *ocxIfPermission="'ADMIN#EDIT'">
               <p-toast />
               <p-menu #menu [model]="cardMenuItems" [popup]="true" appendTo="body" />
               <p-button (onClick)="openMenu(menu, $event, item)" icon="pi pi-ellipsis-v" />

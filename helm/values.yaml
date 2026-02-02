@@ -29,3 +29,6 @@ app:
             SEARCH: 'Search tenants'
           SEARCHCONFIG:
             USE: 'Use search configs in tenant'
+          ADMIN:
+            EDIT: 'Edit tenant (ADMIN action)'
+            CREATE: 'Create tenant (ADMIN action)'            
