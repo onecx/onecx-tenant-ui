@@ -1,11 +1,11 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
-import { distinctUntilChanged, first, map, Observable } from 'rxjs'
+import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, withLatestFrom } from 'rxjs'
 import { MenuItem, PrimeIcons } from 'primeng/api'
 import deepEqual from 'fast-deep-equal'
 
-import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
+import { Action, BreadcrumbService, RowListGridData } from '@onecx/angular-accelerator'
 import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
@@ -72,8 +72,8 @@ export class TenantSearchComponent implements OnInit {
       command: () => this.handleEditEntry(this.currentCardItem as Tenant)
     }
   ]
+  filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
   imageBasePath = this.imageService.configuration.basePath!
-  private loadedImages = new Set()
   private failedImages = new Set()
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
@@ -82,6 +82,7 @@ export class TenantSearchComponent implements OnInit {
       unknown
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
+  public tenantFilterFormControl = this.formBuilder.control(null)
 
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
 
@@ -102,15 +103,7 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
-
-    this.viewModel$
-      .pipe(
-        map((vm) => vm.searchCriteria),
-        distinctUntilChanged(deepEqual)
-      )
-      .subscribe((sc) => {
-        this.tenantSearchForm.reset(sc)
-      })
+    this.makeSubscriptions()
   }
 
   public searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
@@ -204,9 +197,50 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
   }
 
+  clearTextFilters() {
+    this.tenantFilterFormControl.setValue(null)
+  }
+
   private isVisible(control: string) {
     return this.visibleFormControls.some(
       (formControl) => formControl.name !== null && String(formControl.name) === control
     )
+  }
+
+  private makeSubscriptions() {
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.searchCriteria),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe((sc) => {
+        this.tenantSearchForm.reset(sc)
+      })
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.results),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe(() => {
+        this.clearTextFilters()
+      })
+    this.tenantFilterFormControl.valueChanges
+      .pipe(debounceTime(200), withLatestFrom(this.viewModel$))
+      .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel))
+  }
+
+  private handleFilterChange(filterValue: string | null, viewModel: TenantSearchViewModel) {
+    const { results } = viewModel
+    if (filterValue === null || filterValue.trim() === '') {
+      this.filteredResults$.next(results)
+      return
+    }
+    const lowerFilter = filterValue.toLowerCase()
+    const filtered = results.filter((item) => {
+      const orgId = (item['orgId'] as string)?.toLowerCase() ?? ''
+      const tenantId = (item['tenantId'] as string)?.toLowerCase() ?? ''
+      return orgId.includes(lowerFilter) || tenantId.includes(lowerFilter)
+    })
+    this.filteredResults$.next(filtered)
   }
 }

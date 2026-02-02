@@ -104,7 +104,7 @@ export class TenantSearchEffects {
           'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
           {
             baseZIndex: 100,
-            width: '50vh'
+            width: '1000px'
           }
         )
       }),

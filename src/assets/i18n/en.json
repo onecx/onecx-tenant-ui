@@ -76,6 +76,10 @@
       "DEFAULT": "Default",
       "EXTENDED": "Extended",
       "FULL": "Full"
+    },
+    "FILTER": {
+      "PLACEHOLDER": "Filter by Org ID or Tenant ID",
+      "CLEAR": "Clear filter"
     }
   }
 }

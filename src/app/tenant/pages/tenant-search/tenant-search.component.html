@@ -34,7 +34,7 @@
     <ocx-content class="w-full no-card-padding">
       <ocx-interactive-data-view
         editPermission="TENANT#EDIT"
-        [data]="vm.results"
+        [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
         searchConfigPermission="SEARCHCONFIG#USE"
@@ -46,6 +46,28 @@
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
       >
+        <ng-template #topCenter>
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-filter"></i>
+            </span>
+            <input
+              pInputText
+              [formControl]="tenantFilterFormControl"
+              [placeholder]="'TENANT_SEARCH.FILTER.PLACEHOLDER' | translate"
+            />
+            <button
+              pButton
+              type="button"
+              icon="pi pi-filter-slash"
+              class="p-button-primary"
+              (click)="clearTextFilters()"
+              [disabled]="!tenantFilterFormControl.value"
+              [pTooltip]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </ng-template>
         <ng-template #gridItem let-item>
           <p-card class="grid-item-card">
             <ng-template pTemplate="header">

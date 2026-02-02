@@ -76,6 +76,10 @@
       "DEFAULT": "Standard",
       "EXTENDED": "Erweitert",
       "FULL": "Vollständig"
+    },
+    "FILTER": {
+      "PLACEHOLDER": "Nach Org ID oder Mandanten ID filtern",
+      "CLEAR": "Filter löschen"
     }
   }
 }
