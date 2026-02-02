@@ -33,7 +33,7 @@
   <ocx-content-container layout="horizontal">
     <ocx-content class="w-full no-card-padding">
       <ocx-interactive-data-view
-        editPermission="TENANT#EDIT"
+        editPermission="ADMIN#EDIT"
         [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
@@ -101,6 +101,103 @@
               <p-button (onClick)="openMenu(menu, $event, item)" icon="pi pi-ellipsis-v" />
             </ng-template>
           </p-card>
+        </ng-template>
+        <ng-template #listItem let-item let-i="rowIndex">
+          <article
+            class="list-item-row"
+            [ngClass]="{ 'list-item-row-even': i % 2 === 0 }"
+            [id]="'tm_search_data_list_row_' + i"
+            [attr.aria-label]="item['tenantId']"
+          >
+            <div class="list-item-image" [id]="'tm_search_data_list_row_' + i + '_logo'">
+              @if (showDefaultIcon(item['id'])) {
+                <span class="pi pi-image list-item-default-icon" aria-hidden="true"></span>
+              }
+              <img
+                *ngIf="!showDefaultIcon(item['id'])"
+                class="list-item-logo"
+                (error)="imageLoadFailed(item['id'])"
+                (load)="imageLoaded(item['id'])"
+                [ocxSrc]="getImageUrl(item['id'])"
+                alt="Tenant logo"
+                aria-hidden="true"
+              />
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
+              class="list-item-tenant-id"
+              aria-label="Tenant ID"
+              [pTooltip]="item['tenantId']"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['tenantId'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_org_id'"
+              class="list-item-org-id"
+              aria-label="Organization ID"
+              [pTooltip]="item['orgId']"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['orgId'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_description'"
+              class="list-item-description"
+              [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
+              [pTooltip]="item['description'] && item['description'].length > 50 ? item['description'] : ''"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['description'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_modification_date'"
+              class="list-item-modification-date"
+              aria-label="Modification Date"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['modificationDate'] | date: 'short' }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_creation_date'"
+              class="list-item-creation-date"
+              aria-label="Creation Date"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['creationDate'] | date: 'short' }}
+            </div>
+            <div class="list-item-actions">
+              <p-button
+                [id]="'tm_search_data_list_row_' + i + '_view_button'"
+                icon="pi pi-eye"
+                [pTooltip]="'ACTIONS.VIEW.TOOLTIP' | translate"
+                tooltipPosition="top"
+                (onClick)="handleOpenEntryDetails(item)"
+                styleClass="p-button-sm p-button-text"
+                [attr.aria-label]="'ACTIONS.VIEW.LABEL' | translate"
+              />
+              <p-button
+                *ocxIfPermission="'ADMIN#EDIT'"
+                [id]="'tm_search_data_list_row_' + i + '_edit_button'"
+                icon="pi pi-pencil"
+                [pTooltip]="'ACTIONS.EDIT.TOOLTIP' | translate"
+                tooltipPosition="top"
+                (onClick)="handleEditEntry(item)"
+                styleClass="p-button-sm p-button-text"
+                [attr.aria-label]="'ACTIONS.EDIT.LABEL' | translate"
+              />
+            </div>
+          </article>
         </ng-template>
       </ocx-interactive-data-view>
     </ocx-content>
