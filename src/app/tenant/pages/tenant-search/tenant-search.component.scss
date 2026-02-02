@@ -86,3 +86,102 @@
   font-size: 5rem;
   text-align: center;
 }
+
+// List item layout using CSS Grid
+.list-item-row {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  min-height: 4rem;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  &.list-item-row-even {
+    background-color: var(--table-body-row-even-bg);
+  }
+
+  // Responsive adjustments
+  @media (max-width: 1280px) {
+    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 3.5rem minmax(0, 2fr) 5.5rem;
+  }
+
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+}
+
+// Image column
+.list-item-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+.list-item-logo,
+.list-item-default-icon {
+  max-height: 3rem;
+  max-width: 3rem;
+  border-radius: 0.25rem;
+}
+
+.list-item-default-icon {
+  font-size: 2rem;
+}
+
+// Primary column with bold text
+.list-item-tenant-id {
+  font-weight: bold;
+}
+
+// Hide columns on smaller screens
+.list-item-description {
+  @media (max-width: 1280px) {
+    display: none;
+  }
+}
+
+.list-item-creation-date {
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.list-item-modification-date {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.list-item-org-id {
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+// Actions column
+.list-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  overflow: visible;
+}
