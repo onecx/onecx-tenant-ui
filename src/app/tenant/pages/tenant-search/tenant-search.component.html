@@ -33,17 +33,172 @@
   <ocx-content-container layout="horizontal">
     <ocx-content class="w-full no-card-padding">
       <ocx-interactive-data-view
-        [data]="vm.results"
+        editPermission="ADMIN#EDIT"
+        [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
         viewPermission="TENANT#VIEW"
         searchConfigPermission="SEARCHCONFIG#USE"
-        [listGridPaginator]="false"
+        [listGridPaginator]="true"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
-        [supportedViewLayouts]="['table']"
+        [supportedViewLayouts]="['list', 'grid']"
+        [layout]="layout"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
       >
+        <ng-template #topCenter>
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-filter"></i>
+            </span>
+            <input
+              pInputText
+              [formControl]="tenantFilterFormControl"
+              [placeholder]="'TENANT_SEARCH.FILTER.PLACEHOLDER' | translate"
+            />
+            <button
+              pButton
+              type="button"
+              icon="pi pi-filter-slash"
+              class="p-button-primary"
+              (click)="clearTextFilters()"
+              [disabled]="!tenantFilterFormControl.value"
+              [pTooltip]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </ng-template>
+        <ng-template #gridItem let-item>
+          <p-card class="grid-item-card">
+            <ng-template pTemplate="header">
+              <span class="grid-item-title" (click)="handleOpenEntryDetails(item)">{{
+                item['tenantId'] | titlecase
+              }}</span>
+            </ng-template>
+            <div class="grid-item-content" (click)="handleOpenEntryDetails(item)">
+              @if (showDefaultIcon(item['id'])) {
+                <span class="pi pi-image image-container default-icon"></span>
+              }
+              <img
+                *ngIf="!showDefaultIcon(item['id'])"
+                class="image-container"
+                (error)="imageLoadFailed(item['id'])"
+                (load)="imageLoaded(item['id'])"
+                [ocxSrc]="getImageUrl(item['id'])"
+                alt="Tenant logo"
+              />
+              <div>
+                <span>Org ID: </span>
+                <span>{{ item['orgId'] }}</span>
+              </div>
+              <div>
+                <span>{{ item['description'] }}</span>
+              </div>
+            </div>
+            <ng-template pTemplate="footer" *ocxIfPermission="'ADMIN#EDIT'">
+              <p-toast />
+              <p-menu #menu [model]="cardMenuItems" [popup]="true" appendTo="body" />
+              <p-button (onClick)="openMenu(menu, $event, item)" icon="pi pi-ellipsis-v" />
+            </ng-template>
+          </p-card>
+        </ng-template>
+        <ng-template #listItem let-item let-i="rowIndex">
+          <article
+            class="list-item-row"
+            [ngClass]="{ 'list-item-row-even': i % 2 === 0 }"
+            [id]="'tm_search_data_list_row_' + i"
+            [attr.aria-label]="item['tenantId']"
+          >
+            <div class="list-item-image" [id]="'tm_search_data_list_row_' + i + '_logo'">
+              @if (showDefaultIcon(item['id'])) {
+                <span class="pi pi-image list-item-default-icon" aria-hidden="true"></span>
+              }
+              <img
+                *ngIf="!showDefaultIcon(item['id'])"
+                class="list-item-logo"
+                (error)="imageLoadFailed(item['id'])"
+                (load)="imageLoaded(item['id'])"
+                [ocxSrc]="getImageUrl(item['id'])"
+                alt="Tenant logo"
+                aria-hidden="true"
+              />
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
+              class="list-item-tenant-id"
+              aria-label="Tenant ID"
+              [pTooltip]="item['tenantId']"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['tenantId'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_org_id'"
+              class="list-item-org-id"
+              aria-label="Organization ID"
+              [pTooltip]="item['orgId']"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['orgId'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_description'"
+              class="list-item-description"
+              [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
+              [pTooltip]="item['description'] && item['description'].length > 50 ? item['description'] : ''"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['description'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_modification_date'"
+              class="list-item-modification-date"
+              aria-label="Modification Date"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['modificationDate'] | date: 'short' }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_creation_date'"
+              class="list-item-creation-date"
+              aria-label="Creation Date"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['creationDate'] | date: 'short' }}
+            </div>
+            <div class="list-item-actions">
+              <p-button
+                [id]="'tm_search_data_list_row_' + i + '_view_button'"
+                icon="pi pi-eye"
+                [pTooltip]="'ACTIONS.VIEW.TOOLTIP' | translate"
+                tooltipPosition="top"
+                (onClick)="handleOpenEntryDetails(item)"
+                styleClass="p-button-sm p-button-text"
+                [attr.aria-label]="'ACTIONS.VIEW.LABEL' | translate"
+              />
+              <p-button
+                *ocxIfPermission="'ADMIN#EDIT'"
+                [id]="'tm_search_data_list_row_' + i + '_edit_button'"
+                icon="pi pi-pencil"
+                [pTooltip]="'ACTIONS.EDIT.TOOLTIP' | translate"
+                tooltipPosition="top"
+                (onClick)="handleEditEntry(item)"
+                styleClass="p-button-sm p-button-text"
+                [attr.aria-label]="'ACTIONS.EDIT.LABEL' | translate"
+              />
+            </div>
+          </article>
+        </ng-template>
       </ocx-interactive-data-view>
     </ocx-content>
 

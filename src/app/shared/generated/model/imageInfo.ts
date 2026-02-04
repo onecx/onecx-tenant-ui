@@ -11,18 +11,7 @@
  */
 
 
-export interface CreateTenantRequest { 
-    /**
-     * Id of the organization
-     */
-    orgId: string;
-    /**
-     * Id of the tenant
-     */
-    tenantId: string;
-    /**
-     * Description of the tenant
-     */
-    description?: string;
+export interface ImageInfo { 
+    id?: string;
 }
 

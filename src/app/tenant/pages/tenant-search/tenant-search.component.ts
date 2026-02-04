@@ -1,11 +1,11 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
-import { distinctUntilChanged, first, map, Observable } from 'rxjs'
-import { PrimeIcons } from 'primeng/api'
-import * as deepEqual from 'fast-deep-equal'
+import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, withLatestFrom } from 'rxjs'
+import { MenuItem, PrimeIcons } from 'primeng/api'
+import deepEqual from 'fast-deep-equal'
 
-import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
+import { Action, BreadcrumbService, RowListGridData } from '@onecx/angular-accelerator'
 import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
@@ -14,6 +14,8 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
+import { ImagesAPIService, Tenant } from 'src/app/shared/generated'
+import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-search',
@@ -43,16 +45,37 @@ export class TenantSearchComponent implements OnInit {
             : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility()
+        },
+        {
+          labelKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          icon: PrimeIcons.PLUS,
+          titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          show: 'always',
+          permission: 'ADMIN#CREATE',
+          actionCallback: () => this.onCreateTenant()
         }
       ]
       return actions
     })
   )
 
+  layout: 'list' | 'grid' = 'grid'
   diagramColumnId = 'tenantId'
   diagramColumn$ = this.viewModel$.pipe(
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
+
+  currentCardItem: Tenant | null = null
+  cardMenuItems: MenuItem[] = [
+    {
+      icon: PrimeIcons.FILE_EDIT,
+      label: 'Edit',
+      command: () => this.handleEditEntry(this.currentCardItem as Tenant)
+    }
+  ]
+  filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
+  imageBasePath = this.imageService.configuration.basePath!
+  private failedImages = new Set()
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -60,6 +83,7 @@ export class TenantSearchComponent implements OnInit {
       unknown
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
+  public tenantFilterFormControl = this.formBuilder.control(null)
 
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
 
@@ -68,7 +92,8 @@ export class TenantSearchComponent implements OnInit {
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService
+    private readonly exportDataService: ExportDataService,
+    private readonly imageService: ImagesAPIService
   ) {}
 
   public ngOnInit() {
@@ -79,15 +104,7 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
-
-    this.viewModel$
-      .pipe(
-        map((vm) => vm.searchCriteria),
-        distinctUntilChanged(deepEqual)
-      )
-      .subscribe((sc) => {
-        this.tenantSearchForm.reset(sc)
-      })
+    this.makeSubscriptions()
   }
 
   public searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
@@ -132,6 +149,18 @@ export class TenantSearchComponent implements OnInit {
     })
   }
 
+  getImageUrl(objectId: string): string {
+    return getImageUrl(this.imageBasePath, objectId)
+  }
+
+  imageLoaded(id: string) {
+    this.failedImages.delete(id)
+  }
+
+  imageLoadFailed(id: string) {
+    this.failedImages.add(id)
+  }
+
   viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
       TenantSearchActions.viewModeChanged({
@@ -148,9 +177,71 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
   }
 
+  openMenu(menu: any, event: Event, item: Tenant) {
+    this.currentCardItem = item
+    menu.toggle(event)
+  }
+
+  handleOpenEntryDetails(item: Tenant) {
+    this.store.dispatch(TenantSearchActions.openTenantDetailsButtonClicked({ id: item.id }))
+  }
+
+  handleEditEntry(item: Tenant) {
+    this.store.dispatch(TenantSearchActions.editTenantButtonClicked({ id: item.id }))
+  }
+
+  showDefaultIcon(id: string): boolean {
+    return this.failedImages.has(id)
+  }
+
+  onCreateTenant() {
+    this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
+  }
+
+  clearTextFilters() {
+    this.tenantFilterFormControl.setValue(null)
+  }
+
   private isVisible(control: string) {
     return this.visibleFormControls.some(
       (formControl) => formControl.name !== null && String(formControl.name) === control
     )
+  }
+
+  private makeSubscriptions() {
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.searchCriteria),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe((sc) => {
+        this.tenantSearchForm.reset(sc)
+      })
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.results),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe(() => {
+        this.clearTextFilters()
+      })
+    this.tenantFilterFormControl.valueChanges
+      .pipe(debounceTime(200), withLatestFrom(this.viewModel$))
+      .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel))
+  }
+
+  private handleFilterChange(filterValue: string | null, viewModel: TenantSearchViewModel) {
+    const { results } = viewModel
+    if (filterValue === null || filterValue.trim() === '') {
+      this.filteredResults$.next(results)
+      return
+    }
+    const lowerFilter = filterValue.toLowerCase()
+    const filtered = results.filter((item) => {
+      const orgId = (item['orgId'] as string)?.toLowerCase() ?? ''
+      const tenantId = (item['tenantId'] as string)?.toLowerCase() ?? ''
+      return orgId.includes(lowerFilter) || tenantId.includes(lowerFilter)
+    })
+    this.filteredResults$.next(filtered)
   }
 }
