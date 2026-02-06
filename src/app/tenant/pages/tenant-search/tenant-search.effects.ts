@@ -1,5 +1,5 @@
 import { PortalDialogService } from '@onecx/portal-integration-angular'
-import { forkJoin, mergeMap, Observable } from 'rxjs'
+import { forkJoin, mergeMap, Observable, withLatestFrom } from 'rxjs'
 import {
   CreateTenantRequest,
   UpdateTenantRequest,
@@ -18,7 +18,7 @@ import { catchError, map, of, switchMap, tap } from 'rxjs'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const equal = require('fast-deep-equal')
 
-import { PortalMessageService } from '@onecx/angular-integration-interface'
+import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
 import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
@@ -45,7 +45,8 @@ export class TenantSearchEffects {
     private readonly router: Router,
     private readonly store: Store,
     private readonly messageService: PortalMessageService,
-    private readonly imageService: ImagesAPIService
+    private readonly imageService: ImagesAPIService,
+    private readonly userServcie: UserService
   ) {}
 
   pageName = 'tenant'
@@ -79,6 +80,19 @@ export class TenantSearchEffects {
       ofType(TenantSearchActions.createTenantSucceeded, TenantSearchActions.updateTenantSucceeded),
       concatLatestFrom(() => this.store.select(tenantSearchSelectors.selectCriteria)),
       switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+    )
+  })
+
+  openDialogForExistingEntry$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TenantSearchActions.openDialogForExistingEntry),
+      withLatestFrom(of(this.userServcie.hasPermission('TENANT#ADMIN_EDIT'))),
+      map(([action, hasEditPermission]) => {
+        if (hasEditPermission) {
+          return TenantSearchActions.editTenantButtonClicked({ id: action.id })
+        }
+        return TenantSearchActions.openTenantDetailsButtonClicked({ id: action.id })
+      })
     )
   })
 

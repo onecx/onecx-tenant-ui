@@ -27,8 +27,7 @@ app:
             DELETE: 'Delete tenant'
             VIEW: 'View tenant details'
             SEARCH: 'Search tenants'
+            ADMIN_EDIT: 'Edit tenant (ADMIN action)'
+            ADMIN_CREATE: 'Create tenant (ADMIN action)'   
           SEARCHCONFIG:
             USE: 'Use search configs in tenant'
-          ADMIN:
-            EDIT: 'Edit tenant (ADMIN action)'
-            CREATE: 'Create tenant (ADMIN action)'            

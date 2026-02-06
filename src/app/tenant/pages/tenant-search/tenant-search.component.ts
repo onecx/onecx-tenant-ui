@@ -2,10 +2,10 @@ import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, withLatestFrom } from 'rxjs'
-import { MenuItem, PrimeIcons } from 'primeng/api'
+import { PrimeIcons } from 'primeng/api'
 import deepEqual from 'fast-deep-equal'
 
-import { Action, BreadcrumbService, RowListGridData } from '@onecx/angular-accelerator'
+import { Action, BreadcrumbService, DataSortDirection, RowListGridData } from '@onecx/angular-accelerator'
 import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
@@ -51,7 +51,7 @@ export class TenantSearchComponent implements OnInit {
           icon: PrimeIcons.PLUS,
           titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
           show: 'always',
-          permission: 'ADMIN#CREATE',
+          permission: 'TENANT#ADMIN_CREATE',
           actionCallback: () => this.onCreateTenant()
         }
       ]
@@ -66,13 +66,6 @@ export class TenantSearchComponent implements OnInit {
   )
 
   currentCardItem: Tenant | null = null
-  cardMenuItems: MenuItem[] = [
-    {
-      icon: PrimeIcons.FILE_EDIT,
-      label: 'Edit',
-      command: () => this.handleEditEntry(this.currentCardItem as Tenant)
-    }
-  ]
   filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
   imageBasePath = this.imageService.configuration.basePath!
   private failedImages = new Set()
@@ -183,11 +176,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   handleOpenEntryDetails(item: Tenant) {
-    this.store.dispatch(TenantSearchActions.openTenantDetailsButtonClicked({ id: item.id }))
-  }
-
-  handleEditEntry(item: Tenant) {
-    this.store.dispatch(TenantSearchActions.editTenantButtonClicked({ id: item.id }))
+    this.store.dispatch(TenantSearchActions.openDialogForExistingEntry({ id: item.id }))
   }
 
   showDefaultIcon(id: string): boolean {
@@ -243,5 +232,9 @@ export class TenantSearchComponent implements OnInit {
       return orgId.includes(lowerFilter) || tenantId.includes(lowerFilter)
     })
     this.filteredResults$.next(filtered)
+  }
+
+  get ascendingSortDirection(): DataSortDirection {
+    return DataSortDirection.ASCENDING
   }
 }

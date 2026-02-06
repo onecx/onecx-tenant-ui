@@ -45,17 +45,24 @@
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
+        [sortField]="'tenantId'"
+        [sortDirection]="ascendingSortDirection"
       >
         <ng-template #topCenter>
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon">
               <i class="pi pi-filter"></i>
             </span>
-            <input
-              pInputText
-              [formControl]="tenantFilterFormControl"
-              [placeholder]="'TENANT_SEARCH.FILTER.PLACEHOLDER' | translate"
-            />
+            <span class="p-float-label" controlErrorAnchor>
+              <input
+                id="TENANT_FILTER_INPUT"
+                pInputText
+                [formControl]="tenantFilterFormControl"
+                [tooltipPosition]="'bottom'"
+                [pTooltip]="'TENANT_SEARCH.FILTER.TOOLTIP' | translate"
+              />
+              <label for="TENANT_FILTER_INPUT"> {{ 'TENANT_SEARCH.FILTER.LABEL' | translate }}</label>
+            </span>
             <button
               pButton
               type="button"
@@ -95,11 +102,6 @@
                 <span>{{ item['description'] }}</span>
               </div>
             </div>
-            <ng-template pTemplate="footer" *ocxIfPermission="'ADMIN#EDIT'">
-              <p-toast />
-              <p-menu #menu [model]="cardMenuItems" [popup]="true" appendTo="body" />
-              <p-button (onClick)="openMenu(menu, $event, item)" icon="pi pi-ellipsis-v" />
-            </ng-template>
           </p-card>
         </ng-template>
         <ng-template #listItem let-item let-i="rowIndex">
@@ -175,27 +177,6 @@
               role="note"
             >
               {{ item['creationDate'] | date: 'short' }}
-            </div>
-            <div class="list-item-actions">
-              <p-button
-                [id]="'tm_search_data_list_row_' + i + '_view_button'"
-                icon="pi pi-eye"
-                [pTooltip]="'ACTIONS.VIEW.TOOLTIP' | translate"
-                tooltipPosition="top"
-                (onClick)="handleOpenEntryDetails(item)"
-                styleClass="p-button-sm p-button-text"
-                [attr.aria-label]="'ACTIONS.VIEW.LABEL' | translate"
-              />
-              <p-button
-                *ocxIfPermission="'ADMIN#EDIT'"
-                [id]="'tm_search_data_list_row_' + i + '_edit_button'"
-                icon="pi pi-pencil"
-                [pTooltip]="'ACTIONS.EDIT.TOOLTIP' | translate"
-                tooltipPosition="top"
-                (onClick)="handleEditEntry(item)"
-                styleClass="p-button-sm p-button-text"
-                [attr.aria-label]="'ACTIONS.EDIT.LABEL' | translate"
-              />
             </div>
           </article>
         </ng-template>

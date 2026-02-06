@@ -78,7 +78,8 @@
       "FULL": "Vollständig"
     },
     "FILTER": {
-      "PLACEHOLDER": "Nach Org ID oder Mandanten ID filtern",
+      "PLACEHOLDER": "Filter",
+      "TOOLTIP": "Nach Org ID oder Mandanten ID filtern",
       "CLEAR": "Filter löschen"
     }
   }

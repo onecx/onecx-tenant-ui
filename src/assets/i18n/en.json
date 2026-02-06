@@ -78,7 +78,8 @@
       "FULL": "Full"
     },
     "FILTER": {
-      "PLACEHOLDER": "Filter by Org ID or Tenant ID",
+      "LABEL": "Filter",
+      "TOOLTIP": "Filter by Org ID or Tenant ID",
       "CLEAR": "Clear filter"
     }
   }
