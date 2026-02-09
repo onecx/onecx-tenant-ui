@@ -32,7 +32,9 @@
 
   <ocx-content-container layout="horizontal">
     <ocx-content class="w-full no-card-padding">
+      <ocx-loading-indicator *ngIf="vm.loadingData"></ocx-loading-indicator>
       <ocx-interactive-data-view
+        *ngIf="!vm.loadingData"
         editPermission="ADMIN#EDIT"
         [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
@@ -83,16 +85,17 @@
               }}</span>
             </ng-template>
             <div class="grid-item-content" (click)="handleOpenEntryDetails(item)">
-              @if (showDefaultIcon(item['id'])) {
-                <span class="pi pi-image image-container default-icon"></span>
-              }
+              <span
+                class="pi pi-image image-container default-icon"
+                [class.hidden]="!showDefaultIcon(item['id'])"
+              ></span>
               <img
-                *ngIf="!showDefaultIcon(item['id'])"
                 class="image-container"
                 (error)="imageLoadFailed(item['id'])"
                 (load)="imageLoaded(item['id'])"
                 [ocxSrc]="getImageUrl(item['id'])"
                 alt="Tenant logo"
+                [class.hidden]="showDefaultIcon(item['id'])"
               />
               <div>
                 <span>Org ID: </span>
@@ -104,30 +107,32 @@
             </div>
           </p-card>
         </ng-template>
-        <ng-template #listItem let-item let-i="rowIndex">
+        <ng-template #listItem let-item>
           <article
+            (click)="handleOpenEntryDetails(item)"
             class="list-item-row"
-            [ngClass]="{ 'list-item-row-even': i % 2 === 0 }"
-            [id]="'tm_search_data_list_row_' + i"
+            [ngClass]="{ 'list-item-row-even': isEvenRow(item) }"
+            [id]="'tm_search_data_list_row_' + item['id']"
             [attr.aria-label]="item['tenantId']"
           >
-            <div class="list-item-image" [id]="'tm_search_data_list_row_' + i + '_logo'">
-              @if (showDefaultIcon(item['id'])) {
-                <span class="pi pi-image list-item-default-icon" aria-hidden="true"></span>
-              }
+            <div [id]="'tm_search_data_list_row_' + item['id'] + '_logo'">
+              <span
+                class="pi pi-image list-item-default-icon"
+                aria-hidden="true"
+                [class.hidden]="!showDefaultIcon(item['id'])"
+              ></span>
               <img
-                *ngIf="!showDefaultIcon(item['id'])"
                 class="list-item-logo"
                 (error)="imageLoadFailed(item['id'])"
                 (load)="imageLoaded(item['id'])"
                 [ocxSrc]="getImageUrl(item['id'])"
                 alt="Tenant logo"
                 aria-hidden="true"
+                [class.hidden]="showDefaultIcon(item['id'])"
               />
             </div>
             <div
-              [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
-              class="list-item-tenant-id"
+              [id]="'tm_search_data_list_row_' + item['id'] + '_tenant_id'"
               aria-label="Tenant ID"
               [pTooltip]="item['tenantId']"
               tooltipPosition="top"
@@ -137,8 +142,7 @@
               {{ item['tenantId'] }}
             </div>
             <div
-              [id]="'tm_search_data_list_row_' + i + '_org_id'"
-              class="list-item-org-id"
+              [id]="'tm_search_data_list_row_' + item['id'] + '_org_id'"
               aria-label="Organization ID"
               [pTooltip]="item['orgId']"
               tooltipPosition="top"
@@ -148,8 +152,7 @@
               {{ item['orgId'] }}
             </div>
             <div
-              [id]="'tm_search_data_list_row_' + i + '_description'"
-              class="list-item-description"
+              [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
               [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
               [pTooltip]="item['description'] && item['description'].length > 50 ? item['description'] : ''"
               tooltipPosition="top"
@@ -157,26 +160,6 @@
               role="note"
             >
               {{ item['description'] }}
-            </div>
-            <div
-              [id]="'tm_search_data_list_row_' + i + '_modification_date'"
-              class="list-item-modification-date"
-              aria-label="Modification Date"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['modificationDate'] | date: 'short' }}
-            </div>
-            <div
-              [id]="'tm_search_data_list_row_' + i + '_creation_date'"
-              class="list-item-creation-date"
-              aria-label="Creation Date"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['creationDate'] | date: 'short' }}
             </div>
           </article>
         </ng-template>

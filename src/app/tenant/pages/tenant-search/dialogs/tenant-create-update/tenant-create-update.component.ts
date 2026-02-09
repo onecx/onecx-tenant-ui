@@ -77,7 +77,8 @@ export class TenantCreateUpdateComponent
     this.dialogResult = {
       ...this.vm.itemToEdit,
       ...this.formGroup.value,
-      image: this.uploadedFile
+      image: this.uploadedFile,
+      imageRemoved: this.imageRemoved
     }
   }
 
@@ -108,6 +109,9 @@ export class TenantCreateUpdateComponent
     this.imageRemoved = true
     if (this.fileInput?.nativeElement) {
       this.fileInput.nativeElement.value = ''
+    }
+    if (this.formGroup.valid) {
+      this.primaryButtonEnabled.next(true)
     }
   }
 

@@ -84,6 +84,10 @@
 .image-container {
   height: 10rem;
   width: 10rem;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .default-icon {
@@ -94,8 +98,8 @@
 // List item layout using CSS Grid
 .list-item-row {
   display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
-  gap: 1rem;
+  grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+  gap: 5rem;
   align-items: center;
   padding: 1rem;
   width: 100%;
@@ -103,27 +107,20 @@
 
   &:hover {
     background-color: #f5f5f5;
+    cursor: pointer;
   }
 
   &.list-item-row-even {
-    background-color: var(--table-body-row-even-bg);
+    background-color: #fafafa;
   }
 
   // Responsive adjustments
   @media (max-width: 1280px) {
-    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
-  }
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr) 5.5rem;
+    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1fr);
   }
 
   @media (max-width: 640px) {
-    grid-template-columns: 3.5rem minmax(0, 2fr) 5.5rem;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
   }
 
   > div {
@@ -131,15 +128,30 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
-  }
-}
 
-// Image column
-.list-item-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: visible;
+    &:first-child {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+    }
+
+    &:nth-child(2) {
+      font-weight: bold;
+    }
+
+    &:nth-child(3) {
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+
+    &:nth-child(4) {
+      @media (max-width: 1280px) {
+        display: none;
+      }
+    }
+  }
 }
 
 .list-item-logo,
@@ -147,45 +159,12 @@
   max-height: 3rem;
   max-width: 3rem;
   border-radius: 0.25rem;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .list-item-default-icon {
   font-size: 2rem;
-}
-
-// Primary column with bold text
-.list-item-tenant-id {
-  font-weight: bold;
-}
-
-// Hide columns on smaller screens
-.list-item-description {
-  @media (max-width: 1280px) {
-    display: none;
-  }
-}
-
-.list-item-creation-date {
-  @media (max-width: 1024px) {
-    display: none;
-  }
-}
-
-.list-item-modification-date {
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-.list-item-org-id {
-  @media (max-width: 640px) {
-    display: none;
-  }
-}
-
-// Actions column
-.list-item-actions {
-  display: flex;
-  justify-content: flex-end;
-  overflow: visible;
 }

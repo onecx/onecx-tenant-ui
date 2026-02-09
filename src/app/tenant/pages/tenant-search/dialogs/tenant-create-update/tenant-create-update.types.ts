@@ -6,6 +6,7 @@ export interface TenantCreateUpdateViewModel {
 
 export type TenantCreateUpdateDialogResult = Tenant & {
   image: File | null
+  imageRemoved: boolean
 }
 
 export enum TenantDialogMode {

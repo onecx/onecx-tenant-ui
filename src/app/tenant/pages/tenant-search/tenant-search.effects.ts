@@ -1,11 +1,13 @@
 import { PortalDialogService } from '@onecx/portal-integration-angular'
-import { forkJoin, mergeMap, Observable, withLatestFrom } from 'rxjs'
+import { concat, mergeMap, Observable, withLatestFrom } from 'rxjs'
 import {
   CreateTenantRequest,
   UpdateTenantRequest,
   ImagesAPIService,
   UploadImageRequestParams,
-  RefType
+  RefType,
+  DeleteImageRequestParams,
+  Tenant
 } from 'src/app/shared/generated'
 import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
 import { Injectable, SkipSelf } from '@angular/core'
@@ -14,7 +16,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
-import { catchError, map, of, switchMap, tap } from 'rxjs'
+import { catchError, last, map, of, switchMap, tap } from 'rxjs'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const equal = require('fast-deep-equal')
 
@@ -131,22 +133,16 @@ export class TenantSearchEffects {
           throw new Error('DialogResult was not set as expected!')
         }
         const itemToEditId = dialogResult.result.id
-        const itemToEdit: UpdateTenantRequest = {
-          orgId: dialogResult.result.orgId!,
-          description: dialogResult.result.description!
-        }
-        const updateOperations: Observable<any>[] = [
-          this.tenantService.updateTenant({ id: itemToEditId, updateTenantRequest: itemToEdit })
-        ]
+        const updateOperations: Observable<any>[] = []
+        updateOperations.push(this.getUpdateOperation(itemToEditId, dialogResult.result))
         if (dialogResult.result.image) {
-          const uploadParams: UploadImageRequestParams = {
-            refId: itemToEditId,
-            refType: RefType.Logo,
-            body: dialogResult.result.image
-          }
-          updateOperations.push(this.imageService.uploadImage(uploadParams))
+          updateOperations.push(this.getUpdateImageOperation(itemToEditId, dialogResult.result.image))
         }
-        return forkJoin(updateOperations).pipe(
+        if (dialogResult.result.imageRemoved) {
+          updateOperations.push(this.getRemoveImageOperation(itemToEditId))
+        }
+        return concat(...updateOperations).pipe(
+          last(),
           map(() => {
             this.messageService.success({
               summaryKey: 'TENANT_CREATE_UPDATE.UPDATE.SUCCESS'
@@ -331,5 +327,30 @@ export class TenantSearchEffects {
         )
       )
     )
+  }
+
+  private getUpdateOperation(itemId: string, result: Tenant): Observable<any> {
+    const itemToEdit: UpdateTenantRequest = {
+      orgId: result.orgId!,
+      description: result.description!
+    }
+    return this.tenantService.updateTenant({ id: itemId, updateTenantRequest: itemToEdit })
+  }
+
+  private getUpdateImageOperation(itemToEditId: string, image: File): Observable<any> {
+    const uploadParams: UploadImageRequestParams = {
+      refId: itemToEditId,
+      refType: RefType.Logo,
+      body: image
+    }
+    return this.imageService.uploadImage(uploadParams)
+  }
+
+  private getRemoveImageOperation(itemId: string): Observable<any> {
+    const request: DeleteImageRequestParams = {
+      refId: itemId,
+      refType: RefType.Logo
+    }
+    return this.imageService.deleteImage(request)
   }
 }

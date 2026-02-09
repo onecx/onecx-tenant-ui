@@ -68,7 +68,8 @@ export class TenantSearchComponent implements OnInit {
   currentCardItem: Tenant | null = null
   filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
   imageBasePath = this.imageService.configuration.basePath!
-  private failedImages = new Set()
+  failedImages: Record<string, boolean> = {}
+  private imageTimestamp = Date.now()
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -143,15 +144,15 @@ export class TenantSearchComponent implements OnInit {
   }
 
   getImageUrl(objectId: string): string {
-    return getImageUrl(this.imageBasePath, objectId)
+    return `${getImageUrl(this.imageBasePath, objectId)}`
   }
 
   imageLoaded(id: string) {
-    this.failedImages.delete(id)
+    delete this.failedImages[id]
   }
 
   imageLoadFailed(id: string) {
-    this.failedImages.add(id)
+    this.failedImages[id] = true
   }
 
   viewModeChanged(viewMode: 'basic' | 'advanced') {
@@ -180,15 +181,21 @@ export class TenantSearchComponent implements OnInit {
   }
 
   showDefaultIcon(id: string): boolean {
-    return this.failedImages.has(id)
+    return this.failedImages[id] === true
+  }
+
+  isEvenRow(item: Tenant): boolean {
+    const items = this.filteredResults$.value
+    const index = items.findIndex((i) => i === item)
+    return index % 2 === 0
   }
 
   onCreateTenant() {
     this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
   }
 
-  clearTextFilters() {
-    this.tenantFilterFormControl.setValue(null)
+  clearTextFilters(emitEvent = true) {
+    this.tenantFilterFormControl.setValue(null, { emitEvent })
   }
 
   private isVisible(control: string) {
@@ -211,16 +218,18 @@ export class TenantSearchComponent implements OnInit {
         map((vm) => vm.results),
         distinctUntilChanged(deepEqual)
       )
-      .subscribe(() => {
-        this.clearTextFilters()
+      .subscribe((results) => {
+        this.failedImages = {}
+        this.imageTimestamp = Date.now()
+        this.clearTextFilters(false)
+        this.handleFilterChange(null, results)
       })
     this.tenantFilterFormControl.valueChanges
       .pipe(debounceTime(200), withLatestFrom(this.viewModel$))
-      .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel))
+      .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel.results))
   }
 
-  private handleFilterChange(filterValue: string | null, viewModel: TenantSearchViewModel) {
-    const { results } = viewModel
+  private handleFilterChange(filterValue: string | null, results: RowListGridData[]) {
     if (filterValue === null || filterValue.trim() === '') {
       this.filteredResults$.next(results)
       return
