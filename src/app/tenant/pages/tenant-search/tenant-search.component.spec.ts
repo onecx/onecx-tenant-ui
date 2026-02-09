@@ -319,24 +319,13 @@ describe('TenantSearchComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.createTenantButtonClicked())
   })
 
-  it('should dispatch openTenantDetailsButtonClicked action when handleOpenEntryDetails is called', () => {
-    jest.spyOn(store, 'dispatch')
-    const tenant = { id: 'tenant-123', orgId: 'org1', tenantId: 'tenant1' }
-
-    component.handleOpenEntryDetails(tenant as Tenant)
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      TenantSearchActions.openTenantDetailsButtonClicked({ id: 'tenant-123' })
-    )
-  })
-
-  it('should dispatch editTenantButtonClicked action when handleEditEntry is called', () => {
+  it('should dispatch openDialogForExistingEntry action when handleOpenEntryDetails is called', () => {
     jest.spyOn(store, 'dispatch')
     const tenant = { id: 'tenant-456', orgId: 'org2', tenantId: 'tenant2' }
 
-    component.handleEditEntry(tenant as Tenant)
+    component.handleOpenEntryDetails(tenant as Tenant)
 
-    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.editTenantButtonClicked({ id: 'tenant-456' }))
+    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.openDialogForExistingEntry({ id: 'tenant-456' }))
   })
 
   it('should return image URL for given object ID', () => {
@@ -524,15 +513,5 @@ describe('TenantSearchComponent', () => {
       expect(component.onCreateTenant).toHaveBeenCalled()
       done()
     })
-  })
-
-  it('should call command when cardMenuItems command is executed', () => {
-    jest.spyOn(component, 'handleEditEntry')
-    const tenant = { id: 'tenant-999', orgId: 'org9', tenantId: 'tenant9' } as Tenant
-    component.currentCardItem = tenant
-
-    component.cardMenuItems[0].command!({} as any)
-
-    expect(component.handleEditEntry).toHaveBeenCalledWith(tenant)
   })
 })

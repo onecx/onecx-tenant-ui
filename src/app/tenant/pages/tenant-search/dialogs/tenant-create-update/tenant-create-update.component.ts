@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core'
+import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/portal-integration-angular'
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
@@ -8,9 +9,9 @@ import {
   TenantDialogMode
 } from './tenant-create-update.types'
 import { map } from 'rxjs'
-import { FileSelectEvent } from 'primeng/fileupload'
 import { ImagesAPIService } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
+import { MenuItem } from 'primeng/api'
 
 @Component({
   selector: 'app-tenant-create-update',
@@ -24,6 +25,7 @@ export class TenantCreateUpdateComponent
     DialogButtonClicked<TenantCreateUpdateComponent>,
     OnInit
 {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
   @Input() public vm: TenantCreateUpdateViewModel = {
     itemToEdit: undefined
   }
@@ -35,14 +37,30 @@ export class TenantCreateUpdateComponent
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
   dialogResult: TenantCreateUpdateDialogResult | undefined = undefined
   dialogModeEnum = TenantDialogMode
-  showImage = true
+  selectedTab: 'main' | 'internal' = 'main'
+  hasExistingImage = true
+  imageRemoved = false
+  uploadedFile: File | null = null
+  uploadedFilePreview: SafeUrl | null = null
 
-  private uploadedFile: File | null = null
+  readonly menuItems: MenuItem[] = [
+    {
+      label: 'TENANT_CREATE_UPDATE.MENU.PROPERTIES',
+      command: () => (this.selectedTab = 'main')
+    },
+    {
+      label: 'TENANT_CREATE_UPDATE.MENU.INTERNAL',
+      command: () => (this.selectedTab = 'internal')
+    }
+  ]
+
   private baseImagePath: string
+  private uploadedFileUrl: string | null = null
 
   constructor(
     private formBuilder: FormBuilder,
-    private imageService: ImagesAPIService
+    private imageService: ImagesAPIService,
+    private sanitizer: DomSanitizer
   ) {
     this.baseImagePath = this.imageService.configuration.basePath!
   }
@@ -63,19 +81,42 @@ export class TenantCreateUpdateComponent
     }
   }
 
-  handleImageSelect(event: FileSelectEvent) {
-    this.uploadedFile = event.files[0]
-    if (this.formGroup.valid) {
-      this.primaryButtonEnabled.next(true)
+  handleFileChange(event: Event) {
+    const input = event.target as HTMLInputElement
+    if (input.files && input.files[0]) {
+      const file = input.files[0]
+      if (this.uploadedFileUrl) {
+        URL.revokeObjectURL(this.uploadedFileUrl)
+      }
+      this.uploadedFile = file
+      this.uploadedFileUrl = URL.createObjectURL(file)
+      this.uploadedFilePreview = this.sanitizer.bypassSecurityTrustUrl(this.uploadedFileUrl)
+      this.imageRemoved = false
+      if (this.formGroup.valid) {
+        this.primaryButtonEnabled.next(true)
+      }
     }
   }
 
   handleFileRemove() {
+    if (this.uploadedFileUrl) {
+      URL.revokeObjectURL(this.uploadedFileUrl)
+      this.uploadedFileUrl = null
+      this.uploadedFilePreview = null
+    }
     this.uploadedFile = null
+    this.imageRemoved = true
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = ''
+    }
   }
 
-  handleLoadImageError() {
-    this.showImage = false
+  onImageLoad() {
+    this.hasExistingImage = true
+  }
+
+  onImageError() {
+    this.hasExistingImage = false
   }
 
   getImageUrl(): string | undefined {
@@ -112,7 +153,6 @@ export class TenantCreateUpdateComponent
   }
 
   private setCreateMode() {
-    this.showImage = false
     this.formGroup.get('tenantId')!.enable({ emitEvent: false })
   }
 

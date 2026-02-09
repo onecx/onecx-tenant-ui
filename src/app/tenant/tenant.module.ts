@@ -18,6 +18,7 @@ import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects
 import { CardModule } from 'primeng/card'
 import { TenantCreateUpdateComponent } from './pages/tenant-search/dialogs/tenant-create-update/tenant-create-update.component'
 import { TooltipModule } from 'primeng/tooltip'
+import { TabMenuModule } from 'primeng/tabmenu'
 
 @NgModule({
   providers: [providePortalDialogService()],
@@ -32,7 +33,8 @@ import { TooltipModule } from 'primeng/tooltip'
     SharedModule,
     StoreModule.forFeature(tenantFeature),
     CardModule,
-    TooltipModule
+    TooltipModule,
+    TabMenuModule
   ]
 })
 export class TenantModule {}

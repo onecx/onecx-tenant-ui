@@ -1,5 +1,9 @@
 {
   "TENANT_CREATE_UPDATE": {
+    "MENU": {
+      "PROPERTIES": "Properties",
+      "INTERNAL": "Internal"
+    },
     "ACTION": {
       "CREATE": "Create"
     },
@@ -33,7 +37,9 @@
       "CREATION_USER": "Created by",
       "CREATION_DATE": "Created on",
       "MODIFICATION_USER": "Modified by",
-      "MODIFICATION_DATE": "Modified on"
+      "MODIFICATION_DATE": "Modified on",
+      "CHOOSE_IMAGE": "Choose",
+      "REMOVE_IMAGE": "Remove"
     }
   },
   "TENANT_SEARCH": {

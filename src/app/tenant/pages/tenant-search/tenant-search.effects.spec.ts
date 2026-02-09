@@ -12,7 +12,7 @@ import { MockStore, createMockStore } from '@ngrx/store/testing'
 import { ReplaySubject, of, throwError } from 'rxjs'
 import { hot } from 'jest-marbles'
 
-import { PortalMessageService } from '@onecx/angular-integration-interface'
+import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
 
 import { ImagesAPIService, RefType, TenantAPIService } from 'src/app/shared/generated'
 import { TenantSearchEffects } from './tenant-search.effects'
@@ -114,6 +114,10 @@ describe('TenantSearchEffects:', () => {
     openDialog: jest.fn()
   }
 
+  const mockedUserService: Partial<UserService> = {
+    hasPermission: jest.fn()
+  }
+
   let effectsActions: ReplaySubject<any>
   const initEffects = () => {
     return new TenantSearchEffects(
@@ -124,7 +128,8 @@ describe('TenantSearchEffects:', () => {
       mockedRouter as any,
       store,
       mockedMessageService as PortalMessageService,
-      mockedImageService as ImagesAPIService
+      mockedImageService as ImagesAPIService,
+      mockedUserService as UserService
     )
   }
 
@@ -419,6 +424,30 @@ describe('TenantSearchEffects:', () => {
 
     effects.syncParamsToUrl$.subscribe(() => {
       expect(spy).toHaveBeenCalledTimes(0)
+      done()
+    })
+  })
+
+  it('should dispatch open details when user has no admin permission', (done) => {
+    jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(false)
+
+    const effects = initEffects()
+    effectsActions.next(TenantSearchActions.openDialogForExistingEntry({ id: '1' }))
+
+    effects.openDialogForExistingEntry$.subscribe((action) => {
+      expect(action.type).toBe(TenantSearchActions.openTenantDetailsButtonClicked.type)
+      done()
+    })
+  })
+
+  it('should dispatch edit details when user has admin permission', (done) => {
+    jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(true)
+
+    const effects = initEffects()
+    effectsActions.next(TenantSearchActions.openDialogForExistingEntry({ id: '1' }))
+
+    effects.openDialogForExistingEntry$.subscribe((action) => {
+      expect(action.type).toBe(TenantSearchActions.editTenantButtonClicked.type)
       done()
     })
   })

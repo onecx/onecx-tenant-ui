@@ -1,120 +1,157 @@
+<p-tabMenu *ngIf="dialogMode !== dialogModeEnum.CREATE" [model]="menuItems" [activeItem]="menuItems[0]">
+  <ng-template pTemplate="item" let-item>
+    <a class="p-menuitem-link">
+      <span class="ml-2">
+        {{ item.label | translate }}
+      </span>
+    </a>
+  </ng-template>
+</p-tabMenu>
 <div class="form-grid-wrapper">
   <form [formGroup]="formGroup">
     <div class="form-fields-container">
-      <!-- Editable fields -->
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input pInputText type="text" id="tenant_detail_form_orgId" class="form-input" formControlName="orgId" />
-          <label for="tenant_detail_form_orgId"> {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label>
-        </span>
-      </div>
+      @if (selectedTab === 'main') {
+        <!-- Editable fields -->
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input pInputText type="text" id="tenant_detail_form_orgId" class="form-input" formControlName="orgId" />
+            <label class="ocx-required-label" for="tenant_detail_form_orgId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
+            >
+          </span>
+        </div>
 
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_description"
-            class="form-input"
-            formControlName="description"
-          />
-          <label for="tenant_detail_form_description"> {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label>
-        </span>
-      </div>
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_description"
+              class="form-input"
+              formControlName="description"
+            />
+            <label for="tenant_detail_form_description">
+              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            >
+          </span>
+        </div>
 
-      <!-- Read-only fields -->
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate">
-        <span class="p-float-label" controlErrorAnchor>
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_tenantId"
+              class="form-input"
+              formControlName="tenantId"
+            />
+            <label class="ocx-required-label" for="tenant_detail_form_tenantId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label
+            >
+          </span>
+        </div>
+        <div class="image-container" *ngIf="dialogMode !== dialogModeEnum.CREATE">
           <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_tenantId"
-            class="form-input"
-            formControlName="tenantId"
+            #fileInput
+            type="file"
+            accept="image/png, image/jpeg"
+            class="hidden-file-input"
+            (change)="handleFileChange($event)"
           />
-          <label for="tenant_detail_form_tenantId"> {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label>
-        </span>
-      </div>
 
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_creationUser"
-            class="form-input"
-            formControlName="creationUser"
-          />
-          <label for="tenant_detail_form_creationUser">
-            {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
-          >
-        </span>
-      </div>
+          <div class="image-preview">
+            <img
+              *ngIf="!uploadedFile && !imageRemoved && hasExistingImage"
+              [ocxSrc]="getImageUrl()"
+              (load)="onImageLoad()"
+              (error)="onImageError()"
+              alt="Tenant image"
+            />
+            <img *ngIf="uploadedFile" [src]="uploadedFilePreview" alt="New tenant image" />
+            <i *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile" class="pi pi-image image-placeholder"></i>
+          </div>
 
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_creationDate"
-            class="form-input"
-            formControlName="creationDate"
-          />
-          <label for="tenant_detail_form_creationDate">
-            {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
-          >
-        </span>
-      </div>
+          <div class="image-buttons" *ngIf="dialogMode !== dialogModeEnum.DETAILS">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-upload"
+              [label]="'TENANT_CREATE_UPDATE.FORM.CHOOSE_IMAGE' | translate"
+              class="p-button-outlined"
+              (click)="fileInput.click()"
+            ></button>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              [label]="'TENANT_CREATE_UPDATE.FORM.REMOVE_IMAGE' | translate"
+              class="p-button-outlined p-button-danger"
+              (click)="handleFileRemove()"
+              [disabled]="(!hasExistingImage || imageRemoved) && !uploadedFile"
+            ></button>
+          </div>
+        </div>
+      } @else {
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_creationUser"
+              class="form-input"
+              formControlName="creationUser"
+            />
+            <label for="tenant_detail_form_creationUser">
+              {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
+            >
+          </span>
+        </div>
 
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_modificationUser"
-            class="form-input"
-            formControlName="modificationUser"
-          />
-          <label for="tenant_detail_form_modificationUser">
-            {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
-          >
-        </span>
-      </div>
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_creationDate"
+              class="form-input"
+              formControlName="creationDate"
+            />
+            <label for="tenant_detail_form_creationDate">
+              {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
+            >
+          </span>
+        </div>
 
-      <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate">
-        <span class="p-float-label" controlErrorAnchor>
-          <input
-            pInputText
-            type="text"
-            id="tenant_detail_form_modificationDate"
-            class="form-input"
-            formControlName="modificationDate"
-          />
-          <label for="tenant_detail_form_modificationDate">
-            {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label
-          >
-        </span>
-      </div>
-    </div>
-    <div class="image-container" *ngIf="dialogMode === dialogModeEnum.UPDATE">
-      <p-fileUpload
-        name="tenantImage"
-        mode="advanced"
-        [showUploadButton]="false"
-        chooseLabel="Choose tenant image"
-        (onSelect)="handleImageSelect($event)"
-        (onRemove)="handleFileRemove()"
-        [multiple]="false"
-        accept="image/*"
-        maxFileSize="1000000"
-      >
-      </p-fileUpload>
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_modificationUser"
+              class="form-input"
+              formControlName="modificationUser"
+            />
+            <label for="tenant_detail_form_modificationUser">
+              {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_modificationDate"
+              class="form-input"
+              formControlName="modificationDate"
+            />
+            <label for="tenant_detail_form_modificationDate">
+              {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label
+            >
+          </span>
+        </div>
+      }
     </div>
   </form>
-
-  <div class="image-preview-column">
-    <div class="image-preview" *ngIf="showImage">
-      <img alt="Tenant image preview" [ocxSrc]="getImageUrl()" (error)="handleLoadImageError()" />
-    </div>
-  </div>
 </div>
