@@ -9,7 +9,6 @@ import { TenantCreateUpdateComponent } from './tenant-create-update.component'
 import { provideHttpClient } from '@angular/common/http'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
-import { FileSelectEvent } from 'primeng/fileupload'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -23,6 +22,18 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn()
   }))
+})
+
+const originalCreateObjectURL = URL.createObjectURL
+beforeAll(() => {
+  ;(global as any).URL.createObjectURL = jest.fn(() => 'blob:mock')
+  ;(global as any).URL.revokeObjectURL = jest.fn()
+})
+
+afterAll(() => {
+  if (originalCreateObjectURL) {
+    ;(global as any).URL.createObjectURL = originalCreateObjectURL
+  }
 })
 
 const viewModel: TenantCreateUpdateViewModel = {
@@ -82,7 +93,6 @@ describe('TenantCreateUpdateComponent', () => {
       component.ngOnInit()
 
       expect(component.formGroup).toBeDefined()
-      expect(component.showImage).toEqual(false)
       expect(component.formGroup.get('tenantId')?.enabled).toEqual(true)
     })
 
@@ -154,12 +164,34 @@ describe('TenantCreateUpdateComponent', () => {
         done()
       })
 
-      const event: Partial<FileSelectEvent> = {
-        files: [new Blob() as File]
+      const event = {
+        target: {
+          files: [new Blob() as File]
+        }
       }
-      component.handleImageSelect(event as FileSelectEvent)
+      component.handleFileChange(event as unknown as Event)
       component.ocxDialogButtonClicked()
       expect(component.dialogResult?.image).toBeDefined()
+    })
+
+    it('should revoke previous object url when a new image is uploaded', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+
+      const revokeSpy = jest.spyOn(URL, 'revokeObjectURL')
+      ;(component as any).uploadedFileUrl = 'blob:old'
+      const event = {
+        target: {
+          files: [new Blob() as File]
+        }
+      }
+
+      component.handleFileChange(event as unknown as Event)
+
+      expect(revokeSpy).toHaveBeenCalledWith('blob:old')
+      expect((component as any).uploadedFileUrl).toEqual('blob:mock')
+      expect(component.imageRemoved).toBe(false)
     })
 
     it('should emit true then false when form validity changes', (done) => {
@@ -190,15 +222,41 @@ describe('TenantCreateUpdateComponent', () => {
       component.vm = viewModel
       component.ngOnInit()
 
-      const event: Partial<FileSelectEvent> = {
-        files: [new Blob() as File]
+      const event = {
+        target: {
+          input: {
+            files: [new Blob() as File]
+          }
+        }
       }
-      component.handleImageSelect(event as FileSelectEvent)
+      component.handleFileChange(event as unknown as Event)
       component.ocxDialogButtonClicked()
       expect(component.dialogResult?.image).toBeDefined()
       component.handleFileRemove()
       component.ocxDialogButtonClicked()
       expect(component.dialogResult?.image).toBeNull()
+    })
+
+    it('should clear file input and mark image as removed', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+      ;(component as any).uploadedFileUrl = 'blob:old'
+      component.uploadedFile = new Blob() as File
+      component.uploadedFilePreview = {} as any
+      component.fileInput = { nativeElement: document.createElement('input') } as any
+      component.formGroup.patchValue({ orgId: viewModel.itemToEdit?.orgId, tenantId: viewModel.itemToEdit?.tenantId })
+
+      const revokeSpy = jest.spyOn(URL, 'revokeObjectURL')
+
+      component.handleFileRemove()
+
+      expect(revokeSpy).toHaveBeenCalledWith('blob:old')
+      expect(component.uploadedFile).toBeNull()
+      expect((component as any).uploadedFileUrl).toBeNull()
+      expect(component.uploadedFilePreview).toBeNull()
+      expect(component.imageRemoved).toBe(true)
+      expect(component.fileInput.nativeElement.value).toBe('')
     })
   })
 
@@ -224,13 +282,24 @@ describe('TenantCreateUpdateComponent', () => {
       const url = component.getImageUrl()
       expect(url).toContain(viewModel.itemToEdit?.id)
     })
+  })
 
-    it('should handle image load error', () => {
-      component.dialogMode = TenantDialogMode.DETAILS
-      component.vm = viewModel
+  it('should switch tabs via menu commands', () => {
+    component.selectedTab = 'internal'
 
-      component.handleLoadImageError()
-      expect(component.showImage).toEqual(false)
-    })
+    component.menuItems[0].command?.({} as any)
+    expect(component.selectedTab).toBe('main')
+
+    component.menuItems[1].command?.({} as any)
+    expect(component.selectedTab).toBe('internal')
+  })
+
+  it('should toggle existing image flag on load and error', () => {
+    component.hasExistingImage = false
+    component.onImageLoad()
+    expect(component.hasExistingImage).toBe(true)
+
+    component.onImageError()
+    expect(component.hasExistingImage).toBe(false)
   })
 })

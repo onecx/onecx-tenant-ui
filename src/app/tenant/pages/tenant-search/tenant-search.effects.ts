@@ -129,8 +129,15 @@ export class TenantSearchEffects {
         if (!dialogResult || dialogResult.button == 'secondary') {
           return of(TenantSearchActions.updateTenantCancelled())
         }
-        if (!dialogResult?.result) {
-          throw new Error('DialogResult was not set as expected!')
+        if (!dialogResult.result) {
+          this.messageService.error({
+            summaryKey: 'TENANT_CREATE_UPDATE.UPDATE.ERROR'
+          })
+          return of(
+            TenantSearchActions.updateTenantFailed({
+              error: 'DialogResult was not set as expected!'
+            })
+          )
         }
         const itemToEditId = dialogResult.result.id
         const updateOperations: Observable<any>[] = []
@@ -191,8 +198,15 @@ export class TenantSearchEffects {
         if (!dialogResult || dialogResult.button == 'secondary') {
           return of(TenantSearchActions.createTenantCancelled())
         }
-        if (!dialogResult?.result) {
-          throw new Error('DialogResult was not set as expected!')
+        if (!dialogResult.result) {
+          this.messageService.error({
+            summaryKey: 'TENANT_CREATE_UPDATE.CREATE.ERROR'
+          })
+          return of(
+            TenantSearchActions.createTenantFailed({
+              error: 'DialogResult was not set as expected!'
+            })
+          )
         }
         const itemToCreate: CreateTenantRequest = {
           orgId: dialogResult.result.orgId!,

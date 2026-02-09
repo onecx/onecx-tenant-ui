@@ -24,6 +24,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { map, of } from 'rxjs'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
+import { CardModule } from 'primeng/card'
 
 describe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
@@ -63,7 +64,8 @@ describe('TenantSearchComponent', () => {
           'de',
           require('./../../../../assets/i18n/de.json')
         ),
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        CardModule
       ],
       providers: [
         DialogService,
@@ -167,6 +169,42 @@ describe('TenantSearchComponent', () => {
     expect(parsed.pageSize).toBeUndefined()
   })
 
+  it('should determine whether the row index is even', () => {
+    const firstItem = { id: '1' } as any
+    const secondItem = { id: '2' } as any
+    const thirdItem = { id: '3' } as any
+    component.filteredResults$.next([firstItem, secondItem, thirdItem])
+
+    expect(component.isEvenRow(firstItem)).toBe(true)
+    expect(component.isEvenRow(secondItem)).toBe(false)
+    expect(component.isEvenRow(thirdItem)).toBe(true)
+  })
+
+  it('should filter results using orgId or tenantId', () => {
+    const matchingOrg = { orgId: 'Alpha', tenantId: 'T-1' } as any
+    const matchingTenant = { orgId: 'Other', tenantId: 'Target' } as any
+    const nonMatching = { orgId: 'Beta', tenantId: 'Something' } as any
+    const missingIds = {} as any
+
+    ;(component as any).handleFilterChange('alpha', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([matchingOrg])
+    ;(component as any).handleFilterChange('target', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([matchingTenant])
+    ;(component as any).handleFilterChange('missing', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([])
+    ;(component as any).handleFilterChange('none', [missingIds])
+    expect(component.filteredResults$.value).toEqual([])
+  })
+
+  it('should return unfiltered results when filter is empty', () => {
+    const items = [{ orgId: 'Alpha', tenantId: 'T-1' }] as any
+
+    ;(component as any).handleFilterChange('', items)
+    expect(component.filteredResults$.value).toEqual(items)
+    ;(component as any).handleFilterChange(null, items)
+    expect(component.filteredResults$.value).toEqual(items)
+  })
+
   it('should dispatch view mode change', async () => {
     jest.spyOn(store, 'dispatch')
     const baseTenantSearchViewModel: TenantSearchViewModel = {
@@ -175,7 +213,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -197,7 +236,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -241,7 +281,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -295,7 +336,8 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       chartVisible: false,
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
 
     component.diagramColumnId = testColumnId
@@ -338,7 +380,7 @@ describe('TenantSearchComponent', () => {
 
   it('should remove id from failedImages when imageLoaded is called', () => {
     const testId = 'image-123'
-    component['failedImages'].add(testId)
+    component['failedImages'][testId] = true
 
     component.imageLoaded(testId)
 
@@ -355,7 +397,7 @@ describe('TenantSearchComponent', () => {
 
   it('should return true when id is in failedImages', () => {
     const testId = 'failed-image'
-    component['failedImages'].add(testId)
+    component['failedImages'][testId] = true
 
     expect(component.showDefaultIcon(testId)).toBe(true)
   })
@@ -410,10 +452,11 @@ describe('TenantSearchComponent', () => {
         { id: '3', orgId: 'org3', tenantId: 'test-tenant', imagePath: '' }
       ],
       searchCriteria: {},
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
 
-    component['handleFilterChange']('test', viewModel)
+    component['handleFilterChange']('test', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
       expect(results.length).toBe(1)
@@ -431,10 +474,11 @@ describe('TenantSearchComponent', () => {
         { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
       ],
       searchCriteria: {},
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
 
-    component['handleFilterChange']('', viewModel)
+    component['handleFilterChange']('', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
       expect(results.length).toBe(2)
@@ -451,10 +495,11 @@ describe('TenantSearchComponent', () => {
         { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
       ],
       searchCriteria: {},
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
 
-    component['handleFilterChange'](null, viewModel)
+    component['handleFilterChange'](null, viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
       expect(results.length).toBe(2)
@@ -471,10 +516,11 @@ describe('TenantSearchComponent', () => {
         { id: '2', orgId: 'other-org', tenantId: 'tenant2', imagePath: '' }
       ],
       searchCriteria: {},
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
 
-    component['handleFilterChange']('test-org', viewModel)
+    component['handleFilterChange']('test-org', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
       expect(results.length).toBe(1)
@@ -492,10 +538,11 @@ describe('TenantSearchComponent', () => {
         { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
       ],
       searchCriteria: {},
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
 
-    component['handleFilterChange']('special', viewModel)
+    component['handleFilterChange']('special', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
       expect(results.length).toBe(1)

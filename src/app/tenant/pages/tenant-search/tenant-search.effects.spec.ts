@@ -108,7 +108,8 @@ describe('TenantSearchEffects:', () => {
     success: jest.fn()
   }
   const mockedImageService: Partial<ImagesAPIService> = {
-    uploadImage: jest.fn()
+    uploadImage: jest.fn(),
+    deleteImage: jest.fn()
   }
   const mockedDialogService: Partial<PortalDialogService> = {
     openDialog: jest.fn()
@@ -537,10 +538,52 @@ describe('TenantSearchEffects:', () => {
       effects.editButtonClicked$.subscribe((action) => {
         expect(mockedMessageService.error).toHaveBeenCalled()
         expect(action.type).toBe(TenantSearchActions.updateTenantFailed.type)
-        expect((action as any).error).toBeDefined()
-        expect(((action as any).error as Error).message).toEqual('DialogResult was not set as expected!')
+        expect((action as any).error).toBe('DialogResult was not set as expected!')
         done()
       })
+    })
+
+    it('should fail update when dialog result is missing', (done) => {
+      store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: '1', orgId: 'org1' }])
+
+      jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(of({ button: 'primary', result: undefined } as any))
+      const effects = initEffects()
+
+      effects.editButtonClicked$.subscribe({
+        next: (action) => {
+          expect(mockedMessageService.error).toHaveBeenCalled()
+          expect(action.type).toBe(TenantSearchActions.updateTenantFailed.type)
+          expect((action as any).error).toBe('DialogResult was not set as expected!')
+          done()
+        },
+        error: (error) => done(error)
+      })
+
+      effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: '1' }))
+    })
+
+    it('should emit failure when update service fails', (done) => {
+      store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: '1', orgId: 'org1' }])
+
+      jest
+        .spyOn(mockedDialogService, 'openDialog')
+        .mockReturnValue(of({ button: 'primary', result: { id: '1', orgId: '1', description: 'desc' } } as any))
+      const updateError = new Error('update failed')
+      jest.spyOn(mockedTenantService, 'updateTenant').mockReturnValue(throwError(() => updateError) as any)
+
+      const effects = initEffects()
+
+      effects.editButtonClicked$.subscribe({
+        next: (action) => {
+          expect(mockedMessageService.error).toHaveBeenCalledWith({ summaryKey: 'TENANT_CREATE_UPDATE.UPDATE.ERROR' })
+          expect(action.type).toBe(TenantSearchActions.updateTenantFailed.type)
+          expect((action as any).error).toBe(updateError)
+          done()
+        },
+        error: (error) => done(error)
+      })
+
+      effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: '1' }))
     })
 
     it('should update object without image properly', (done) => {
@@ -600,6 +643,109 @@ describe('TenantSearchEffects:', () => {
         done()
       })
     })
+    it('should remove image when flagged as removed', (done) => {
+      const objectId = '1'
+      const itemToEdit = {
+        orgId: '2',
+        description: 'Test Desc'
+      }
+      const deleteImageRequest = {
+        refId: objectId,
+        refType: RefType.Logo
+      }
+      store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: objectId, orgId: 'org1' }])
+
+      jest
+        .spyOn(mockedDialogService, 'openDialog')
+        .mockReturnValue(of({ button: 'primary', result: { id: objectId, imageRemoved: true, ...itemToEdit } } as any))
+      jest.spyOn(mockedTenantService, 'updateTenant').mockReturnValue(of(itemToEdit as any))
+      jest.spyOn(mockedImageService, 'deleteImage').mockReturnValue(of({} as any))
+
+      const effects = initEffects()
+
+      effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: objectId }))
+
+      effects.editButtonClicked$.subscribe((action) => {
+        expect(mockedMessageService.success).toHaveBeenCalled()
+        expect(mockedImageService.deleteImage).toHaveBeenCalledWith(deleteImageRequest)
+        expect(mockedImageService.uploadImage).not.toHaveBeenCalled()
+        expect(action.type).toBe(TenantSearchActions.updateTenantSucceeded.type)
+        expect(mockedTenantService.updateTenant).toHaveBeenCalledWith({ id: '1', updateTenantRequest: itemToEdit })
+        done()
+      })
+    })
+
+    it('should remove image when flagged as removed', (done) => {
+      const objectId = '1'
+      const itemToEdit = {
+        orgId: '2',
+        description: 'Test Desc'
+      }
+      const deleteImageRequest = {
+        refId: objectId,
+        refType: RefType.Logo
+      }
+      store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: objectId, orgId: 'org1' }])
+
+      jest
+        .spyOn(mockedDialogService, 'openDialog')
+        .mockReturnValue(of({ button: 'primary', result: { id: objectId, imageRemoved: true, ...itemToEdit } } as any))
+      jest.spyOn(mockedTenantService, 'updateTenant').mockReturnValue(of(itemToEdit as any))
+      jest.spyOn(mockedImageService, 'deleteImage').mockReturnValue(of({} as any))
+
+      const effects = initEffects()
+
+      effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: objectId }))
+
+      effects.editButtonClicked$.subscribe((action) => {
+        expect(mockedMessageService.success).toHaveBeenCalled()
+        expect(mockedImageService.deleteImage).toHaveBeenCalledWith(deleteImageRequest)
+        expect(mockedImageService.uploadImage).not.toHaveBeenCalled()
+        expect(action.type).toBe(TenantSearchActions.updateTenantSucceeded.type)
+        expect(mockedTenantService.updateTenant).toHaveBeenCalledWith({ id: '1', updateTenantRequest: itemToEdit })
+        done()
+      })
+    })
+
+    it('should upload and remove image when both flags are present', (done) => {
+      const objectId = '1'
+      const itemToEdit = {
+        orgId: '2',
+        description: 'Test Desc'
+      }
+      const image = new Blob()
+      const deleteImageRequest = {
+        refId: objectId,
+        refType: RefType.Logo
+      }
+      const uploadImageRequest = {
+        refId: objectId,
+        refType: RefType.Logo,
+        body: image
+      }
+
+      store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: objectId, orgId: 'org1' }])
+
+      jest
+        .spyOn(mockedDialogService, 'openDialog')
+        .mockReturnValue(
+          of({ button: 'primary', result: { id: objectId, imageRemoved: true, image, ...itemToEdit } } as any)
+        )
+      jest.spyOn(mockedTenantService, 'updateTenant').mockReturnValue(of(itemToEdit as any))
+      jest.spyOn(mockedImageService, 'uploadImage').mockReturnValue(of({} as any))
+      jest.spyOn(mockedImageService, 'deleteImage').mockReturnValue(of({} as any))
+
+      const effects = initEffects()
+
+      effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: objectId }))
+
+      effects.editButtonClicked$.subscribe((action) => {
+        expect(mockedImageService.uploadImage).toHaveBeenCalledWith(uploadImageRequest)
+        expect(mockedImageService.deleteImage).toHaveBeenCalledWith(deleteImageRequest)
+        expect(action.type).toBe(TenantSearchActions.updateTenantSucceeded.type)
+        done()
+      })
+    })
   })
 
   describe('Tenant create dialog', () => {
@@ -627,10 +773,52 @@ describe('TenantSearchEffects:', () => {
       effects.createButtonClicked$.subscribe((action) => {
         expect(mockedMessageService.error).toHaveBeenCalled()
         expect(action.type).toBe(TenantSearchActions.createTenantFailed.type)
-        expect((action as any).error).toBeDefined()
-        expect(((action as any).error as Error).message).toEqual('DialogResult was not set as expected!')
+        expect((action as any).error).toBe('DialogResult was not set as expected!')
         done()
       })
+    })
+
+    it('should fail create when dialog result is missing', (done) => {
+      jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(of({ button: 'primary', result: undefined } as any))
+
+      const effects = initEffects()
+
+      effects.createButtonClicked$.subscribe({
+        next: (action) => {
+          expect(mockedMessageService.error).toHaveBeenCalled()
+          expect(action.type).toBe(TenantSearchActions.createTenantFailed.type)
+          expect((action as any).error).toBe('DialogResult was not set as expected!')
+          done()
+        },
+        error: (error) => done(error)
+      })
+
+      effectsActions.next(TenantSearchActions.createTenantButtonClicked())
+    })
+
+    it('should emit failure when create service fails', (done) => {
+      jest
+        .spyOn(mockedDialogService, 'openDialog')
+        .mockReturnValue(
+          of({ button: 'primary', result: { orgId: '1', description: 'desc', tenantId: 'id-1' } } as any)
+        )
+
+      const createError = new Error('create failed')
+      jest.spyOn(mockedTenantService, 'createTenant').mockReturnValue(throwError(() => createError) as any)
+
+      const effects = initEffects()
+
+      effects.createButtonClicked$.subscribe({
+        next: (action) => {
+          expect(mockedMessageService.error).toHaveBeenCalledWith({ summaryKey: 'TENANT_CREATE_UPDATE.CREATE.ERROR' })
+          expect(action.type).toBe(TenantSearchActions.createTenantFailed.type)
+          expect((action as any).error).toBe(createError)
+          done()
+        },
+        error: (error) => done(error)
+      })
+
+      effectsActions.next(TenantSearchActions.createTenantButtonClicked())
     })
 
     it('should create tenant properly', (done) => {
