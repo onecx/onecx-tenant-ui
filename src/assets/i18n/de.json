@@ -8,12 +8,12 @@
       "CREATE": "Erstellen"
     },
     "CREATE": {
-      "HEADER": "Neues Tenant erstellen",
+      "HEADER": "Neuen Mandanten erstellen",
       "SUCCESS": "Erstellung erfolgreich",
       "ERROR": "Erstellung fehlgeschlagen",
       "FORM": {
-        "SAVE": "Save",
-        "CANCEL": "Cancel"
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen"
       }
     },
     "UPDATE": {

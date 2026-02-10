@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/portal-integration-angular'
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
@@ -41,7 +40,7 @@ export class TenantCreateUpdateComponent
   hasExistingImage = true
   imageRemoved = false
   uploadedFile: File | null = null
-  uploadedFilePreview: SafeUrl | null = null
+  uploadedFilePreview: string | null = null
 
   readonly menuItems: MenuItem[] = [
     {
@@ -59,8 +58,7 @@ export class TenantCreateUpdateComponent
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly imageService: ImagesAPIService,
-    private readonly sanitizer: DomSanitizer
+    private readonly imageService: ImagesAPIService
   ) {
     this.baseImagePath = this.imageService.configuration.basePath!
   }
@@ -97,8 +95,7 @@ export class TenantCreateUpdateComponent
     }
     this.uploadedFile = file
     this.uploadedFileUrl = URL.createObjectURL(file)
-    // Safe: only blob URLs from validated image files are trusted here for preview rendering.
-    this.uploadedFilePreview = this.sanitizer.bypassSecurityTrustUrl(this.uploadedFileUrl)
+    this.uploadedFilePreview = this.uploadedFileUrl
     this.imageRemoved = false
     if (this.formGroup.valid) {
       this.primaryButtonEnabled.next(true)
