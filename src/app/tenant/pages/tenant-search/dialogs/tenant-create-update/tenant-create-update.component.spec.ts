@@ -164,9 +164,10 @@ describe('TenantCreateUpdateComponent', () => {
         done()
       })
 
+      const file = new File(['test'], 'test.png', { type: 'image/png' })
       const event = {
         target: {
-          files: [new Blob() as File]
+          files: [file]
         }
       }
       component.handleFileChange(event as unknown as Event)
@@ -181,9 +182,10 @@ describe('TenantCreateUpdateComponent', () => {
 
       const revokeSpy = jest.spyOn(URL, 'revokeObjectURL')
       ;(component as any).uploadedFileUrl = 'blob:old'
+      const file = new File(['test'], 'test.png', { type: 'image/png' })
       const event = {
         target: {
-          files: [new Blob() as File]
+          files: [file]
         }
       }
 
@@ -222,11 +224,10 @@ describe('TenantCreateUpdateComponent', () => {
       component.vm = viewModel
       component.ngOnInit()
 
+      const file = new File(['test'], 'test.png', { type: 'image/png' })
       const event = {
         target: {
-          input: {
-            files: [new Blob() as File]
-          }
+          files: [file]
         }
       }
       component.handleFileChange(event as unknown as Event)
@@ -242,7 +243,7 @@ describe('TenantCreateUpdateComponent', () => {
       component.vm = viewModel
       component.ngOnInit()
       ;(component as any).uploadedFileUrl = 'blob:old'
-      component.uploadedFile = new Blob() as File
+      component.uploadedFile = new File(['test'], 'test.png', { type: 'image/png' })
       component.uploadedFilePreview = {} as any
       component.fileInput = { nativeElement: document.createElement('input') } as any
       component.formGroup.patchValue({ orgId: viewModel.itemToEdit?.orgId, tenantId: viewModel.itemToEdit?.tenantId })
@@ -301,5 +302,91 @@ describe('TenantCreateUpdateComponent', () => {
 
     component.onImageError()
     expect(component.hasExistingImage).toBe(false)
+  })
+
+  describe('file validation and handling', () => {
+    it('should do nothing when input has no files', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+
+      const initialUploadedFile = component.uploadedFile
+      const event = {
+        target: {
+          files: null
+        }
+      }
+
+      component.handleFileChange(event as unknown as Event)
+
+      expect(component.uploadedFile).toBe(initialUploadedFile)
+    })
+
+    it('should do nothing when input files array is empty', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+
+      const initialUploadedFile = component.uploadedFile
+      const event = {
+        target: {
+          files: []
+        }
+      }
+
+      component.handleFileChange(event as unknown as Event)
+
+      expect(component.uploadedFile).toBe(initialUploadedFile)
+    })
+
+    it('should reject non-image files and reset state', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+      component.uploadedFile = new File(['test'], 'test.png', { type: 'image/png' })
+      ;(component as any).uploadedFileUrl = 'blob:existing'
+      component.uploadedFilePreview = {} as any
+      component.fileInput = { nativeElement: document.createElement('input') } as any
+      component.fileInput.nativeElement.value = 'test.txt'
+
+      const revokeSpy = jest.spyOn(URL, 'revokeObjectURL')
+      const nonImageFile = new File(['test'], 'test.txt', { type: 'text/plain' })
+      const event = {
+        target: {
+          files: [nonImageFile]
+        }
+      }
+
+      component.handleFileChange(event as unknown as Event)
+
+      expect(revokeSpy).toHaveBeenCalledWith('blob:existing')
+      expect(component.uploadedFile).toBeNull()
+      expect((component as any).uploadedFileUrl).toBeNull()
+      expect(component.uploadedFilePreview).toBeNull()
+      expect(component.imageRemoved).toBe(false)
+      expect(component.fileInput.nativeElement.value).toBe('')
+    })
+
+    it('should accept image files with various MIME types', () => {
+      component.dialogMode = TenantDialogMode.UPDATE
+      component.vm = viewModel
+      component.ngOnInit()
+
+      const imageTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp']
+
+      imageTypes.forEach((type) => {
+        const file = new File(['test'], 'test.img', { type })
+        const event = {
+          target: {
+            files: [file]
+          }
+        }
+
+        component.handleFileChange(event as unknown as Event)
+
+        expect(component.uploadedFile).toBe(file)
+        expect((component as any).uploadedFileUrl).toEqual('blob:mock')
+      })
+    })
   })
 })

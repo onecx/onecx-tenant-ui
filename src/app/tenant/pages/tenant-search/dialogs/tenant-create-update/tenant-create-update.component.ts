@@ -54,13 +54,13 @@ export class TenantCreateUpdateComponent
     }
   ]
 
-  private baseImagePath: string
+  private readonly baseImagePath: string
   private uploadedFileUrl: string | null = null
 
   constructor(
-    private formBuilder: FormBuilder,
-    private imageService: ImagesAPIService,
-    private sanitizer: DomSanitizer
+    private readonly formBuilder: FormBuilder,
+    private readonly imageService: ImagesAPIService,
+    private readonly sanitizer: DomSanitizer
   ) {
     this.baseImagePath = this.imageService.configuration.basePath!
   }
@@ -84,32 +84,29 @@ export class TenantCreateUpdateComponent
 
   handleFileChange(event: Event) {
     const input = event.target as HTMLInputElement
-    if (input.files && input.files[0]) {
-      const file = input.files[0]
-      if (this.uploadedFileUrl) {
-        URL.revokeObjectURL(this.uploadedFileUrl)
-      }
-      this.uploadedFile = file
-      this.uploadedFileUrl = URL.createObjectURL(file)
-      this.uploadedFilePreview = this.sanitizer.bypassSecurityTrustUrl(this.uploadedFileUrl)
-      this.imageRemoved = false
-      if (this.formGroup.valid) {
-        this.primaryButtonEnabled.next(true)
-      }
+    const file = input.files?.[0]
+    if (!file) {
+      return
+    }
+    if (!this.isAllowedImage(file)) {
+      this.resetUploadedFileState(false)
+      return
+    }
+    if (this.uploadedFileUrl) {
+      URL.revokeObjectURL(this.uploadedFileUrl)
+    }
+    this.uploadedFile = file
+    this.uploadedFileUrl = URL.createObjectURL(file)
+    // Safe: only blob URLs from validated image files are trusted here for preview rendering.
+    this.uploadedFilePreview = this.sanitizer.bypassSecurityTrustUrl(this.uploadedFileUrl)
+    this.imageRemoved = false
+    if (this.formGroup.valid) {
+      this.primaryButtonEnabled.next(true)
     }
   }
 
   handleFileRemove() {
-    if (this.uploadedFileUrl) {
-      URL.revokeObjectURL(this.uploadedFileUrl)
-      this.uploadedFileUrl = null
-      this.uploadedFilePreview = null
-    }
-    this.uploadedFile = null
-    this.imageRemoved = true
-    if (this.fileInput?.nativeElement) {
-      this.fileInput.nativeElement.value = ''
-    }
+    this.resetUploadedFileState()
     if (this.formGroup.valid) {
       this.primaryButtonEnabled.next(true)
     }
@@ -182,5 +179,22 @@ export class TenantCreateUpdateComponent
         })
       )
       .subscribe(this.primaryButtonEnabled)
+  }
+
+  private isAllowedImage(file: File): boolean {
+    return file.type.startsWith('image/')
+  }
+
+  private resetUploadedFileState(markAsRemoved = true) {
+    if (this.uploadedFileUrl) {
+      URL.revokeObjectURL(this.uploadedFileUrl)
+    }
+    this.uploadedFileUrl = null
+    this.uploadedFilePreview = null
+    this.uploadedFile = null
+    this.imageRemoved = markAsRemoved
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = ''
+    }
   }
 }

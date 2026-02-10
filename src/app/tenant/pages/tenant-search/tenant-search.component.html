@@ -78,7 +78,14 @@
           </div>
         </ng-template>
         <ng-template #gridItem let-item>
-          <p-card class="grid-item-card" (click)="handleOpenEntryDetails(item)">
+          <p-card
+            class="grid-item-card"
+            (click)="handleOpenEntryDetails(item)"
+            (onkeypress)="handleOpenEntryDetails(item)"
+            (keydown.enter)="handleOpenEntryDetails(item)"
+            tabindex="0"
+            role="button"
+          >
             <ng-template pTemplate="header">
               <span class="grid-item-title">{{ item['tenantId'] | titlecase }}</span>
             </ng-template>
@@ -108,8 +115,11 @@
         <ng-template #listItem let-item>
           <article
             (click)="handleOpenEntryDetails(item)"
+            (onkeypress)="handleOpenEntryDetails(item)"
+            (keydown.enter)="handleOpenEntryDetails(item)"
+            tabindex="0"
+            role="button"
             class="list-item-row"
-            [ngClass]="{ 'list-item-row-even': isEvenRow(item) }"
             [id]="'tm_search_data_list_row_' + item['id']"
             [attr.aria-label]="item['tenantId']"
           >

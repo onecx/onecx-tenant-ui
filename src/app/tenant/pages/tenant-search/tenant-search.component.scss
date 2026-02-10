@@ -127,7 +127,7 @@
     cursor: pointer;
   }
 
-  &.list-item-row-even {
+  &:nth-child(odd) {
     background-color: #fafafa;
   }
 

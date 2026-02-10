@@ -1,5 +1,5 @@
 import { PortalDialogService } from '@onecx/portal-integration-angular'
-import { concat, mergeMap, Observable, withLatestFrom } from 'rxjs'
+import { concat, mergeMap, Observable, withLatestFrom, catchError, last, map, of, switchMap, tap } from 'rxjs'
 import {
   CreateTenantRequest,
   UpdateTenantRequest,
@@ -16,7 +16,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
-import { catchError, last, map, of, switchMap, tap } from 'rxjs'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const equal = require('fast-deep-equal')
 
@@ -41,7 +40,7 @@ import { PrimeIcons } from 'primeng/api'
 @Injectable()
 export class TenantSearchEffects {
   constructor(
-    private portalDialogService: PortalDialogService,
+    private readonly portalDialogService: PortalDialogService,
     private readonly actions$: Actions,
     @SkipSelf() private readonly route: ActivatedRoute,
     private readonly tenantService: TenantAPIService,

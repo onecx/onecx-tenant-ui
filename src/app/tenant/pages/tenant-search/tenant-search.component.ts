@@ -129,7 +129,7 @@ export class TenantSearchComponent implements OnInit {
           : null
       }),
       {}
-    ) as TenantSearchCriteria
+    )
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
@@ -182,12 +182,6 @@ export class TenantSearchComponent implements OnInit {
 
   showDefaultIcon(id: string): boolean {
     return this.failedImages[id] === true
-  }
-
-  isEvenRow(item: Tenant): boolean {
-    const items = this.filteredResults$.value
-    const index = items.findIndex((i) => i === item)
-    return index % 2 === 0
   }
 
   onCreateTenant() {

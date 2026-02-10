@@ -65,9 +65,9 @@
               [ocxSrc]="getImageUrl()"
               (load)="onImageLoad()"
               (error)="onImageError()"
-              alt="Tenant image"
+              alt="Tenant"
             />
-            <img *ngIf="uploadedFile" [src]="uploadedFilePreview" alt="New tenant image" />
+            <img *ngIf="uploadedFile" [src]="uploadedFilePreview" alt="New tenant" />
             <i *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile" class="pi pi-image image-placeholder"></i>
           </div>
 

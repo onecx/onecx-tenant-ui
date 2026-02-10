@@ -169,17 +169,6 @@ describe('TenantSearchComponent', () => {
     expect(parsed.pageSize).toBeUndefined()
   })
 
-  it('should determine whether the row index is even', () => {
-    const firstItem = { id: '1' } as any
-    const secondItem = { id: '2' } as any
-    const thirdItem = { id: '3' } as any
-    component.filteredResults$.next([firstItem, secondItem, thirdItem])
-
-    expect(component.isEvenRow(firstItem)).toBe(true)
-    expect(component.isEvenRow(secondItem)).toBe(false)
-    expect(component.isEvenRow(thirdItem)).toBe(true)
-  })
-
   it('should filter results using orgId or tenantId', () => {
     const matchingOrg = { orgId: 'Alpha', tenantId: 'T-1' } as any
     const matchingTenant = { orgId: 'Other', tenantId: 'Target' } as any
