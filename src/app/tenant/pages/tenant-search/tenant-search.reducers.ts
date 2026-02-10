@@ -22,7 +22,8 @@ export const tenantSearchReducer = createReducer(
     if (results.success) {
       return {
         ...state,
-        criteria: results.data
+        criteria: results.data,
+        loadingData: true
       }
     }
     return state
@@ -44,8 +45,7 @@ export const tenantSearchReducer = createReducer(
     TenantSearchActions.searchButtonClicked,
     (state: TenantSearchState, { searchCriteria }): TenantSearchState => ({
       ...state,
-      criteria: searchCriteria,
-      loadingData: true
+      criteria: searchCriteria
     })
   ),
   on(

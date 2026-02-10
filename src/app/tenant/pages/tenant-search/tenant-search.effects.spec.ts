@@ -865,11 +865,13 @@ describe('TenantSearchEffects:', () => {
               dialogMode: TenantDialogMode.DETAILS
             })
           }),
-          'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
+          expect.objectContaining({
+            key: 'TENANT_CREATE_UPDATE.DETAILS.BUTTON'
+          }),
           undefined,
           expect.objectContaining({
             baseZIndex: 100,
-            width: '1000px'
+            width: '35vw'
           })
         )
         done()
@@ -900,7 +902,7 @@ describe('TenantSearchEffects:', () => {
               dialogMode: TenantDialogMode.DETAILS
             })
           }),
-          expect.any(String),
+          expect.objectContaining({ key: expect.any(String) }),
           undefined,
           expect.any(Object)
         )

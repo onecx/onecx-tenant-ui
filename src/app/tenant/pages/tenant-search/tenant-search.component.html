@@ -30,25 +30,25 @@
     </div>
   </ocx-search-header>
 
-  <ocx-content-container layout="horizontal">
+  <ocx-loading-indicator *ngIf="vm.loadingData"></ocx-loading-indicator>
+  <ocx-content-container layout="horizontal" *ngIf="!vm.loadingData">
     <ocx-content class="w-full no-card-padding">
-      <ocx-loading-indicator *ngIf="vm.loadingData"></ocx-loading-indicator>
       <ocx-interactive-data-view
-        *ngIf="!vm.loadingData"
-        editPermission="ADMIN#EDIT"
+        [editPermission]="'TENANT#ADMIN_EDIT'"
         [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
-        viewPermission="TENANT#VIEW"
+        [viewPermission]="'TENANT#ADMIN_VIEW'"
         searchConfigPermission="SEARCHCONFIG#USE"
         [listGridPaginator]="true"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
-        [supportedViewLayouts]="['list', 'grid']"
+        [supportedViewLayouts]="['list', 'grid', 'table']"
         [layout]="layout"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
         [sortField]="'tenantId'"
         [sortDirection]="ascendingSortDirection"
+        (editItem)="handleOpenEntryDetails($event)"
       >
         <ng-template #topCenter>
           <div class="p-inputgroup">
@@ -78,13 +78,11 @@
           </div>
         </ng-template>
         <ng-template #gridItem let-item>
-          <p-card class="grid-item-card">
+          <p-card class="grid-item-card" (click)="handleOpenEntryDetails(item)">
             <ng-template pTemplate="header">
-              <span class="grid-item-title" (click)="handleOpenEntryDetails(item)">{{
-                item['tenantId'] | titlecase
-              }}</span>
+              <span class="grid-item-title">{{ item['tenantId'] | titlecase }}</span>
             </ng-template>
-            <div class="grid-item-content" (click)="handleOpenEntryDetails(item)">
+            <div class="grid-item-content">
               <span
                 class="pi pi-image image-container default-icon"
                 [class.hidden]="!showDefaultIcon(item['id'])"

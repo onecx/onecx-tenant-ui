@@ -176,8 +176,8 @@ export class TenantSearchComponent implements OnInit {
     menu.toggle(event)
   }
 
-  handleOpenEntryDetails(item: Tenant) {
-    this.store.dispatch(TenantSearchActions.openDialogForExistingEntry({ id: item.id }))
+  handleOpenEntryDetails(item: Tenant | RowListGridData) {
+    this.store.dispatch(TenantSearchActions.openDialogForExistingEntry({ id: String(item.id) }))
   }
 
   showDefaultIcon(id: string): boolean {

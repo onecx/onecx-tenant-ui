@@ -36,6 +36,7 @@ import {
   TenantCreateUpdateDialogResult,
   TenantDialogMode
 } from './dialogs/tenant-create-update/tenant-create-update.types'
+import { PrimeIcons } from 'primeng/api'
 
 @Injectable()
 export class TenantSearchEffects {
@@ -52,6 +53,7 @@ export class TenantSearchEffects {
   ) {}
 
   pageName = 'tenant'
+  private readonly DIALOG_WIDTH = '35vw'
 
   syncParamsToUrl$ = createEffect(
     () => {
@@ -117,11 +119,17 @@ export class TenantSearchEffects {
               dialogMode: TenantDialogMode.UPDATE
             }
           },
-          'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
-          'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
+          {
+            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
+            icon: PrimeIcons.SAVE
+          },
+          {
+            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
+            icon: PrimeIcons.TIMES
+          },
           {
             baseZIndex: 100,
-            width: '1000px'
+            width: this.DIALOG_WIDTH
           }
         )
       }),
@@ -186,11 +194,17 @@ export class TenantSearchEffects {
               dialogMode: TenantDialogMode.CREATE
             }
           },
-          'TENANT_CREATE_UPDATE.CREATE.FORM.SAVE',
-          'TENANT_CREATE_UPDATE.CREATE.FORM.CANCEL',
+          {
+            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
+            icon: PrimeIcons.SAVE
+          },
+          {
+            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
+            icon: PrimeIcons.TIMES
+          },
           {
             baseZIndex: 100,
-            width: '1000px'
+            width: this.DIALOG_WIDTH
           }
         )
       }),
@@ -255,11 +269,14 @@ export class TenantSearchEffects {
                 dialogMode: TenantDialogMode.DETAILS
               }
             },
-            'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
+            {
+              key: 'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
+              icon: PrimeIcons.CHECK
+            },
             undefined,
             {
               baseZIndex: 100,
-              width: '1000px'
+              width: this.DIALOG_WIDTH
             }
           )
         })
