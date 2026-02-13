@@ -9,6 +9,7 @@ import { Store, StoreModule } from '@ngrx/store'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { DialogService } from 'primeng/dynamicdialog'
+import { PrimeIcons } from 'primeng/api'
 
 import { ColumnType, DataTableColumn, PortalCoreModule, UserService } from '@onecx/portal-integration-angular'
 
@@ -356,7 +357,7 @@ describe('TenantSearchComponent', () => {
 
     component.handleOpenEntryDetails(tenant as Tenant)
 
-    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.openDialogForExistingEntry({ id: 'tenant-456' }))
+    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.dialogForExistingEntryOpened({ id: 'tenant-456' }))
   })
 
   it('should return image URL for given object ID', () => {
@@ -549,5 +550,34 @@ describe('TenantSearchComponent', () => {
       expect(component.onCreateTenant).toHaveBeenCalled()
       done()
     })
+  })
+
+  it('should call handleOpenEntryDetails when additionalActions callback is invoked', () => {
+    jest.spyOn(component, 'handleOpenEntryDetails')
+    const testData = { id: 'test-123', orgId: 'org-test', tenantId: 'tenant-test' }
+
+    const action = component.additionalActions[0]
+    expect(action).toBeDefined()
+    expect(action.permission).toBe('TENANT#SEARCH')
+
+    action.callback(testData)
+
+    expect(component.handleOpenEntryDetails).toHaveBeenCalledWith(testData)
+  })
+
+  it('should set icon to PENCIL when user has TENANT#ADMIN_EDIT permission', () => {
+    const action = component.additionalActions[0]
+    expect(action.icon).toBe(PrimeIcons.PENCIL)
+  })
+
+  it('should set icon to EYE when user does not have TENANT#ADMIN_EDIT permission', () => {
+    const userService = TestBed.inject(UserService)
+    jest.spyOn(userService, 'hasPermission').mockReturnValue(false)
+
+    const localFixture = TestBed.createComponent(TenantSearchComponent)
+    const localComponent = localFixture.componentInstance
+
+    const action = localComponent.additionalActions[0]
+    expect(action.icon).toBe(PrimeIcons.EYE)
   })
 })

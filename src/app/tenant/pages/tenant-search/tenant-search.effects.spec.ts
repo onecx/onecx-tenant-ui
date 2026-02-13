@@ -433,7 +433,7 @@ describe('TenantSearchEffects:', () => {
     jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(false)
 
     const effects = initEffects()
-    effectsActions.next(TenantSearchActions.openDialogForExistingEntry({ id: '1' }))
+    effectsActions.next(TenantSearchActions.dialogForExistingEntryOpened({ id: '1' }))
 
     effects.openDialogForExistingEntry$.subscribe((action) => {
       expect(action.type).toBe(TenantSearchActions.openTenantDetailsButtonClicked.type)
@@ -445,7 +445,7 @@ describe('TenantSearchEffects:', () => {
     jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(true)
 
     const effects = initEffects()
-    effectsActions.next(TenantSearchActions.openDialogForExistingEntry({ id: '1' }))
+    effectsActions.next(TenantSearchActions.dialogForExistingEntryOpened({ id: '1' }))
 
     effects.openDialogForExistingEntry$.subscribe((action) => {
       expect(action.type).toBe(TenantSearchActions.editTenantButtonClicked.type)

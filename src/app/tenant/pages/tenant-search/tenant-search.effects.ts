@@ -88,7 +88,7 @@ export class TenantSearchEffects {
 
   openDialogForExistingEntry$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(TenantSearchActions.openDialogForExistingEntry),
+      ofType(TenantSearchActions.dialogForExistingEntryOpened),
       withLatestFrom(of(this.userServcie.hasPermission('TENANT#ADMIN_EDIT'))),
       map(([action, hasEditPermission]) => {
         if (hasEditPermission) {
@@ -120,11 +120,15 @@ export class TenantSearchEffects {
           },
           {
             key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
-            icon: PrimeIcons.SAVE
+            icon: PrimeIcons.SAVE,
+            tooltipKey: 'TENANT_CREATE_UPDATE.UPDATE.FORM.TOOLTIPS.SAVE',
+            tooltipPosition: 'bottom'
           },
           {
             key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
-            icon: PrimeIcons.TIMES
+            icon: PrimeIcons.TIMES,
+            tooltipKey: 'TENANT_CREATE_UPDATE.UPDATE.FORM.TOOLTIPS.CANCEL',
+            tooltipPosition: 'bottom'
           },
           {
             baseZIndex: 100,
@@ -194,12 +198,16 @@ export class TenantSearchEffects {
             }
           },
           {
-            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.SAVE',
-            icon: PrimeIcons.SAVE
+            key: 'TENANT_CREATE_UPDATE.CREATE.FORM.SAVE',
+            icon: PrimeIcons.SAVE,
+            tooltipKey: 'TENANT_CREATE_UPDATE.CREATE.FORM.TOOLTIPS.SAVE',
+            tooltipPosition: 'bottom'
           },
           {
-            key: 'TENANT_CREATE_UPDATE.UPDATE.FORM.CANCEL',
-            icon: PrimeIcons.TIMES
+            key: 'TENANT_CREATE_UPDATE.CREATE.FORM.CANCEL',
+            icon: PrimeIcons.TIMES,
+            tooltipKey: 'TENANT_CREATE_UPDATE.CREATE.FORM.TOOLTIPS.CANCEL',
+            tooltipPosition: 'bottom'
           },
           {
             baseZIndex: 100,
@@ -270,7 +278,9 @@ export class TenantSearchEffects {
             },
             {
               key: 'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
-              icon: PrimeIcons.CHECK
+              icon: PrimeIcons.CHECK,
+              tooltipKey: 'TENANT_CREATE_UPDATE.DETAILS.TOOLTIPS.BUTTON',
+              tooltipPosition: 'bottom'
             },
             undefined,
             {

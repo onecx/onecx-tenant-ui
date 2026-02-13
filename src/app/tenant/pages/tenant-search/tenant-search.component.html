@@ -34,10 +34,10 @@
   <ocx-content-container layout="horizontal" *ngIf="!vm.loadingData">
     <ocx-content class="w-full no-card-padding">
       <ocx-interactive-data-view
-        [editPermission]="'TENANT#ADMIN_EDIT'"
+        [actionColumnPosition]="'left'"
+        [additionalActions]="additionalActions"
         [data]="(filteredResults$ | async) || []"
         [columns]="vm.columns"
-        [viewPermission]="'TENANT#ADMIN_VIEW'"
         searchConfigPermission="SEARCHCONFIG#USE"
         [listGridPaginator]="true"
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
@@ -48,7 +48,6 @@
         [pageSizes]="[10, 50, 1000]"
         [sortField]="'tenantId'"
         [sortDirection]="ascendingSortDirection"
-        (editItem)="handleOpenEntryDetails($event)"
       >
         <ng-template #topCenter>
           <div class="p-inputgroup">
@@ -116,7 +115,6 @@
             (click)="handleOpenEntryDetails(item)"
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
-            tabindex="0"
             class="list-item-row"
             [id]="'tm_search_data_list_row_' + item['id']"
             [attr.aria-label]="item['tenantId']"
@@ -160,7 +158,7 @@
             <div
               [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
               [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
-              [pTooltip]="item['description'] && item['description'].length > 50 ? item['description'] : ''"
+              [ocxTooltipOnOverflow]="item['description']"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="note"

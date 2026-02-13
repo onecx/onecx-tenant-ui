@@ -5,8 +5,8 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observ
 import { PrimeIcons } from 'primeng/api'
 import deepEqual from 'fast-deep-equal'
 
-import { Action, BreadcrumbService, DataSortDirection, RowListGridData } from '@onecx/angular-accelerator'
-import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
+import { Action, BreadcrumbService, DataAction, DataSortDirection, RowListGridData } from '@onecx/angular-accelerator'
+import { DataTableColumn, ExportDataService, SearchConfigData, UserService } from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
 
@@ -69,7 +69,13 @@ export class TenantSearchComponent implements OnInit {
   filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
   imageBasePath = this.imageService.configuration.basePath!
   failedImages: Record<string, boolean> = {}
-  private imageTimestamp = Date.now()
+  additionalActions: DataAction[] = [
+    {
+      icon: this.userService.hasPermission('TENANT#ADMIN_EDIT') ? PrimeIcons.PENCIL : PrimeIcons.EYE,
+      callback: (data) => this.handleOpenEntryDetails(data as RowListGridData),
+      permission: 'TENANT#SEARCH'
+    }
+  ]
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -87,7 +93,8 @@ export class TenantSearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
-    private readonly imageService: ImagesAPIService
+    private readonly imageService: ImagesAPIService,
+    private readonly userService: UserService
   ) {}
 
   public ngOnInit() {
@@ -177,7 +184,7 @@ export class TenantSearchComponent implements OnInit {
   }
 
   handleOpenEntryDetails(item: Tenant | RowListGridData) {
-    this.store.dispatch(TenantSearchActions.openDialogForExistingEntry({ id: String(item.id) }))
+    this.store.dispatch(TenantSearchActions.dialogForExistingEntryOpened({ id: String(item.id) }))
   }
 
   showDefaultIcon(id: string): boolean {
@@ -214,7 +221,6 @@ export class TenantSearchComponent implements OnInit {
       )
       .subscribe((results) => {
         this.failedImages = {}
-        this.imageTimestamp = Date.now()
         this.clearTextFilters(false)
         this.handleFilterChange(null, results)
       })

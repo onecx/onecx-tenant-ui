@@ -1,6 +1,6 @@
 <p-tabMenu *ngIf="dialogMode !== dialogModeEnum.CREATE" [model]="menuItems" [activeItem]="menuItems[0]">
   <ng-template pTemplate="item" let-item>
-    <a class="p-menuitem-link">
+    <a class="p-menuitem-link" [pTooltip]="item.tooltip | translate" tooltipPosition="top">
       <span class="ml-2">
         {{ item.label | translate }}
       </span>
@@ -11,27 +11,19 @@
   <form [formGroup]="formGroup">
     <div class="form-fields-container">
       @if (selectedTab === 'main') {
-        <!-- Editable fields -->
         <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
-          <span class="p-float-label" controlErrorAnchor>
-            <input pInputText type="text" id="tenant_detail_form_orgId" class="form-input" formControlName="orgId" />
-            <label class="ocx-required-label" for="tenant_detail_form_orgId">
-              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
-            >
-          </span>
-        </div>
-
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
               type="text"
-              id="tenant_detail_form_description"
+              id="tenant_detail_form_orgId"
               class="form-input"
-              formControlName="description"
+              formControlName="orgId"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
+              tooltipPosition="top"
             />
-            <label for="tenant_detail_form_description">
-              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            <label class="ocx-required-label" for="tenant_detail_form_orgId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
             >
           </span>
         </div>
@@ -44,12 +36,32 @@
               id="tenant_detail_form_tenantId"
               class="form-input"
               formControlName="tenantId"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
+              tooltipPosition="top"
             />
             <label class="ocx-required-label" for="tenant_detail_form_tenantId">
               {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label
             >
           </span>
         </div>
+
+        <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_description"
+              class="form-input"
+              formControlName="description"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              tooltipPosition="top"
+            />
+            <label for="tenant_detail_form_description">
+              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            >
+          </span>
+        </div>
+
         <div class="image-container" *ngIf="dialogMode !== dialogModeEnum.CREATE">
           <input
             #fileInput
@@ -71,25 +83,25 @@
             <i *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile" class="pi pi-image image-placeholder"></i>
           </div>
 
-          <div class="image-buttons" *ngIf="dialogMode !== dialogModeEnum.DETAILS">
-            <button
-              pButton
-              type="button"
-              icon="pi pi-upload"
-              [label]="'TENANT_CREATE_UPDATE.FORM.CHOOSE_IMAGE' | translate"
-              class="p-button-outlined"
-              (click)="fileInput.click()"
-            ></button>
+          <ng-container class="image-buttons" *ngIf="dialogMode !== dialogModeEnum.DETAILS">
             <button
               pButton
               type="button"
               icon="pi pi-trash"
-              [label]="'TENANT_CREATE_UPDATE.FORM.REMOVE_IMAGE' | translate"
-              class="p-button-outlined p-button-danger"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.REMOVE_IMAGE' | translate"
+              tooltipPosition="top"
               (click)="handleFileRemove()"
               [disabled]="(!hasExistingImage || imageRemoved) && !uploadedFile"
             ></button>
-          </div>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-upload"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
+              tooltipPosition="top"
+              (click)="fileInput.click()"
+            ></button>
+          </ng-container>
         </div>
       } @else {
         <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
@@ -100,6 +112,8 @@
               id="tenant_detail_form_creationUser"
               class="form-input"
               formControlName="creationUser"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CREATION_USER' | translate"
+              tooltipPosition="top"
             />
             <label for="tenant_detail_form_creationUser">
               {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
@@ -115,6 +129,8 @@
               id="tenant_detail_form_creationDate"
               class="form-input"
               formControlName="creationDate"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CREATION_DATE' | translate"
+              tooltipPosition="top"
             />
             <label for="tenant_detail_form_creationDate">
               {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
@@ -130,6 +146,8 @@
               id="tenant_detail_form_modificationUser"
               class="form-input"
               formControlName="modificationUser"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.MODIFICATION_USER' | translate"
+              tooltipPosition="top"
             />
             <label for="tenant_detail_form_modificationUser">
               {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
@@ -145,6 +163,8 @@
               id="tenant_detail_form_modificationDate"
               class="form-input"
               formControlName="modificationDate"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.MODIFICATION_DATE' | translate"
+              tooltipPosition="top"
             />
             <label for="tenant_detail_form_modificationDate">
               {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label

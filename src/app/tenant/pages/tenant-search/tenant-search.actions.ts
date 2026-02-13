@@ -9,7 +9,7 @@ import { TenantSearchCriteria } from './tenant-search.parameters'
 export const TenantSearchActions = createActionGroup({
   source: 'TenantSearch',
   events: {
-    'Open dialog for existing entry': props<{ id: number | string }>(),
+    'Dialog for existing entry opened': props<{ id: number | string }>(),
     'Create tenant button clicked': emptyProps(),
     'Edit tenant button clicked': props<{
       id: number | string

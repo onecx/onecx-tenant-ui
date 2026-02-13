@@ -45,10 +45,12 @@ export class TenantCreateUpdateComponent
   readonly menuItems: MenuItem[] = [
     {
       label: 'TENANT_CREATE_UPDATE.MENU.PROPERTIES',
+      tooltip: 'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.PROPERTIES',
       command: () => (this.selectedTab = 'main')
     },
     {
       label: 'TENANT_CREATE_UPDATE.MENU.INTERNAL',
+      tooltip: 'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.INTERNAL',
       command: () => (this.selectedTab = 'internal')
     }
   ]

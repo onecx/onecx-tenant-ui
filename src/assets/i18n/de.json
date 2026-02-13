@@ -2,7 +2,11 @@
   "TENANT_CREATE_UPDATE": {
     "MENU": {
       "PROPERTIES": "Eigenschaften",
-      "INTERNAL": "Intern"
+      "INTERNAL": "Intern",
+      "TOOLTIPS": {
+        "PROPERTIES": "Haupteigenschaften des Mandanten",
+        "INTERNAL": "Systemmetadaten und Audit-Informationen"
+      }
     },
     "ACTION": {
       "CREATE": "Erstellen"
@@ -13,7 +17,11 @@
       "ERROR": "Erstellung fehlgeschlagen",
       "FORM": {
         "SAVE": "Speichern",
-        "CANCEL": "Abbrechen"
+        "CANCEL": "Abbrechen",
+        "TOOLTIPS": {
+          "SAVE": "Neuen Mandanten erstellen",
+          "CANCEL": "Abbrechen und Dialog schließen"
+        }
       }
     },
     "UPDATE": {
@@ -21,14 +29,21 @@
       "FAILED": "ACTION: Add Translation",
       "ERROR": "Aktualisierung fehlgeschlagen",
       "FORM": {
-        "SAVE": "Save",
-        "CANCEL": "Cancel"
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen",
+        "TOOLTIPS": {
+          "SAVE": "Änderungen speichern",
+          "CANCEL": "Abbrechen und Änderungen verwerfen"
+        }
       },
       "HEADER": "Tenant bearbeiten"
     },
     "DETAILS": {
       "HEADER": "Tenant Daten",
-      "BUTTON": "OK"
+      "BUTTON": "Schließen",
+      "TOOLTIPS": {
+        "BUTTON": "Details-Dialog schließen"
+      }
     },
     "FORM": {
       "ORG_ID": "Organisations-ID",
@@ -39,7 +54,18 @@
       "MODIFICATION_USER": "Geändert von",
       "MODIFICATION_DATE": "Geändert am",
       "CHOOSE_IMAGE": "Auswählen",
-      "REMOVE_IMAGE": "Entfernen"
+      "REMOVE_IMAGE": "Entfernen",
+      "TOOLTIPS": {
+        "ORG_ID": "Eindeutige orgId für IAM-Integration",
+        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
+        "DESCRIPTION": "Optionale Beschreibung des Mandanten",
+        "CREATION_USER": "Benutzer, der diesen Mandanten erstellt hat",
+        "CREATION_DATE": "Datum, an dem der Mandant erstellt wurde",
+        "MODIFICATION_USER": "Benutzer, der diesen Mandanten zuletzt geändert hat",
+        "MODIFICATION_DATE": "Datum der letzten Änderung",
+        "CHOOSE_IMAGE": "Mandanten-Logo hochladen",
+        "REMOVE_IMAGE": "Aktuelles Mandanten-Logo entfernen"
+      }
     }
   },
   "TENANT_SEARCH": {
@@ -69,7 +95,7 @@
       "ORGID": "Organisations-ID"
     },
     "COLUMNS": {
-      "ORG_ID": "Org ID",
+      "ORG_ID": "Organisations ID",
       "TENANT_ID": "Mandanten ID",
       "DESCRIPTION": "Beschreibung",
       "MODIFICATION_DATE": "Geändert am",
