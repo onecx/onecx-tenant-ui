@@ -278,7 +278,7 @@ export class TenantSearchEffects {
             },
             {
               key: 'TENANT_CREATE_UPDATE.DETAILS.BUTTON',
-              icon: PrimeIcons.CHECK,
+              icon: PrimeIcons.TIMES,
               tooltipKey: 'TENANT_CREATE_UPDATE.DETAILS.TOOLTIPS.BUTTON',
               tooltipPosition: 'bottom'
             },

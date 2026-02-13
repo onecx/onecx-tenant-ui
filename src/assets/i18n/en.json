@@ -113,6 +113,13 @@
       "LABEL": "Filter",
       "TOOLTIP": "Filter by Org ID or Tenant ID",
       "CLEAR": "Clear filter"
+    },
+    "LIST_ITEM": {
+      "TOOLTIPS": {
+        "TENANT_ID": "Unique identifier for this tenant",
+        "ORG_ID": "Organization ID for IAM integration",
+        "DESCRIPTION": "Optional tenant description"
+      }
     }
   }
 }

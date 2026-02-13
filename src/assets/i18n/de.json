@@ -113,6 +113,13 @@
       "PLACEHOLDER": "Filter",
       "TOOLTIP": "Nach Org ID oder Mandanten ID filtern",
       "CLEAR": "Filter löschen"
+    },
+    "LIST_ITEM": {
+      "TOOLTIPS": {
+        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
+        "ORG_ID": "Organisations-ID für IAM-Integration",
+        "DESCRIPTION": "Optionale Mandantenbeschreibung"
+      }
     }
   }
 }

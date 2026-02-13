@@ -84,10 +84,8 @@
             (keydown.enter)="handleOpenEntryDetails(item)"
             tabindex="0"
           >
-            <ng-template pTemplate="header">
-              <span class="grid-item-title">{{ item['tenantId'] | titlecase }}</span>
-            </ng-template>
             <div class="grid-item-content">
+              <span class="grid-item-title">{{ item['tenantId'] | titlecase }}</span>
               <span
                 class="pi pi-image image-container default-icon"
                 [class.hidden]="!showDefaultIcon(item['id'])"
@@ -100,13 +98,9 @@
                 alt="Tenant logo"
                 [class.hidden]="showDefaultIcon(item['id'])"
               />
-              <div>
-                <span>Org ID: </span>
-                <span>{{ item['orgId'] }}</span>
-              </div>
-              <div class="grid-item-description">
-                <span>{{ item['description'] }}</span>
-              </div>
+              <span [pTooltip]="'orgId'" [tooltipPosition]="'bottom'">
+                {{ item['orgId'] }}
+              </span>
             </div>
           </p-card>
         </ng-template>
@@ -138,8 +132,8 @@
             <div
               [id]="'tm_search_data_list_row_' + item['id'] + '_tenant_id'"
               aria-label="Tenant ID"
-              [pTooltip]="item['tenantId']"
-              tooltipPosition="top"
+              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+              tooltipPosition="bottom"
               tooltipEvent="hover"
               role="note"
             >
@@ -148,8 +142,8 @@
             <div
               [id]="'tm_search_data_list_row_' + item['id'] + '_org_id'"
               aria-label="Organization ID"
-              [pTooltip]="item['orgId']"
-              tooltipPosition="top"
+              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
+              tooltipPosition="bottom"
               tooltipEvent="hover"
               role="note"
             >
@@ -158,8 +152,8 @@
             <div
               [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
               [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
-              [ocxTooltipOnOverflow]="item['description']"
-              tooltipPosition="top"
+              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
+              tooltipPosition="bottom"
               tooltipEvent="hover"
               role="note"
             >

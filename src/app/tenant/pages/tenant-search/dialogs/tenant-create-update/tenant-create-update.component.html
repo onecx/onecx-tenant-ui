@@ -11,24 +11,7 @@
   <form [formGroup]="formGroup">
     <div class="form-fields-container">
       @if (selectedTab === 'main') {
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate">
-          <span class="p-float-label" controlErrorAnchor>
-            <input
-              pInputText
-              type="text"
-              id="tenant_detail_form_orgId"
-              class="form-input"
-              formControlName="orgId"
-              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
-              tooltipPosition="top"
-            />
-            <label class="ocx-required-label" for="tenant_detail_form_orgId">
-              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
-            >
-          </span>
-        </div>
-
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
@@ -45,19 +28,19 @@
           </span>
         </div>
 
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
               type="text"
-              id="tenant_detail_form_description"
+              id="tenant_detail_form_orgId"
               class="form-input"
-              formControlName="description"
-              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              formControlName="orgId"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
               tooltipPosition="top"
             />
-            <label for="tenant_detail_form_description">
-              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            <label class="ocx-required-label" for="tenant_detail_form_orgId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
             >
           </span>
         </div>
@@ -103,8 +86,26 @@
             ></button>
           </ng-container>
         </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <textarea
+              pInputTextarea
+              rows="3"
+              type="text"
+              id="tenant_detail_form_description"
+              class="form-input"
+              formControlName="description"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              tooltipPosition="top"
+            ></textarea>
+            <label for="tenant_detail_form_description">
+              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            >
+          </span>
+        </div>
       } @else {
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
@@ -121,7 +122,7 @@
           </span>
         </div>
 
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
@@ -138,7 +139,7 @@
           </span>
         </div>
 
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
@@ -155,7 +156,7 @@
           </span>
         </div>
 
-        <div [title]="'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate">
+        <div>
           <span class="p-float-label" controlErrorAnchor>
             <input
               pInputText
