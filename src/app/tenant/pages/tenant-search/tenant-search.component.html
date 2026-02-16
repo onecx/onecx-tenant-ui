@@ -88,10 +88,12 @@
               <span class="flex justify-content-center w-full font-bold grid-item-title">{{
                 item['tenantId'] | titlecase
               }}</span>
-              <span
-                class="pi pi-image image-container default-icon text-center"
+              <img
+                class="image-container"
+                [ocxSrc]="tenantDefaultImagePath"
+                alt="Tenant logo"
                 [class.hidden]="!showDefaultIcon(item['id'])"
-              ></span>
+              />
               <img
                 class="image-container"
                 (error)="imageLoadFailed(item['id'])"
@@ -119,11 +121,13 @@
               class="col-fixed logo-column flex justify-content-center align-items-center"
               [id]="'tm_search_data_list_row_' + item['id'] + '_logo'"
             >
-              <span
-                class="pi pi-image list-item-default-icon border-round-sm"
+              <img
+                class="list-item-logo border-round-sm"
+                [src]="tenantDefaultImagePath"
+                alt="Tenant logo"
                 aria-hidden="true"
                 [class.hidden]="!showDefaultIcon(item['id'])"
-              ></span>
+              />
               <img
                 class="list-item-logo border-round-sm"
                 (error)="imageLoadFailed(item['id'])"

@@ -3,12 +3,15 @@ import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular'
+import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { TenantCreateUpdateComponent } from './tenant-create-update.component'
 import { provideHttpClient } from '@angular/common/http'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
+import { environment } from 'src/environments/environment'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -48,6 +51,7 @@ const viewModel: TenantCreateUpdateViewModel = {
 describe('TenantCreateUpdateComponent', () => {
   let component: TenantCreateUpdateComponent
   let fixture: ComponentFixture<TenantCreateUpdateComponent>
+  let appStateServiceMock: AppStateServiceMock
 
   const mockActivatedRoute = {}
   const mockedImageService: Partial<ImagesAPIService> = {
@@ -74,12 +78,14 @@ describe('TenantCreateUpdateComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: ImagesAPIService, useValue: mockedImageService },
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideAppStateServiceMock()
       ]
     }).compileComponents()
 
     fixture = TestBed.createComponent(TenantCreateUpdateComponent)
     component = fixture.componentInstance
+    appStateServiceMock = TestBed.inject(AppStateServiceMock)
     fixture.detectChanges()
   })
 
@@ -388,5 +394,18 @@ describe('TenantCreateUpdateComponent', () => {
         expect((component as any).uploadedFileUrl).toEqual('blob:mock')
       })
     })
+  })
+
+  it('should set tenantDefaultImagePath from AppStateService currentMfe$ subscription', () => {
+    const mockMfe = {
+      remoteBaseUrl: 'http://example.com/remote',
+      appId: 'test-app',
+      productName: 'test-product'
+    }
+
+    appStateServiceMock.currentMfe$.publish(mockMfe as any)
+
+    const expectedPath = Location.joinWithSlash(mockMfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)
+    expect(component.tenantDefaultImagePath).toBe(expectedPath)
   })
 })

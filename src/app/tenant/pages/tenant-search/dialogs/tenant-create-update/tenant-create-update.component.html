@@ -63,7 +63,11 @@
               alt="Tenant"
             />
             <img *ngIf="uploadedFile" [src]="uploadedFilePreview" alt="New tenant" />
-            <i *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile" class="pi pi-image image-placeholder"></i>
+            <img
+              *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile"
+              [src]="tenantDefaultImagePath"
+              class="pi pi-image image-placeholder"
+            />
           </div>
 
           <ng-container *ngIf="dialogMode !== dialogModeEnum.DETAILS">

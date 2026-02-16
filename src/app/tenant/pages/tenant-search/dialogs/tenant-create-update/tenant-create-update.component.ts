@@ -1,5 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
-import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/portal-integration-angular'
+import {
+  AppStateService,
+  DialogButtonClicked,
+  DialogPrimaryButtonDisabled,
+  DialogResult
+} from '@onecx/portal-integration-angular'
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import {
@@ -11,6 +16,8 @@ import { map } from 'rxjs'
 import { ImagesAPIService } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
 import { MenuItem } from 'primeng/api'
+import { environment } from 'src/environments/environment'
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-tenant-create-update',
@@ -41,6 +48,7 @@ export class TenantCreateUpdateComponent
   imageRemoved = false
   uploadedFile: File | null = null
   uploadedFilePreview: string | null = null
+  tenantDefaultImagePath: string = environment.TENANT_IMAGE_PATH
 
   readonly menuItems: MenuItem[] = [
     {
@@ -60,7 +68,8 @@ export class TenantCreateUpdateComponent
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly imageService: ImagesAPIService
+    private readonly imageService: ImagesAPIService,
+    private readonly appState: AppStateService
   ) {
     this.baseImagePath = this.imageService.configuration.basePath!
   }
@@ -71,6 +80,9 @@ export class TenantCreateUpdateComponent
     if (this.dialogMode !== TenantDialogMode.DETAILS) {
       this.makeSubscriptions()
     }
+    this.appState.currentMfe$
+      .pipe(map((mfe) => Location.joinWithSlash(mfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)))
+      .subscribe((data) => (this.tenantDefaultImagePath = data))
   }
 
   ocxDialogButtonClicked() {

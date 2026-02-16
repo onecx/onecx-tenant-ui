@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 import { LetDirective } from '@ngrx/component'
 import { ofType } from '@ngrx/effects'
 import { Store, StoreModule } from '@ngrx/store'
@@ -26,6 +27,8 @@ import { map, of } from 'rxjs'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { CardModule } from 'primeng/card'
+import { environment } from 'src/environments/environment'
+import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
 
 describe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
@@ -33,6 +36,7 @@ describe('TenantSearchComponent', () => {
   let store: MockStore<Store>
   let formBuilder: FormBuilder
   let tenantSearch: TenantSearchHarness
+  let appStateServiceMock: AppStateServiceMock
 
   const mockActivatedRoute = {}
 
@@ -76,7 +80,8 @@ describe('TenantSearchComponent', () => {
           initialState: { tenant: { search: initialState } }
         }),
         FormBuilder,
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideAppStateServiceMock()
       ]
     }).compileComponents()
   })
@@ -91,6 +96,7 @@ describe('TenantSearchComponent', () => {
     component = fixture.componentInstance
     store = TestBed.inject(MockStore)
     formBuilder = TestBed.inject(FormBuilder)
+    appStateServiceMock = TestBed.inject(AppStateServiceMock)
     fixture.detectChanges()
     tenantSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, TenantSearchHarness)
     window.URL.createObjectURL = jest.fn()
@@ -579,5 +585,18 @@ describe('TenantSearchComponent', () => {
 
     const action = localComponent.additionalActions[0]
     expect(action.icon).toBe(PrimeIcons.EYE)
+  })
+
+  it('should set tenantDefaultImagePath from AppStateService currentMfe$ subscription', () => {
+    const mockMfe = {
+      remoteBaseUrl: 'http://example.com/remote',
+      appId: 'test-app',
+      productName: 'test-product'
+    }
+
+    appStateServiceMock.currentMfe$.publish(mockMfe as any)
+
+    const expectedPath = Location.joinWithSlash(mockMfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)
+    expect(component.tenantDefaultImagePath).toBe(expectedPath)
   })
 })

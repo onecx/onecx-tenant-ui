@@ -6,7 +6,13 @@ import { PrimeIcons } from 'primeng/api'
 import deepEqual from 'fast-deep-equal'
 
 import { Action, BreadcrumbService, DataAction, DataSortDirection, RowListGridData } from '@onecx/angular-accelerator'
-import { DataTableColumn, ExportDataService, SearchConfigData, UserService } from '@onecx/portal-integration-angular'
+import {
+  AppStateService,
+  DataTableColumn,
+  ExportDataService,
+  SearchConfigData,
+  UserService
+} from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
 
@@ -16,6 +22,8 @@ import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
 import { ImagesAPIService, Tenant } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
+import { environment } from 'src/environments/environment'
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-tenant-search',
@@ -76,6 +84,7 @@ export class TenantSearchComponent implements OnInit {
       permission: 'TENANT#SEARCH'
     }
   ]
+  tenantDefaultImagePath: string = environment.TENANT_IMAGE_PATH
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -94,7 +103,8 @@ export class TenantSearchComponent implements OnInit {
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
     private readonly imageService: ImagesAPIService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly appState: AppStateService
   ) {}
 
   public ngOnInit() {
@@ -227,6 +237,9 @@ export class TenantSearchComponent implements OnInit {
     this.tenantFilterFormControl.valueChanges
       .pipe(debounceTime(200), withLatestFrom(this.viewModel$))
       .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel.results))
+    this.appState.currentMfe$
+      .pipe(map((mfe) => Location.joinWithSlash(mfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)))
+      .subscribe((data) => (this.tenantDefaultImagePath = data))
   }
 
   private handleFilterChange(filterValue: string | null, results: RowListGridData[]) {
