@@ -75,6 +75,7 @@
 .image-container {
   height: 10rem;
   width: 10rem;
+  object-fit: contain;
 
   &.hidden {
     display: none;
@@ -99,12 +100,14 @@
 .logo-column {
   width: 3.5rem !important;
   max-width: 3.5rem !important;
+  height: 3.5rem;
 }
 
 .list-item-logo,
 .list-item-default-icon {
   max-height: 3rem;
   max-width: 3rem;
+  object-fit: contain;
 }
 
 .list-item-default-icon {
