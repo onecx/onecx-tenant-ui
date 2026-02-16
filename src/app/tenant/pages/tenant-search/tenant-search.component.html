@@ -84,10 +84,12 @@
             (keydown.enter)="handleOpenEntryDetails(item)"
             tabindex="0"
           >
-            <div class="grid-item-content">
-              <span class="grid-item-title">{{ item['tenantId'] | titlecase }}</span>
+            <div class="flex flex-column align-items-center justify-content-center gap-4 flex-auto w-full">
+              <span class="flex justify-content-center w-full font-bold grid-item-title">{{
+                item['tenantId'] | titlecase
+              }}</span>
               <span
-                class="pi pi-image image-container default-icon"
+                class="pi pi-image image-container default-icon text-center"
                 [class.hidden]="!showDefaultIcon(item['id'])"
               ></span>
               <img
@@ -109,18 +111,21 @@
             (click)="handleOpenEntryDetails(item)"
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
-            class="list-item-row"
+            class="grid align-items-center p-3 w-full list-item-row gap-8"
             [id]="'tm_search_data_list_row_' + item['id']"
             [attr.aria-label]="item['tenantId']"
           >
-            <div [id]="'tm_search_data_list_row_' + item['id'] + '_logo'">
+            <div
+              class="col-fixed logo-column flex justify-content-center align-items-center"
+              [id]="'tm_search_data_list_row_' + item['id'] + '_logo'"
+            >
               <span
-                class="pi pi-image list-item-default-icon"
+                class="pi pi-image list-item-default-icon border-round-sm"
                 aria-hidden="true"
                 [class.hidden]="!showDefaultIcon(item['id'])"
               ></span>
               <img
-                class="list-item-logo"
+                class="list-item-logo border-round-sm"
                 (error)="imageLoadFailed(item['id'])"
                 (load)="imageLoaded(item['id'])"
                 [ocxSrc]="getImageUrl(item['id'])"
@@ -130,6 +135,7 @@
               />
             </div>
             <div
+              class="col font-bold text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_tenant_id'"
               aria-label="Tenant ID"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
@@ -140,6 +146,7 @@
               {{ item['tenantId'] }}
             </div>
             <div
+              class="col hidden sm:block text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_org_id'"
               aria-label="Organization ID"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
@@ -150,6 +157,7 @@
               {{ item['orgId'] }}
             </div>
             <div
+              class="col-6 hidden lg:block text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
               [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
