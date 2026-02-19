@@ -3,12 +3,14 @@ import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 import { LetDirective } from '@ngrx/component'
 import { ofType } from '@ngrx/effects'
 import { Store, StoreModule } from '@ngrx/store'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { DialogService } from 'primeng/dynamicdialog'
+import { PrimeIcons } from 'primeng/api'
 
 import { ColumnType, DataTableColumn, PortalCoreModule, UserService } from '@onecx/portal-integration-angular'
 
@@ -18,11 +20,15 @@ import { initialState } from './tenant-search.reducers'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
 import { TenantSearchHarness } from './tenant-search.harness'
+import { Tenant } from 'src/app/shared/generated'
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed'
 import { TranslateService } from '@ngx-translate/core'
-import { of } from 'rxjs'
+import { map, of } from 'rxjs'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
+import { CardModule } from 'primeng/card'
+import { environment } from 'src/environments/environment'
+import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
 
 describe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
@@ -30,6 +36,7 @@ describe('TenantSearchComponent', () => {
   let store: MockStore<Store>
   let formBuilder: FormBuilder
   let tenantSearch: TenantSearchHarness
+  let appStateServiceMock: AppStateServiceMock
 
   const mockActivatedRoute = {}
 
@@ -62,7 +69,8 @@ describe('TenantSearchComponent', () => {
           'de',
           require('./../../../../assets/i18n/de.json')
         ),
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        CardModule
       ],
       providers: [
         DialogService,
@@ -72,7 +80,8 @@ describe('TenantSearchComponent', () => {
           initialState: { tenant: { search: initialState } }
         }),
         FormBuilder,
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideAppStateServiceMock()
       ]
     }).compileComponents()
   })
@@ -87,6 +96,7 @@ describe('TenantSearchComponent', () => {
     component = fixture.componentInstance
     store = TestBed.inject(MockStore)
     formBuilder = TestBed.inject(FormBuilder)
+    appStateServiceMock = TestBed.inject(AppStateServiceMock)
     fixture.detectChanges()
     tenantSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, TenantSearchHarness)
     window.URL.createObjectURL = jest.fn()
@@ -166,6 +176,31 @@ describe('TenantSearchComponent', () => {
     expect(parsed.pageSize).toBeUndefined()
   })
 
+  it('should filter results using orgId or tenantId', () => {
+    const matchingOrg = { orgId: 'Alpha', tenantId: 'T-1' } as any
+    const matchingTenant = { orgId: 'Other', tenantId: 'Target' } as any
+    const nonMatching = { orgId: 'Beta', tenantId: 'Something' } as any
+    const missingIds = {} as any
+
+    ;(component as any).handleFilterChange('alpha', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([matchingOrg])
+    ;(component as any).handleFilterChange('target', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([matchingTenant])
+    ;(component as any).handleFilterChange('missing', [matchingOrg, matchingTenant, nonMatching])
+    expect(component.filteredResults$.value).toEqual([])
+    ;(component as any).handleFilterChange('none', [missingIds])
+    expect(component.filteredResults$.value).toEqual([])
+  })
+
+  it('should return unfiltered results when filter is empty', () => {
+    const items = [{ orgId: 'Alpha', tenantId: 'T-1' }] as any
+
+    ;(component as any).handleFilterChange('', items)
+    expect(component.filteredResults$.value).toEqual(items)
+    ;(component as any).handleFilterChange(null, items)
+    expect(component.filteredResults$.value).toEqual(items)
+  })
+
   it('should dispatch view mode change', async () => {
     jest.spyOn(store, 'dispatch')
     const baseTenantSearchViewModel: TenantSearchViewModel = {
@@ -174,7 +209,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'basic'
+      viewMode: 'basic',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -196,7 +232,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -240,7 +277,8 @@ describe('TenantSearchComponent', () => {
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -294,16 +332,271 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       chartVisible: false,
-      viewMode: 'advanced'
+      viewMode: 'advanced',
+      loadingData: false
     }
 
     component.diagramColumnId = testColumnId
     component.viewModel$ = of(testViewModel)
+    // Rebuild diagramColumn$ after changing viewModel$
+    component.diagramColumn$ = component.viewModel$.pipe(
+      map((vm) => vm.columns.find((e) => e.id === component.diagramColumnId) as DataTableColumn)
+    )
 
     component.diagramColumn$.subscribe((result) => {
       expect(result).toEqual(testColumn)
       done()
     })
-    done()
+  })
+
+  it('should dispatch createTenantButtonClicked action when onCreateTenant is called', () => {
+    jest.spyOn(store, 'dispatch')
+
+    component.onCreateTenant()
+
+    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.createTenantButtonClicked())
+  })
+
+  it('should dispatch openDialogForExistingEntry action when handleOpenEntryDetails is called', () => {
+    jest.spyOn(store, 'dispatch')
+    const tenant = { id: 'tenant-456', orgId: 'org2', tenantId: 'tenant2' }
+
+    component.handleOpenEntryDetails(tenant as Tenant)
+
+    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.dialogForExistingEntryOpened({ id: 'tenant-456' }))
+  })
+
+  it('should return image URL for given object ID', () => {
+    const objectId = 'test-id-123'
+
+    const result = component.getImageUrl(objectId)
+
+    expect(result).toContain(objectId)
+  })
+
+  it('should remove id from failedImages when imageLoaded is called', () => {
+    const testId = 'image-123'
+    component['failedImages'][testId] = true
+
+    component.imageLoaded(testId)
+
+    expect(component.showDefaultIcon(testId)).toBe(false)
+  })
+
+  it('should add id to failedImages when imageLoadFailed is called', () => {
+    const testId = 'image-456'
+
+    component.imageLoadFailed(testId)
+
+    expect(component.showDefaultIcon(testId)).toBe(true)
+  })
+
+  it('should return true when id is in failedImages', () => {
+    const testId = 'failed-image'
+    component['failedImages'][testId] = true
+
+    expect(component.showDefaultIcon(testId)).toBe(true)
+  })
+
+  it('should return false when id is not in failedImages', () => {
+    const testId = 'successful-image'
+
+    expect(component.showDefaultIcon(testId)).toBe(false)
+  })
+
+  it('should set current card item and toggle menu when openMenu is called', () => {
+    const mockMenu = { toggle: jest.fn() }
+    const mockEvent = new Event('click')
+    const tenant = { id: 'tenant-789', orgId: 'org3', tenantId: 'tenant3' } as Tenant
+
+    component.openMenu(mockMenu, mockEvent, tenant)
+
+    expect(component.currentCardItem).toEqual(tenant)
+    expect(mockMenu.toggle).toHaveBeenCalledWith(mockEvent)
+  })
+
+  it('should dispatch displayedColumnsChanged action when onDisplayedColumnsChange is called', () => {
+    jest.spyOn(store, 'dispatch')
+    const columns: DataTableColumn[] = [
+      { id: '1', nameKey: 'orgId', columnType: ColumnType.STRING },
+      { id: '2', nameKey: 'tenantId', columnType: ColumnType.STRING }
+    ]
+
+    component.onDisplayedColumnsChange(columns)
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      TenantSearchActions.displayedColumnsChanged({ displayedColumns: columns })
+    )
+  })
+
+  it('should clear text filter when clearTextFilters is called', () => {
+    component.tenantFilterFormControl.setValue('test filter' as any)
+
+    component.clearTextFilters()
+
+    expect(component.tenantFilterFormControl.value).toBeNull()
+  })
+
+  it('should filter results when handleFilterChange is called with valid filter', () => {
+    const viewModel: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [],
+      displayedColumns: [],
+      results: [
+        { id: '1', orgId: 'org1', tenantId: 'tenant1', imagePath: '' },
+        { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' },
+        { id: '3', orgId: 'org3', tenantId: 'test-tenant', imagePath: '' }
+      ],
+      searchCriteria: {},
+      viewMode: 'basic',
+      loadingData: false
+    }
+
+    component['handleFilterChange']('test', viewModel.results)
+
+    component.filteredResults$.subscribe((results) => {
+      expect(results.length).toBe(1)
+      expect(results[0].id).toBe('3')
+    })
+  })
+
+  it('should return all results when handleFilterChange is called with empty filter', () => {
+    const viewModel: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [],
+      displayedColumns: [],
+      results: [
+        { id: '1', orgId: 'org1', tenantId: 'tenant1', imagePath: '' },
+        { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
+      ],
+      searchCriteria: {},
+      viewMode: 'basic',
+      loadingData: false
+    }
+
+    component['handleFilterChange']('', viewModel.results)
+
+    component.filteredResults$.subscribe((results) => {
+      expect(results.length).toBe(2)
+    })
+  })
+
+  it('should return all results when handleFilterChange is called with null filter', () => {
+    const viewModel: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [],
+      displayedColumns: [],
+      results: [
+        { id: '1', orgId: 'org1', tenantId: 'tenant1', imagePath: '' },
+        { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
+      ],
+      searchCriteria: {},
+      viewMode: 'basic',
+      loadingData: false
+    }
+
+    component['handleFilterChange'](null, viewModel.results)
+
+    component.filteredResults$.subscribe((results) => {
+      expect(results.length).toBe(2)
+    })
+  })
+
+  it('should filter by orgId when handleFilterChange is called', () => {
+    const viewModel: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [],
+      displayedColumns: [],
+      results: [
+        { id: '1', orgId: 'test-org', tenantId: 'tenant1', imagePath: '' },
+        { id: '2', orgId: 'other-org', tenantId: 'tenant2', imagePath: '' }
+      ],
+      searchCriteria: {},
+      viewMode: 'basic',
+      loadingData: false
+    }
+
+    component['handleFilterChange']('test-org', viewModel.results)
+
+    component.filteredResults$.subscribe((results) => {
+      expect(results.length).toBe(1)
+      expect(results[0]['orgId']).toBe('test-org')
+    })
+  })
+
+  it('should filter by tenantId when handleFilterChange is called', () => {
+    const viewModel: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [],
+      displayedColumns: [],
+      results: [
+        { id: '1', orgId: 'org1', tenantId: 'special-tenant', imagePath: '' },
+        { id: '2', orgId: 'org2', tenantId: 'tenant2', imagePath: '' }
+      ],
+      searchCriteria: {},
+      viewMode: 'basic',
+      loadingData: false
+    }
+
+    component['handleFilterChange']('special', viewModel.results)
+
+    component.filteredResults$.subscribe((results) => {
+      expect(results.length).toBe(1)
+      expect(results[0]['tenantId']).toBe('special-tenant')
+    })
+  })
+
+  it('should call actionCallback when headerActions$ is subscribed', (done) => {
+    jest.spyOn(component, 'onCreateTenant')
+
+    component.headerActions$.subscribe((actions) => {
+      const createAction = actions.find((a) => a.labelKey === 'TENANT_CREATE_UPDATE.ACTION.CREATE')
+      expect(createAction).toBeDefined()
+      createAction?.actionCallback()
+      expect(component.onCreateTenant).toHaveBeenCalled()
+      done()
+    })
+  })
+
+  it('should call handleOpenEntryDetails when additionalActions callback is invoked', () => {
+    jest.spyOn(component, 'handleOpenEntryDetails')
+    const testData = { id: 'test-123', orgId: 'org-test', tenantId: 'tenant-test' }
+
+    const action = component.additionalActions[0]
+    expect(action).toBeDefined()
+    expect(action.permission).toBe('TENANT#SEARCH')
+
+    action.callback(testData)
+
+    expect(component.handleOpenEntryDetails).toHaveBeenCalledWith(testData)
+  })
+
+  it('should set icon to PENCIL when user has TENANT#ADMIN_EDIT permission', () => {
+    const action = component.additionalActions[0]
+    expect(action.icon).toBe(PrimeIcons.PENCIL)
+  })
+
+  it('should set icon to EYE when user does not have TENANT#ADMIN_EDIT permission', () => {
+    const userService = TestBed.inject(UserService)
+    jest.spyOn(userService, 'hasPermission').mockReturnValue(false)
+
+    const localFixture = TestBed.createComponent(TenantSearchComponent)
+    const localComponent = localFixture.componentInstance
+
+    const action = localComponent.additionalActions[0]
+    expect(action.icon).toBe(PrimeIcons.EYE)
+  })
+
+  it('should set tenantDefaultImagePath from AppStateService currentMfe$ subscription', () => {
+    const mockMfe = {
+      remoteBaseUrl: 'http://example.com/remote',
+      appId: 'test-app',
+      productName: 'test-product'
+    }
+
+    appStateServiceMock.currentMfe$.publish(mockMfe as any)
+
+    const expectedPath = Location.joinWithSlash(mockMfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)
+    expect(component.tenantDefaultImagePath).toBe(expectedPath)
   })
 })

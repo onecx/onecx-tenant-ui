@@ -31,7 +31,7 @@ export const tenantSearchColumns: DataTableColumn[] = [
     id: 'description',
     nameKey: 'TENANT_SEARCH.COLUMNS.DESCRIPTION',
     filterable: true,
-    sortable: true,
+    sortable: false,
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
@@ -43,7 +43,7 @@ export const tenantSearchColumns: DataTableColumn[] = [
     id: 'modificationDate',
     nameKey: 'TENANT_SEARCH.COLUMNS.MODIFICATION_DATE',
     filterable: true,
-    sortable: true,
+    sortable: false,
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
@@ -55,7 +55,7 @@ export const tenantSearchColumns: DataTableColumn[] = [
     id: 'creationDate',
     nameKey: 'TENANT_SEARCH.COLUMNS.CREATION_DATE',
     filterable: true,
-    sortable: true,
+    sortable: false,
     predefinedGroupKeys: [
       'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',

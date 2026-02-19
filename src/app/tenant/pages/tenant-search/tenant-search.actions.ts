@@ -9,6 +9,25 @@ import { TenantSearchCriteria } from './tenant-search.parameters'
 export const TenantSearchActions = createActionGroup({
   source: 'TenantSearch',
   events: {
+    'Dialog for existing entry opened': props<{ id: number | string }>(),
+    'Create tenant button clicked': emptyProps(),
+    'Edit tenant button clicked': props<{
+      id: number | string
+    }>(),
+    'Open tenant details button clicked': props<{
+      id: number | string
+    }>(),
+    'Create tenant cancelled': emptyProps(),
+    'Update tenant cancelled': emptyProps(),
+    'Create tenant succeeded': emptyProps(),
+    'Update tenant succeeded': emptyProps(),
+    'Create tenant failed': props<{
+      error: string | null
+    }>(),
+    'Update tenant failed': props<{
+      error: string | null
+    }>(),
+
     'Search button clicked': props<{ searchCriteria: TenantSearchCriteria }>(),
     'Reset button clicked': emptyProps(),
     'Search config selected': props<{ searchConfig: SearchConfigData | undefined }>(),
