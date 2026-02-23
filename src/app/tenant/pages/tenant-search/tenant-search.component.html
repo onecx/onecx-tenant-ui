@@ -110,22 +110,12 @@
                 <div
                   class="text-xs md:text-sm md:text-base text-responsive"
                   [attr.aria-label]="'Organization ID'"
-                  [pTooltip]="'TENANT_SEARCH.COLUMNS.ORGID' | translate"
+                  [pTooltip]="'TENANT_SEARCH.COLUMNS.ORG_ID' | translate"
                   tooltipPosition="top"
                   tooltipEvent="hover"
                   role="note"
                 >
                   {{ item['orgId'] }}
-                </div>
-                <div
-                  class="text-xs md:text-sm md:text-base text-responsive"
-                  [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
-                  [pTooltip]="item['description'] && item['description'].length < 50 ? '' : item['description']"
-                  tooltipPosition="top"
-                  tooltipEvent="hover"
-                  role="note"
-                >
-                  {{ item['description'] }}
                 </div>
               </div>
             </div>
