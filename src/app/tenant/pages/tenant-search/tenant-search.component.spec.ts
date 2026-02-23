@@ -3,7 +3,6 @@ import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
-import { Location } from '@angular/common'
 import { LetDirective } from '@ngrx/component'
 import { ofType } from '@ngrx/effects'
 import { Store, StoreModule } from '@ngrx/store'
@@ -27,8 +26,8 @@ import { map, of } from 'rxjs'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { CardModule } from 'primeng/card'
-import { environment } from 'src/environments/environment'
-import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
+import { provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
+import { ImageContainerComponent } from 'src/app/shared/components/image-container/image-container.component'
 
 describe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
@@ -36,7 +35,6 @@ describe('TenantSearchComponent', () => {
   let store: MockStore<Store>
   let formBuilder: FormBuilder
   let tenantSearch: TenantSearchHarness
-  let appStateServiceMock: AppStateServiceMock
 
   const mockActivatedRoute = {}
 
@@ -59,7 +57,7 @@ describe('TenantSearchComponent', () => {
   /* eslint-disable @typescript-eslint/no-var-requires */
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TenantSearchComponent],
+      declarations: [TenantSearchComponent, ImageContainerComponent],
       imports: [
         PortalCoreModule,
         LetDirective,
@@ -96,7 +94,6 @@ describe('TenantSearchComponent', () => {
     component = fixture.componentInstance
     store = TestBed.inject(MockStore)
     formBuilder = TestBed.inject(FormBuilder)
-    appStateServiceMock = TestBed.inject(AppStateServiceMock)
     fixture.detectChanges()
     tenantSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, TenantSearchHarness)
     window.URL.createObjectURL = jest.fn()
@@ -374,47 +371,6 @@ describe('TenantSearchComponent', () => {
     expect(result).toContain(objectId)
   })
 
-  it('should remove id from failedImages when imageLoaded is called', () => {
-    const testId = 'image-123'
-    component['failedImages'][testId] = true
-
-    component.imageLoaded(testId)
-
-    expect(component.showDefaultIcon(testId)).toBe(false)
-  })
-
-  it('should add id to failedImages when imageLoadFailed is called', () => {
-    const testId = 'image-456'
-
-    component.imageLoadFailed(testId)
-
-    expect(component.showDefaultIcon(testId)).toBe(true)
-  })
-
-  it('should return true when id is in failedImages', () => {
-    const testId = 'failed-image'
-    component['failedImages'][testId] = true
-
-    expect(component.showDefaultIcon(testId)).toBe(true)
-  })
-
-  it('should return false when id is not in failedImages', () => {
-    const testId = 'successful-image'
-
-    expect(component.showDefaultIcon(testId)).toBe(false)
-  })
-
-  it('should set current card item and toggle menu when openMenu is called', () => {
-    const mockMenu = { toggle: jest.fn() }
-    const mockEvent = new Event('click')
-    const tenant = { id: 'tenant-789', orgId: 'org3', tenantId: 'tenant3' } as Tenant
-
-    component.openMenu(mockMenu, mockEvent, tenant)
-
-    expect(component.currentCardItem).toEqual(tenant)
-    expect(mockMenu.toggle).toHaveBeenCalledWith(mockEvent)
-  })
-
   it('should dispatch displayedColumnsChanged action when onDisplayedColumnsChange is called', () => {
     jest.spyOn(store, 'dispatch')
     const columns: DataTableColumn[] = [
@@ -585,18 +541,5 @@ describe('TenantSearchComponent', () => {
 
     const action = localComponent.additionalActions[0]
     expect(action.icon).toBe(PrimeIcons.EYE)
-  })
-
-  it('should set tenantDefaultImagePath from AppStateService currentMfe$ subscription', () => {
-    const mockMfe = {
-      remoteBaseUrl: 'http://example.com/remote',
-      appId: 'test-app',
-      productName: 'test-product'
-    }
-
-    appStateServiceMock.currentMfe$.publish(mockMfe as any)
-
-    const expectedPath = Location.joinWithSlash(mockMfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)
-    expect(component.tenantDefaultImagePath).toBe(expectedPath)
   })
 })

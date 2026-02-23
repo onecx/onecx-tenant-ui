@@ -98,25 +98,13 @@
                 {{ item['tenantId'] | titlecase }}
               </div>
 
-              <div
-                class="relative w-full h-5rem sm:h-10rem px-4 flex justify-content-center align-items-center overflow-hidden"
-              >
-                <img
-                  class="max-h-5rem sm:max-h-10rem p-2 border-round-sm"
-                  [ocxSrc]="tenantDefaultImagePath"
-                  alt="Tenant logo"
+              <div class="relative w-full h-5rem sm:h-10rem px-4 flex justify-content-center align-items-center">
+                <app-image-container
+                  [id]="'tenant_search_data_grid_row_' + item['id'] + '_logo'"
+                  styleClass="max-h-5rem sm:max-h-10rem p-2 border-round-sm"
+                  [bffUrl]="getImageUrl(item['id'])"
                   aria-hidden="true"
-                  [class.hidden]="!showDefaultIcon(item['id'])"
-                />
-                <img
-                  class="max-h-5rem sm:max-h-10rem p-2 border-round-sm"
-                  (error)="imageLoadFailed(item['id'])"
-                  (load)="imageLoaded(item['id'])"
-                  [ocxSrc]="getImageUrl(item['id'])"
-                  alt="Tenant logo"
-                  aria-hidden="true"
-                  [class.hidden]="showDefaultIcon(item['id'])"
-                />
+                ></app-image-container>
               </div>
               <div class="w-full mt-1 h-2rem sm:h-3rem flex flex-column justify-content-between text-center">
                 <div
@@ -152,26 +140,13 @@
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
           >
-            <div
-              class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
-              [id]="'tm_search_data_list_row_' + item['id'] + '_logo'"
-            >
-              <img
-                class="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
-                [src]="tenantDefaultImagePath"
-                alt="Tenant logo"
+            <div class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center">
+              <app-image-container
+                [id]="'tenant_search_data_grid_row_' + item['id'] + '_logo'"
+                styleClass="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
+                [bffUrl]="getImageUrl(item['id'])"
                 aria-hidden="true"
-                [class.hidden]="!showDefaultIcon(item['id'])"
-              />
-              <img
-                class="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
-                (error)="imageLoadFailed(item['id'])"
-                (load)="imageLoaded(item['id'])"
-                [ocxSrc]="getImageUrl(item['id'])"
-                alt="Tenant logo"
-                aria-hidden="true"
-                [class.hidden]="showDefaultIcon(item['id'])"
-              />
+              ></app-image-container>
             </div>
             <div
               class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
