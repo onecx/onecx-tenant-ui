@@ -77,59 +77,94 @@
           </div>
         </ng-template>
         <ng-template #gridItem let-item>
-          <p-card
-            class="grid-item-card"
+          <article
+            class="w-full sm:w-6 md:w-4 xl:w-3 p-1 sm:p-2"
             (click)="handleOpenEntryDetails(item)"
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
             tabindex="0"
+            [attr.aria-label]="'Tenant: ' + item['tenantId']"
           >
-            <div class="flex flex-column align-items-center justify-content-center gap-4 flex-auto w-full">
-              <span class="flex justify-content-center w-full font-bold grid-item-title">{{
-                item['tenantId'] | titlecase
-              }}</span>
-              <img
-                class="image-container"
-                [ocxSrc]="tenantDefaultImagePath"
-                alt="Tenant logo"
-                [class.hidden]="!showDefaultIcon(item['id'])"
-              />
-              <img
-                class="image-container"
-                (error)="imageLoadFailed(item['id'])"
-                (load)="imageLoaded(item['id'])"
-                [ocxSrc]="getImageUrl(item['id'])"
-                alt="Tenant logo"
-                [class.hidden]="showDefaultIcon(item['id'])"
-              />
-              <span [pTooltip]="'orgId'" [tooltipPosition]="'bottom'">
-                {{ item['orgId'] }}
-              </span>
+            <div
+              class="card p-2 flex flex-column gap-1 sm:gap-2 justify-content-between text-center hover:bg-gray-200 cursor-pointer h-full overflow-hidden"
+            >
+              <div
+                class="w-full font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-responsive"
+                [ocxTooltipOnOverflow]="item['tenantId']"
+                tooltipPosition="top"
+                tooltipEvent="hover"
+                aria-label="Tenant ID"
+              >
+                {{ item['tenantId'] | titlecase }}
+              </div>
+
+              <div
+                class="relative w-full h-5rem sm:h-10rem px-4 flex justify-content-center align-items-center overflow-hidden"
+              >
+                <img
+                  class="max-h-5rem sm:max-h-10rem p-2 border-round-sm"
+                  [ocxSrc]="tenantDefaultImagePath"
+                  alt="Tenant logo"
+                  aria-hidden="true"
+                  [class.hidden]="!showDefaultIcon(item['id'])"
+                />
+                <img
+                  class="max-h-5rem sm:max-h-10rem p-2 border-round-sm"
+                  (error)="imageLoadFailed(item['id'])"
+                  (load)="imageLoaded(item['id'])"
+                  [ocxSrc]="getImageUrl(item['id'])"
+                  alt="Tenant logo"
+                  aria-hidden="true"
+                  [class.hidden]="showDefaultIcon(item['id'])"
+                />
+              </div>
+              <div class="w-full mt-1 h-2rem sm:h-3rem flex flex-column justify-content-between text-center">
+                <div
+                  class="text-xs md:text-sm md:text-base text-responsive"
+                  [attr.aria-label]="'Organization ID'"
+                  [pTooltip]="'TENANT_SEARCH.COLUMNS.ORGID' | translate"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                  role="note"
+                >
+                  {{ item['orgId'] }}
+                </div>
+                <div
+                  class="text-xs md:text-sm md:text-base text-responsive"
+                  [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
+                  [pTooltip]="item['description'] && item['description'].length < 50 ? '' : item['description']"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                  role="note"
+                >
+                  {{ item['description'] }}
+                </div>
+              </div>
             </div>
-          </p-card>
+          </article>
         </ng-template>
         <ng-template #listItem let-item>
           <article
+            class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 hover:bg-gray-200 cursor-pointer list-item-row"
+            [id]="'tm_search_data_list_row_' + item['id']"
+            [attr.aria-label]="item['tenantId']"
             (click)="handleOpenEntryDetails(item)"
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
-            class="grid align-items-center p-3 w-full list-item-row gap-8"
-            [id]="'tm_search_data_list_row_' + item['id']"
-            [attr.aria-label]="item['tenantId']"
           >
             <div
-              class="col-fixed logo-column flex justify-content-center align-items-center"
+              class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
               [id]="'tm_search_data_list_row_' + item['id'] + '_logo'"
             >
               <img
-                class="list-item-logo border-round-sm"
+                class="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
                 [src]="tenantDefaultImagePath"
                 alt="Tenant logo"
                 aria-hidden="true"
                 [class.hidden]="!showDefaultIcon(item['id'])"
               />
               <img
-                class="list-item-logo border-round-sm"
+                class="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
                 (error)="imageLoadFailed(item['id'])"
                 (load)="imageLoaded(item['id'])"
                 [ocxSrc]="getImageUrl(item['id'])"
@@ -139,33 +174,33 @@
               />
             </div>
             <div
-              class="col font-bold text-overflow-ellipsis overflow-hidden white-space-nowrap"
+              class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_tenant_id'"
               aria-label="Tenant ID"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-              tooltipPosition="bottom"
+              tooltipPosition="top"
               tooltipEvent="hover"
               role="note"
             >
               {{ item['tenantId'] }}
             </div>
             <div
-              class="col hidden sm:block text-overflow-ellipsis overflow-hidden white-space-nowrap"
+              class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_org_id'"
               aria-label="Organization ID"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
-              tooltipPosition="bottom"
+              tooltipPosition="top"
               tooltipEvent="hover"
               role="note"
             >
               {{ item['orgId'] }}
             </div>
             <div
-              class="col-6 hidden lg:block text-overflow-ellipsis overflow-hidden white-space-nowrap"
+              class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
               [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
               [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
-              tooltipPosition="bottom"
+              tooltipPosition="top"
               tooltipEvent="hover"
               role="note"
             >
