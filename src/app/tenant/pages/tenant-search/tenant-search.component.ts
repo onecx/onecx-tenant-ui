@@ -1,12 +1,12 @@
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
-import { distinctUntilChanged, first, map, Observable } from 'rxjs'
+import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, withLatestFrom } from 'rxjs'
 import { PrimeIcons } from 'primeng/api'
-import * as deepEqual from 'fast-deep-equal'
+import deepEqual from 'fast-deep-equal'
 
-import { Action, BreadcrumbService } from '@onecx/angular-accelerator'
-import { DataTableColumn, ExportDataService, SearchConfigData } from '@onecx/portal-integration-angular'
+import { Action, BreadcrumbService, DataAction, DataSortDirection, RowListGridData } from '@onecx/angular-accelerator'
+import { DataTableColumn, ExportDataService, SearchConfigData, UserService } from '@onecx/portal-integration-angular'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
 
@@ -14,6 +14,8 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
+import { ImagesAPIService, Tenant } from 'src/app/shared/generated'
+import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-search',
@@ -43,16 +45,35 @@ export class TenantSearchComponent implements OnInit {
             : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility()
+        },
+        {
+          labelKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          icon: PrimeIcons.PLUS,
+          titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          show: 'always',
+          permission: 'TENANT#ADMIN_CREATE',
+          actionCallback: () => this.onCreateTenant()
         }
       ]
       return actions
     })
   )
 
+  layout: 'list' | 'grid' = 'grid'
   diagramColumnId = 'tenantId'
   diagramColumn$ = this.viewModel$.pipe(
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
+
+  filteredResults$ = new BehaviorSubject<RowListGridData[]>([])
+  imageBasePath = this.imageService.configuration.basePath!
+  additionalActions: DataAction[] = [
+    {
+      icon: this.userService.hasPermission('TENANT#ADMIN_EDIT') ? PrimeIcons.PENCIL : PrimeIcons.EYE,
+      callback: (data) => this.handleOpenEntryDetails(data as RowListGridData),
+      permission: 'TENANT#SEARCH'
+    }
+  ]
 
   public tenantSearchForm: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(tenantSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
@@ -60,6 +81,7 @@ export class TenantSearchComponent implements OnInit {
       unknown
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
+  public tenantFilterFormControl = this.formBuilder.control(null)
 
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
 
@@ -68,7 +90,9 @@ export class TenantSearchComponent implements OnInit {
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService
+    private readonly exportDataService: ExportDataService,
+    private readonly imageService: ImagesAPIService,
+    private readonly userService: UserService
   ) {}
 
   public ngOnInit() {
@@ -79,15 +103,7 @@ export class TenantSearchComponent implements OnInit {
         routerLink: '/tenant'
       }
     ])
-
-    this.viewModel$
-      .pipe(
-        map((vm) => vm.searchCriteria),
-        distinctUntilChanged(deepEqual)
-      )
-      .subscribe((sc) => {
-        this.tenantSearchForm.reset(sc)
-      })
+    this.makeSubscriptions()
   }
 
   public searchConfigInfoSelectionChanged(searchConfig: SearchConfigData | undefined) {
@@ -118,7 +134,7 @@ export class TenantSearchComponent implements OnInit {
           : null
       }),
       {}
-    ) as TenantSearchCriteria
+    )
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
@@ -130,6 +146,10 @@ export class TenantSearchComponent implements OnInit {
     this.viewModel$.pipe(first()).subscribe((data) => {
       this.exportDataService.exportCsv(data.displayedColumns, data.results, 'tenant.csv')
     })
+  }
+
+  getImageUrl(objectId: string): string {
+    return `${getImageUrl(this.imageBasePath, objectId)}`
   }
 
   viewModeChanged(viewMode: 'basic' | 'advanced') {
@@ -148,9 +168,62 @@ export class TenantSearchComponent implements OnInit {
     this.store.dispatch(TenantSearchActions.chartVisibilityToggled())
   }
 
+  handleOpenEntryDetails(item: Tenant | RowListGridData) {
+    this.store.dispatch(TenantSearchActions.dialogForExistingEntryOpened({ id: String(item.id) }))
+  }
+
+  onCreateTenant() {
+    this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
+  }
+
+  clearTextFilters(emitEvent = true) {
+    this.tenantFilterFormControl.setValue(null, { emitEvent })
+  }
+
   private isVisible(control: string) {
     return this.visibleFormControls.some(
       (formControl) => formControl.name !== null && String(formControl.name) === control
     )
+  }
+
+  private makeSubscriptions() {
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.searchCriteria),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe((sc) => {
+        this.tenantSearchForm.reset(sc)
+      })
+    this.viewModel$
+      .pipe(
+        map((vm) => vm.results),
+        distinctUntilChanged(deepEqual)
+      )
+      .subscribe((results) => {
+        this.clearTextFilters(false)
+        this.handleFilterChange(null, results)
+      })
+    this.tenantFilterFormControl.valueChanges
+      .pipe(debounceTime(200), withLatestFrom(this.viewModel$))
+      .subscribe(([filterValue, viewModel]) => this.handleFilterChange(filterValue, viewModel.results))
+  }
+
+  private handleFilterChange(filterValue: string | null, results: RowListGridData[]) {
+    if (filterValue === null || filterValue.trim() === '') {
+      this.filteredResults$.next(results)
+      return
+    }
+    const lowerFilter = filterValue.toLowerCase()
+    const filtered = results.filter((item) => {
+      const orgId = (item['orgId'] as string)?.toLowerCase() ?? ''
+      const tenantId = (item['tenantId'] as string)?.toLowerCase() ?? ''
+      return orgId.includes(lowerFilter) || tenantId.includes(lowerFilter)
+    })
+    this.filteredResults$.next(filtered)
+  }
+
+  get ascendingSortDirection(): DataSortDirection {
+    return DataSortDirection.ASCENDING
   }
 }

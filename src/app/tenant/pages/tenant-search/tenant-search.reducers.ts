@@ -11,7 +11,8 @@ export const initialState: TenantSearchState = {
   displayedColumns: null,
   viewMode: 'basic',
   chartVisible: false,
-  criteria: {}
+  criteria: {},
+  loadingData: true
 }
 
 export const tenantSearchReducer = createReducer(
@@ -21,7 +22,8 @@ export const tenantSearchReducer = createReducer(
     if (results.success) {
       return {
         ...state,
-        criteria: results.data
+        criteria: results.data,
+        loadingData: true
       }
     }
     return state
@@ -57,14 +59,16 @@ export const tenantSearchReducer = createReducer(
     TenantSearchActions.tenantSearchResultsReceived,
     (state: TenantSearchState, { results }): TenantSearchState => ({
       ...state,
-      results
+      results,
+      loadingData: false
     })
   ),
   on(
     TenantSearchActions.tenantSearchResultsLoadingFailed,
     (state: TenantSearchState): TenantSearchState => ({
       ...state,
-      results: []
+      results: [],
+      loadingData: false
     })
   ),
   on(
@@ -91,5 +95,13 @@ export const tenantSearchReducer = createReducer(
   on(TenantSearchActions.displayedColumnsChanged, (state: TenantSearchState, { displayedColumns }) => ({
     ...state,
     displayedColumns: displayedColumns.map((c) => c.id)
+  })),
+  on(TenantSearchActions.updateTenantSucceeded, (state: TenantSearchState) => ({
+    ...state,
+    loadingData: true
+  })),
+  on(TenantSearchActions.createTenantSucceeded, (state: TenantSearchState) => ({
+    ...state,
+    loadingData: true
   }))
 )

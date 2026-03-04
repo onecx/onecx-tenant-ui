@@ -14,10 +14,13 @@ import { RadioButtonModule } from 'primeng/radiobutton'
 import { SkeletonModule } from 'primeng/skeleton'
 import { TabViewModule } from 'primeng/tabview'
 import { TooltipModule } from 'primeng/tooltip'
+import { ImageContainerComponent } from './components/image-container/image-container.component'
+import { PortalCoreModule } from '@onecx/portal-integration-angular'
 
 @NgModule({
-  declarations: [],
+  declarations: [ImageContainerComponent],
   imports: [
+    PortalCoreModule.forMicroFrontend(),
     CommonModule,
     DockModule,
     FileUploadModule,
@@ -48,7 +51,8 @@ import { TooltipModule } from 'primeng/tooltip'
     SkeletonModule,
     TabViewModule,
     TooltipModule,
-    TranslateModule
+    TranslateModule,
+    ImageContainerComponent
   ],
   providers: []
 })

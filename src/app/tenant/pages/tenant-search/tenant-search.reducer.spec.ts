@@ -19,7 +19,8 @@ describe('TenantSearchReducer', () => {
         const nextState = tenantSearchReducer(initialState, action)
         expect(nextState).toEqual({
           ...initialState,
-          results: tenant.results
+          results: tenant.results,
+          loadingData: false
         })
         expect(nextState).not.toBe(initialState)
       })
@@ -152,5 +153,17 @@ describe('TenantSearchReducer', () => {
     })
     const state = tenantSearchReducer(initialState, action)
     expect(state.displayedColumns).toEqual(['name'])
+  })
+
+  it('should set loadingData to true on updateTenantSucceeded', () => {
+    const modifiedState = { ...initialState, loadingData: false }
+    const state = tenantSearchReducer(modifiedState, TenantSearchActions.updateTenantSucceeded())
+    expect(state.loadingData).toBe(true)
+  })
+
+  it('should set loadingData to true on createTenantSucceeded', () => {
+    const modifiedState = { ...initialState, loadingData: false }
+    const state = tenantSearchReducer(modifiedState, TenantSearchActions.createTenantSucceeded())
+    expect(state.loadingData).toBe(true)
   })
 })
