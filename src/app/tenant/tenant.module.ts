@@ -15,10 +15,14 @@ import { routes } from './tenant.routes'
 
 import { TenantSearchComponent } from './pages/tenant-search/tenant-search.component'
 import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects'
+import { CardModule } from 'primeng/card'
+import { TenantCreateUpdateComponent } from './pages/tenant-search/dialogs/tenant-create-update/tenant-create-update.component'
+import { TooltipModule } from 'primeng/tooltip'
+import { TabMenuModule } from 'primeng/tabmenu'
 
 @NgModule({
   providers: [providePortalDialogService()],
-  declarations: [TenantSearchComponent],
+  declarations: [TenantCreateUpdateComponent, TenantSearchComponent],
   imports: [
     CalendarModule,
     CommonModule,
@@ -27,7 +31,10 @@ import { TenantSearchEffects } from './pages/tenant-search/tenant-search.effects
     PortalCoreModule.forMicroFrontend(),
     RouterModule.forChild(addInitializeModuleGuard(routes)),
     SharedModule,
-    StoreModule.forFeature(tenantFeature)
+    StoreModule.forFeature(tenantFeature),
+    CardModule,
+    TooltipModule,
+    TabMenuModule
   ]
 })
 export class TenantModule {}

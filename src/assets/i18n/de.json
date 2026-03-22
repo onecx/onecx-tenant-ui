@@ -1,4 +1,73 @@
 {
+  "TENANT_CREATE_UPDATE": {
+    "MENU": {
+      "PROPERTIES": "Eigenschaften",
+      "INTERNAL": "Intern",
+      "TOOLTIPS": {
+        "PROPERTIES": "Haupteigenschaften des Mandanten",
+        "INTERNAL": "Systemmetadaten und Audit-Informationen"
+      }
+    },
+    "ACTION": {
+      "CREATE": "Erstellen"
+    },
+    "CREATE": {
+      "HEADER": "Neuen Mandanten erstellen",
+      "SUCCESS": "Erstellung erfolgreich",
+      "ERROR": "Erstellung fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen",
+        "TOOLTIPS": {
+          "SAVE": "Neuen Mandanten erstellen",
+          "CANCEL": "Abbrechen und Dialog schließen"
+        }
+      }
+    },
+    "UPDATE": {
+      "SUCCESS": "Aktualisierung erfolgreich",
+      "FAILED": "ACTION: Add Translation",
+      "ERROR": "Aktualisierung fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen",
+        "TOOLTIPS": {
+          "SAVE": "Änderungen speichern",
+          "CANCEL": "Abbrechen und Änderungen verwerfen"
+        }
+      },
+      "HEADER": "Tenant bearbeiten"
+    },
+    "DETAILS": {
+      "HEADER": "Tenant Daten",
+      "BUTTON": "Schließen",
+      "TOOLTIPS": {
+        "BUTTON": "Details-Dialog schließen"
+      }
+    },
+    "FORM": {
+      "ORG_ID": "Organisations-ID",
+      "DESCRIPTION": "Beschreibung",
+      "TENANT_ID": "Mandanten-ID",
+      "CREATION_USER": "Erstellt von",
+      "CREATION_DATE": "Erstellt am",
+      "MODIFICATION_USER": "Geändert von",
+      "MODIFICATION_DATE": "Geändert am",
+      "CHOOSE_IMAGE": "Auswählen",
+      "REMOVE_IMAGE": "Entfernen",
+      "TOOLTIPS": {
+        "ORG_ID": "Eindeutige orgId für IAM-Integration",
+        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
+        "DESCRIPTION": "Optionale Beschreibung des Mandanten",
+        "CREATION_USER": "Benutzer, der diesen Mandanten erstellt hat",
+        "CREATION_DATE": "Datum, an dem der Mandant erstellt wurde",
+        "MODIFICATION_USER": "Benutzer, der diesen Mandanten zuletzt geändert hat",
+        "MODIFICATION_DATE": "Datum der letzten Änderung",
+        "CHOOSE_IMAGE": "Mandanten-Logo hochladen",
+        "REMOVE_IMAGE": "Aktuelles Mandanten-Logo entfernen"
+      }
+    }
+  },
   "TENANT_SEARCH": {
     "HEADER": "Mandanten ",
     "SUB_HEADER": "Suchen und Anzeigen von Mandanten",
@@ -26,7 +95,7 @@
       "ORGID": "Organisations-ID"
     },
     "COLUMNS": {
-      "ORG_ID": "Org ID",
+      "ORG_ID": "Organisations ID",
       "TENANT_ID": "Mandanten ID",
       "DESCRIPTION": "Beschreibung",
       "MODIFICATION_DATE": "Geändert am",
@@ -39,6 +108,18 @@
       "DEFAULT": "Standard",
       "EXTENDED": "Erweitert",
       "FULL": "Vollständig"
+    },
+    "FILTER": {
+      "PLACEHOLDER": "Filter",
+      "TOOLTIP": "Nach Org ID oder Mandanten ID filtern",
+      "CLEAR": "Filter löschen"
+    },
+    "LIST_ITEM": {
+      "TOOLTIPS": {
+        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
+        "ORG_ID": "Organisations-ID für IAM-Integration",
+        "DESCRIPTION": "Optionale Mandantenbeschreibung"
+      }
     }
   }
 }

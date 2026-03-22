@@ -1,0 +1,182 @@
+<p-tabMenu *ngIf="dialogMode !== dialogModeEnum.CREATE" [model]="menuItems" [activeItem]="menuItems[0]">
+  <ng-template pTemplate="item" let-item>
+    <a class="p-menuitem-link" [pTooltip]="item.tooltip | translate" tooltipPosition="top">
+      <span class="ml-2">
+        {{ item.label | translate }}
+      </span>
+    </a>
+  </ng-template>
+</p-tabMenu>
+<div class="gap-5 align-items-start mt-3 px-3">
+  <form [formGroup]="formGroup" class="w-full">
+    <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
+      @if (selectedTab === 'main') {
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_tenantId"
+              class="w-full pb-2 pt-3"
+              formControlName="tenantId"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
+              tooltipPosition="top"
+            />
+            <label class="ocx-required-label" for="tenant_detail_form_tenantId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_orgId"
+              class="w-full pb-2 pt-3"
+              formControlName="orgId"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
+              tooltipPosition="top"
+            />
+            <label class="ocx-required-label" for="tenant_detail_form_orgId">
+              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div class="w-full flex flex-row align-items-center gap-4" *ngIf="dialogMode !== dialogModeEnum.CREATE">
+          <input
+            #fileInput
+            type="file"
+            accept="image/png, image/jpeg"
+            class="hidden"
+            (change)="handleFileChange($event)"
+          />
+
+          <div class="image-preview flex align-items-center justify-content-center">
+            <img
+              *ngIf="!uploadedFile && !imageRemoved && hasExistingImage"
+              [ocxSrc]="getImageUrl()"
+              (load)="onImageLoad()"
+              (error)="onImageError()"
+              alt="Tenant"
+            />
+            <img *ngIf="uploadedFile" [src]="uploadedFilePreview" alt="New tenant" />
+            <img
+              *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile"
+              [src]="tenantDefaultImagePath"
+              class="pi pi-image image-placeholder"
+            />
+          </div>
+
+          <ng-container *ngIf="dialogMode !== dialogModeEnum.DETAILS">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.REMOVE_IMAGE' | translate"
+              tooltipPosition="top"
+              (click)="handleFileRemove()"
+              [disabled]="(!hasExistingImage || imageRemoved) && !uploadedFile"
+            ></button>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-upload"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
+              tooltipPosition="top"
+              (click)="fileInput.click()"
+            ></button>
+          </ng-container>
+        </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <textarea
+              pInputTextarea
+              rows="3"
+              type="text"
+              id="tenant_detail_form_description"
+              class="w-full pb-2 pt-3"
+              formControlName="description"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              tooltipPosition="top"
+            ></textarea>
+            <label for="tenant_detail_form_description">
+              {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label
+            >
+          </span>
+        </div>
+      } @else {
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_creationUser"
+              class="w-full pb-2 pt-3"
+              formControlName="creationUser"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CREATION_USER' | translate"
+              tooltipPosition="top"
+            />
+            <label for="tenant_detail_form_creationUser">
+              {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_USER' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_creationDate"
+              class="w-full pb-2 pt-3"
+              formControlName="creationDate"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CREATION_DATE' | translate"
+              tooltipPosition="top"
+            />
+            <label for="tenant_detail_form_creationDate">
+              {{ 'TENANT_CREATE_UPDATE.FORM.CREATION_DATE' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_modificationUser"
+              class="w-full pb-2 pt-3"
+              formControlName="modificationUser"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.MODIFICATION_USER' | translate"
+              tooltipPosition="top"
+            />
+            <label for="tenant_detail_form_modificationUser">
+              {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_USER' | translate }}</label
+            >
+          </span>
+        </div>
+
+        <div>
+          <span class="p-float-label" controlErrorAnchor>
+            <input
+              pInputText
+              type="text"
+              id="tenant_detail_form_modificationDate"
+              class="w-full pb-2 pt-3"
+              formControlName="modificationDate"
+              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.MODIFICATION_DATE' | translate"
+              tooltipPosition="top"
+            />
+            <label for="tenant_detail_form_modificationDate">
+              {{ 'TENANT_CREATE_UPDATE.FORM.MODIFICATION_DATE' | translate }}</label
+            >
+          </span>
+        </div>
+      }
+    </div>
+  </form>
+</div>

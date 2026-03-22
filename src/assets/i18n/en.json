@@ -1,4 +1,73 @@
 {
+  "TENANT_CREATE_UPDATE": {
+    "MENU": {
+      "PROPERTIES": "Properties",
+      "INTERNAL": "Internal",
+      "TOOLTIPS": {
+        "PROPERTIES": "Main tenant properties",
+        "INTERNAL": "System metadata and audit information"
+      }
+    },
+    "ACTION": {
+      "CREATE": "Create"
+    },
+    "CREATE": {
+      "HEADER": "Create Tenant",
+      "SUCCESS": "Creation succesful",
+      "ERROR": "Creation failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel",
+        "TOOLTIPS": {
+          "SAVE": "Create the new tenant",
+          "CANCEL": "Cancel and close dialog"
+        }
+      }
+    },
+    "UPDATE": {
+      "SUCCESS": "Update successful",
+      "FAILED": "ACTION: Add Translation",
+      "ERROR": "Update failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel",
+        "TOOLTIPS": {
+          "SAVE": "Save tenant changes",
+          "CANCEL": "Cancel and discard changes"
+        }
+      },
+      "HEADER": "Update Tenant"
+    },
+    "DETAILS": {
+      "HEADER": "Tenant Details",
+      "BUTTON": "Close",
+      "TOOLTIPS": {
+        "BUTTON": "Close details dialog"
+      }
+    },
+    "FORM": {
+      "ORG_ID": "Organization ID",
+      "DESCRIPTION": "Description",
+      "TENANT_ID": "Tenant ID",
+      "CREATION_USER": "Created by",
+      "CREATION_DATE": "Created on",
+      "MODIFICATION_USER": "Modified by",
+      "MODIFICATION_DATE": "Modified on",
+      "CHOOSE_IMAGE": "Choose",
+      "REMOVE_IMAGE": "Remove",
+      "TOOLTIPS": {
+        "ORG_ID": "Unique orgId for IAM integration",
+        "TENANT_ID": "Unique identifier for this tenant",
+        "DESCRIPTION": "Optional description of the tenant",
+        "CREATION_USER": "User who created this tenant",
+        "CREATION_DATE": "Date when the tenant was created",
+        "MODIFICATION_USER": "User who last modified this tenant",
+        "MODIFICATION_DATE": "Date of the last modification",
+        "CHOOSE_IMAGE": "Upload a tenant logo image",
+        "REMOVE_IMAGE": "Remove the current tenant logo"
+      }
+    }
+  },
   "TENANT_SEARCH": {
     "HEADER": "Tenants",
     "SUB_HEADER": "Search and display Tenants",
@@ -26,7 +95,7 @@
       "ORGID": "Organization ID"
     },
     "COLUMNS": {
-      "ORG_ID": "Org ID",
+      "ORG_ID": "Organization ID",
       "TENANT_ID": "Tenant ID",
       "DESCRIPTION": "Description",
       "MODIFICATION_DATE": "Modified on",
@@ -39,6 +108,18 @@
       "DEFAULT": "Default",
       "EXTENDED": "Extended",
       "FULL": "Full"
+    },
+    "FILTER": {
+      "LABEL": "Filter",
+      "TOOLTIP": "Filter by Org ID or Tenant ID",
+      "CLEAR": "Clear filter"
+    },
+    "LIST_ITEM": {
+      "TOOLTIPS": {
+        "TENANT_ID": "Unique identifier for this tenant",
+        "ORG_ID": "Organization ID for IAM integration",
+        "DESCRIPTION": "Optional tenant description"
+      }
     }
   }
 }
