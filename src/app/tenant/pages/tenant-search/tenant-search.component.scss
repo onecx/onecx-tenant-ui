@@ -5,6 +5,7 @@
 @include table-responsive-columns;
 @include displaying-text-responsive;
 @include correct-ocx-interactive-data-view;
+@include dataview-list-zebra-rows;
 
 :host ::ng-deep .p-calendar-clear-icon {
   right: 1rem;
@@ -29,6 +30,11 @@
     padding-top: 0;
   }
 
+  .no-card-padding .card ocx-interactive-data-view div:first-child div:first-child {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
   /* correct header layouting by lib */
   .table-header-wrapper {
     flex-direction: row !important;
@@ -37,11 +43,5 @@
   }
   .table-header-wrapper span:first-child {
     margin-right: 10px !important;
-  }
-}
-
-.list-item-row {
-  &:nth-child(odd) {
-    background-color: var(--table-body-row-even-bg);
   }
 }

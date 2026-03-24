@@ -52,7 +52,7 @@ export class TenantSearchEffects {
   ) {}
 
   pageName = 'tenant'
-  private readonly DIALOG_WIDTH = '35vw'
+  private readonly DIALOG_WIDTH = '30vw'
 
   syncParamsToUrl$ = createEffect(
     () => {
@@ -131,7 +131,9 @@ export class TenantSearchEffects {
             tooltipPosition: 'bottom'
           },
           {
-            baseZIndex: 100,
+            modal: true,
+            draggable: true,
+            resizable: true,
             width: this.DIALOG_WIDTH
           }
         )
@@ -210,7 +212,9 @@ export class TenantSearchEffects {
             tooltipPosition: 'bottom'
           },
           {
-            baseZIndex: 100,
+            modal: true,
+            draggable: true,
+            resizable: true,
             width: this.DIALOG_WIDTH
           }
         )
@@ -284,7 +288,9 @@ export class TenantSearchEffects {
             },
             undefined,
             {
-              baseZIndex: 100,
+              modal: true,
+              draggable: true,
+              resizable: true,
               width: this.DIALOG_WIDTH
             }
           )

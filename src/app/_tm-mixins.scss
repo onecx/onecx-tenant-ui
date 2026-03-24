@@ -67,14 +67,6 @@
   }
 }
 
-@mixin compact-dropdown-list-items {
-  :host ::ng-deep {
-    .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-      padding: 0.4rem 1rem !important;
-    }
-  }
-}
-
 @mixin invisible {
   :host ::ng-deep {
     .invisible {
@@ -108,6 +100,14 @@
     .danger-action-bg {
       color: white;
       background-color: var(--danger-button-bg);
+    }
+  }
+}
+
+@mixin compact-dropdown-list-items {
+  :host ::ng-deep {
+    .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+      padding: 0.4rem 1rem !important;
     }
   }
 }
@@ -430,7 +430,7 @@
 /* ZEBRA rows */
 @mixin dataview-list-zebra-rows {
   :host ::ng-deep {
-    .p-dataview-list .p-dataview-content .p-grid > div {
+    .p-dataview-list .p-dataview-content .p-grid > * {
       &:nth-child(even) {
         background-color: var(--table-body-row-even-bg);
       }
@@ -439,7 +439,7 @@
 }
 @mixin dataview-list-flex-zebra-rows {
   :host ::ng-deep {
-    .p-dataview-list .p-dataview-content > div {
+    .p-dataview-list .p-dataview-content > * {
       &:nth-child(even) {
         background-color: var(--table-body-row-even-bg);
       }
@@ -540,12 +540,10 @@
     }
   }
 }
+
 @mixin tabview-fix-color-selected-tab {
   :host ::ng-deep {
-    // correct the background color on inital selected tab
-    .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link[aria-selected='true'] {
-      background-color: rgba(var(--primary-color-rgb), 0.12);
-    }
+    --tabview-header-active-bg: rgb(from var(--primary-color) r g b / 0.12) !important;
   }
 }
 
