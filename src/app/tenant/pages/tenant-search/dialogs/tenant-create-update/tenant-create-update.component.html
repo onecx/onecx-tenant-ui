@@ -43,31 +43,29 @@
     <div class="ml-3 flex flex-row align-items-center gap-4" *ngIf="dialogMode !== dialogModeEnum.CREATE">
       <input #fileInput type="file" accept="image/png, image/jpeg" class="hidden" (change)="handleFileChange($event)" />
 
-      <div class="image-preview">
-        <img
-          *ngIf="!uploadedFile && !imageRemoved && hasExistingImage"
-          id="tm_detail_form_image_preview"
-          class="border-round-sm max-h-3rem max-w-5rem"
-          [ocxSrc]="getImageUrl()"
-          (load)="onImageLoad()"
-          (error)="onImageError()"
-          alt="Tenant"
-        />
-        <img
-          *ngIf="uploadedFile"
-          id="tm_detail_form_image_uploaded"
-          class="border-round-sm max-h-3rem max-w-5rem"
-          [src]="uploadedFilePreview"
-          alt="New tenant"
-        />
-        <img
-          *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile"
-          id="tm_detail_form_image_default"
-          class="border-round-sm max-h-3rem max-w-5rem"
-          [src]="tenantDefaultImagePath"
-          class="pi pi-image image-placeholder"
-        />
-      </div>
+      <img
+        *ngIf="!uploadedFile && !imageRemoved && hasExistingImage"
+        id="tm_detail_form_image_preview"
+        class="border-round-sm max-h-3rem max-w-5rem"
+        [ocxSrc]="getImageUrl()"
+        (load)="onImageLoad()"
+        (error)="onImageError()"
+        alt="Tenant"
+      />
+      <img
+        *ngIf="uploadedFile"
+        id="tm_detail_form_image_uploaded"
+        class="border-round-sm max-h-3rem max-w-5rem"
+        [src]="uploadedFilePreview"
+        alt="New tenant"
+      />
+      <img
+        *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile"
+        id="tm_detail_form_image_default"
+        class="border-round-sm max-h-3rem max-w-5rem"
+        [src]="tenantDefaultImagePath"
+        class="pi pi-image image-placeholder"
+      />
 
       @if (dialogMode !== dialogModeEnum.DETAILS) {
         <button

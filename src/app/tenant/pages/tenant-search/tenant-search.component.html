@@ -80,16 +80,16 @@
         <ng-template #gridItem let-item let-i="index">
           <div class="col-6 md:col-4 xl:col-3 p-2 md:p-3">
             <article
-              class="card flex flex-column gap-1 sm:gap-2 justify-content-between text-center hover:bg-gray-200 cursor-pointer"
+              class="card p-2 flex flex-column gap-1 sm:gap-2 justify-content-between text-center hover:bg-gray-200 cursor-pointer"
               (click)="handleOpenEntryDetails(item)"
               (onkeypress)="handleOpenEntryDetails(item)"
               (keydown.enter)="handleOpenEntryDetails(item)"
               tabindex="0"
-              [attr.aria-label]="'Tenant: ' + item['tenantId']"
+              [attr.aria-label]="'OrgId: ' + item['orgId'] + ', TenantId: ' + item['tenantId']"
             >
               <div
                 class="font-bold sm:text-lg md:text-xl lg:text-2xl text-responsive"
-                [attr.aria-label]="'Organization ID'"
+                [attr.aria-label]="'TENANT_SEARCH.COLUMNS.ORG_ID' | translate"
                 [pTooltip]="'TENANT_SEARCH.COLUMNS.ORG_ID' | translate"
                 tooltipPosition="top"
                 tooltipEvent="hover"
@@ -99,17 +99,18 @@
               </div>
               <div
                 class="text-sm md:text-base text-responsive"
-                [ocxTooltipOnOverflow]="item['tenantId']"
+                [attr.aria-label]="'TENANT_SEARCH.COLUMNS.TENANT_ID' | translate"
+                [pTooltip]="'TENANT_SEARCH.COLUMNS.TENANT_ID' | translate"
                 tooltipPosition="top"
                 tooltipEvent="hover"
-                aria-label="Tenant ID"
+                role="note"
               >
                 id: {{ item['tenantId'] }}
               </div>
-              <div class="h-5rem sm:h-10rem px-4 flex justify-content-center align-items-center border-round-sm">
+              <div class="mt-1 h-4rem sm:h-6rem md:h-8rem px-4 flex justify-content-center align-items-center border-round-sm">
                 <app-image-container
                   [id]="'tm_search_data_grid_row_' + i + '_logo'"
-                  styleClass="max-h-5rem sm:max-h-9rem border-round-sm"
+                  styleClass="max-h-4rem sm:max-h-6rem md:max-h-8rem border-round-sm"
                   [bffUrl]="getImageUrl(item['id'])"
                   aria-hidden="true"
                 ></app-image-container>
@@ -118,44 +119,44 @@
           </div>
         </ng-template>
 
-        <ng-template #listItem let-item>
+        <ng-template #listItem let-item let-i="index">
           <article
             class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 hover:bg-gray-200 cursor-pointer list-item-row"
-            [id]="'tm_search_data_list_row_' + item['id']"
-            [attr.aria-label]="item['tenantId']"
+            [id]="'tm_search_data_list_row_' + i"
+            [attr.aria-label]="item['orgId']"
             (click)="handleOpenEntryDetails(item)"
             (onkeypress)="handleOpenEntryDetails(item)"
             (keydown.enter)="handleOpenEntryDetails(item)"
           >
-            <div class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center">
+            <div class="py-1 px-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center">
               <app-image-container
-                [id]="'tm_search_data_grid_row_' + item['id'] + '_logo'"
-                styleClass="max-h-4rem sm:max-h-5rem max-w-4rem sm:max-w-6rem border-round-sm"
+                [id]="'tm_search_data_list_row_' + i + '_logo'"
+                styleClass="max-h-3rem sm:max-h-4rem max-w-4rem sm:max-w-6rem border-round-sm"
                 [bffUrl]="getImageUrl(item['id'])"
                 aria-hidden="true"
               ></app-image-container>
             </div>
             <div
+              [id]="'tm_search_data_list_row_' + i + '_org_id'"
               class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
-              [id]="'tm_search_data_list_row_' + item['id'] + '_tenant_id'"
-              aria-label="Tenant ID"
-              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['tenantId'] }}
-            </div>
-            <div
-              class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
-              [id]="'tm_search_data_list_row_' + item['id'] + '_org_id'"
-              aria-label="Organization ID"
+              [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
               [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="note"
             >
               {{ item['orgId'] }}
+            </div>
+            <div
+              [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
+              class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
+              [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="note"
+            >
+              {{ item['tenantId'] }}
             </div>
             <div
               class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"

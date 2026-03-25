@@ -30,9 +30,10 @@
     padding-top: 0;
   }
 
-  .no-card-padding .card ocx-interactive-data-view div:first-child div:first-child {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  // fix default padding of dataview list items
+  .no-card-padding .card ocx-interactive-data-view div.p-3.border-bottom-1 div.py-1 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
   }
 
   /* correct header layouting by lib */
