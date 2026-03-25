@@ -37,29 +37,5 @@ export const tenantSearchColumns: DataTableColumn[] = [
       'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
       'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
     ]
-  },
-  {
-    columnType: ColumnType.DATE,
-    id: 'modificationDate',
-    nameKey: 'TENANT_SEARCH.COLUMNS.MODIFICATION_DATE',
-    filterable: true,
-    sortable: false,
-    predefinedGroupKeys: [
-      'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
-      'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
-    ]
-  },
-  {
-    columnType: ColumnType.DATE,
-    id: 'creationDate',
-    nameKey: 'TENANT_SEARCH.COLUMNS.CREATION_DATE',
-    filterable: true,
-    sortable: false,
-    predefinedGroupKeys: [
-      'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT',
-      'TENANT_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'TENANT_SEARCH.PREDEFINED_GROUP.FULL'
-    ]
   }
 ]
