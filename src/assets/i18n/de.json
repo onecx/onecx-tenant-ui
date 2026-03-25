@@ -56,8 +56,8 @@
       "CHOOSE_IMAGE": "Auswählen",
       "REMOVE_IMAGE": "Entfernen",
       "TOOLTIPS": {
-        "ORG_ID": "Eindeutige orgId für IAM-Integration",
-        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
+        "ORG_ID": "Eindeutige orgId für diesen Mandanten. Wird verwendet, um einen Benutzer zu einem Tenant zuzuweisen, innerhalb des IAM (Identity Access Management)",
+        "TENANT_ID": "Eindeutige Kennung für diesen Mandanten. Wird in der Datenbank verwendet um Daten dem Teannt zuzuordnen. Kann nicht mehr geändert werden, nachdem der Mandant erstellt wurde.",
         "DESCRIPTION": "Optionale Beschreibung des Mandanten",
         "CREATION_USER": "Benutzer, der diesen Mandanten erstellt hat",
         "CREATION_DATE": "Datum, an dem der Mandant erstellt wurde",
@@ -117,7 +117,7 @@
     "LIST_ITEM": {
       "TOOLTIPS": {
         "TENANT_ID": "Eindeutige Kennung für diesen Mandanten",
-        "ORG_ID": "Organisations-ID für IAM-Integration",
+        "ORG_ID": "Organisations-ID",
         "DESCRIPTION": "Optionale Mandantenbeschreibung"
       }
     }

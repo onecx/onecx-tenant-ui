@@ -56,8 +56,8 @@
       "CHOOSE_IMAGE": "Choose",
       "REMOVE_IMAGE": "Remove",
       "TOOLTIPS": {
-        "ORG_ID": "Unique orgId for IAM integration",
-        "TENANT_ID": "Unique identifier for this tenant",
+        "ORG_ID": "Unique orgId for the tenant. Used to assign a user to a tenant within IAM (Identity Access Management)",
+        "TENANT_ID": "Unique identifier for this tenant. Used in the database to assign data to the tenant. Cannot be changed after tenant creation.",
         "DESCRIPTION": "Optional description of the tenant",
         "CREATION_USER": "User who created this tenant",
         "CREATION_DATE": "Date when the tenant was created",
@@ -116,8 +116,8 @@
     },
     "LIST_ITEM": {
       "TOOLTIPS": {
-        "TENANT_ID": "Unique identifier for this tenant",
-        "ORG_ID": "Organization ID for IAM integration",
+        "TENANT_ID": "Unique identifier for this tenant.",
+        "ORG_ID": "Organization ID for the tenant. Used to assign a user to a tenant within IAM (Identity Access Management)",
         "DESCRIPTION": "Optional tenant description"
       }
     }
