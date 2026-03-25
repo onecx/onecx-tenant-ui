@@ -15,7 +15,7 @@ import { hot } from 'jest-marbles'
 import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
 
 import { ImagesAPIService, RefType, TenantAPIService } from 'src/app/shared/generated'
-import { TenantSearchEffects } from './tenant-search.effects'
+import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchComponent } from './tenant-search.component'
@@ -845,7 +845,7 @@ describe('TenantSearchEffects:', () => {
 
   describe('Tenant details dialog', () => {
     it('should open details dialog with proper configuration', (done) => {
-      const tenantDetails = { id: '1', orgId: 'org1', description: 'Test' }
+      const tenantDetails = { id: '1', orgId: 'org1', tenantId: 'tenant1', description: 'Test' }
       store.overrideSelector(tenantSearchSelectors.selectResults, [tenantDetails])
 
       const openDialogSpy = jest.spyOn(mockedDialogService, 'openDialog').mockReturnValue(of({} as any))
@@ -869,10 +869,7 @@ describe('TenantSearchEffects:', () => {
             key: 'TENANT_CREATE_UPDATE.DETAILS.BUTTON'
           }),
           undefined,
-          expect.objectContaining({
-            baseZIndex: 100,
-            width: '35vw'
-          })
+          expect.objectContaining(DialogConfig)
         )
         done()
       })

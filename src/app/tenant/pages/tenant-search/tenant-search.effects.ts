@@ -1,4 +1,4 @@
-import { PortalDialogService } from '@onecx/portal-integration-angular'
+import { PortalDialogConfig, PortalDialogService } from '@onecx/portal-integration-angular'
 import { concat, mergeMap, Observable, withLatestFrom, catchError, last, map, of, switchMap, tap } from 'rxjs'
 import {
   CreateTenantRequest,
@@ -37,6 +37,13 @@ import {
 } from './dialogs/tenant-create-update/tenant-create-update.types'
 import { PrimeIcons } from 'primeng/api'
 
+export const DialogConfig: PortalDialogConfig = {
+  modal: true,
+  draggable: true,
+  resizable: true,
+  width: '30vw'
+}
+
 @Injectable()
 export class TenantSearchEffects {
   constructor(
@@ -50,9 +57,6 @@ export class TenantSearchEffects {
     private readonly imageService: ImagesAPIService,
     private readonly userServcie: UserService
   ) {}
-
-  pageName = 'tenant'
-  private readonly DIALOG_WIDTH = '30vw'
 
   syncParamsToUrl$ = createEffect(
     () => {
@@ -130,12 +134,7 @@ export class TenantSearchEffects {
             tooltipKey: 'TENANT_CREATE_UPDATE.UPDATE.FORM.TOOLTIPS.CANCEL',
             tooltipPosition: 'bottom'
           },
-          {
-            modal: true,
-            draggable: true,
-            resizable: true,
-            width: this.DIALOG_WIDTH
-          }
+          DialogConfig
         )
       }),
       switchMap((dialogResult) => {
@@ -211,12 +210,7 @@ export class TenantSearchEffects {
             tooltipKey: 'TENANT_CREATE_UPDATE.CREATE.FORM.TOOLTIPS.CANCEL',
             tooltipPosition: 'bottom'
           },
-          {
-            modal: true,
-            draggable: true,
-            resizable: true,
-            width: this.DIALOG_WIDTH
-          }
+          DialogConfig
         )
       }),
       switchMap((dialogResult) => {
@@ -287,12 +281,7 @@ export class TenantSearchEffects {
               tooltipPosition: 'bottom'
             },
             undefined,
-            {
-              modal: true,
-              draggable: true,
-              resizable: true,
-              width: this.DIALOG_WIDTH
-            }
+            DialogConfig
           )
         })
       )

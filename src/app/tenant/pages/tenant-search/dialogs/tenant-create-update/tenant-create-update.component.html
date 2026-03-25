@@ -14,21 +14,6 @@
       <input
         pInputText
         type="text"
-        id="tm_detail_form_tenantId"
-        class="w-full pb-2 pt-3 text-responsive"
-        formControlName="tenantId"
-        [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
-        tooltipPosition="top"
-      />
-      <label class="ocx-required-label" for="tm_detail_form_tenantId">
-        {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}</label
-      >
-    </span>
-
-    <span class="p-float-label" controlErrorAnchor>
-      <input
-        pInputText
-        type="text"
         id="tm_detail_form_orgId"
         class="w-full pb-2 pt-3 text-responsive"
         formControlName="orgId"
@@ -37,8 +22,22 @@
         tooltipEvent="hover"
       />
       <label class="ocx-required-label" for="tm_detail_form_orgId">
-        {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}</label
-      >
+        {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}
+      </label>
+    </span>
+    <span class="p-float-label" controlErrorAnchor>
+      <input
+        pInputText
+        type="text"
+        id="tm_detail_form_tenantId"
+        class="w-full pb-2 pt-3 text-responsive"
+        formControlName="tenantId"
+        [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
+        tooltipPosition="top"
+      />
+      <label class="ocx-required-label" for="tm_detail_form_tenantId">
+        {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}
+      </label>
     </span>
 
     <div class="ml-3 flex flex-row align-items-center gap-4" *ngIf="dialogMode !== dialogModeEnum.CREATE">
