@@ -76,6 +76,10 @@
     "DIAGRAM": {
       "SUM": "Gesamtanzahl"
     },
+    "SECTIONS": {
+      "CRITERIA": "Suchfelder",
+      "RESULTS": "Suchergebnisse"
+    },
     "HEADER_ACTIONS": {
       "EXPORT_ALL": "Alles exportieren",
       "SHOW_CHART": "Diagramm anzeigen",

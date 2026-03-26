@@ -76,6 +76,10 @@
     "DIAGRAM": {
       "SUM": "Total"
     },
+    "SECTIONS": {
+      "CRITERIA": "Search Criteria",
+      "RESULTS": "Search Results"
+    },
     "HEADER_ACTIONS": {
       "EXPORT_ALL": "Export all",
       "SHOW_CHART": "Show chart",

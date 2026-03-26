@@ -77,6 +77,65 @@
           </div>
         </ng-template>
 
+        <!-- LIST -->
+        <section [attr.aria-label]="'TENANT_SEARCH.SECTIONS.RESULTS' | translate">
+          <ng-template #listItem let-item let-i="index">
+            <article
+              [id]="'tm_search_data_list_row_' + i"
+              class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 hover:bg-gray-200 cursor-pointer list-item-row"
+              [attr.aria-label]="item['orgId']"
+              (click)="handleOpenEntryDetails(item)"
+              (onkeypress)="handleOpenEntryDetails(item)"
+              (keydown.enter)="handleOpenEntryDetails(item)"
+            >
+              <div
+                class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
+                aria-hidden="true"
+              >
+                <app-image-container
+                  [id]="'tm_search_data_list_row_' + i + '_logo'"
+                  styleClass="max-h-3rem max-w-4rem sm:max-w-6rem border-round-sm"
+                  [bffUrl]="getImageUrl(item['id'])"
+                ></app-image-container>
+              </div>
+              <div
+                [id]="'tm_search_data_list_row_' + i + '_org_id'"
+                class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
+                [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
+                tooltipPosition="top"
+                tooltipEvent="hover"
+                role="note"
+              >
+                {{ item['orgId'] }}
+              </div>
+              <div
+                [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
+                class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+                [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+                tooltipPosition="top"
+                tooltipEvent="hover"
+                role="note"
+              >
+                {{ item['tenantId'] }}
+              </div>
+              <div
+                class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
+                [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
+                [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
+                tooltipPosition="top"
+                tooltipEvent="hover"
+                role="note"
+              >
+                {{ item['description'] }}
+              </div>
+            </article>
+          </ng-template>
+        </section>
+
+        <!-- GRID -->
         <ng-template #gridItem let-item let-i="index">
           <div class="col-6 md:col-4 xl:col-3 p-2 md:p-3">
             <article
@@ -107,7 +166,9 @@
               >
                 id: {{ item['tenantId'] }}
               </div>
-              <div class="mt-1 h-4rem sm:h-6rem md:h-8rem px-4 flex justify-content-center align-items-center border-round-sm">
+              <div
+                class="mt-1 h-4rem sm:h-6rem md:h-8rem px-4 flex justify-content-center align-items-center border-round-sm"
+              >
                 <app-image-container
                   [id]="'tm_search_data_grid_row_' + i + '_logo'"
                   styleClass="max-h-4rem sm:max-h-6rem md:max-h-8rem border-round-sm"
@@ -117,59 +178,6 @@
               </div>
             </article>
           </div>
-        </ng-template>
-
-        <ng-template #listItem let-item let-i="index">
-          <article
-            class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 hover:bg-gray-200 cursor-pointer list-item-row"
-            [id]="'tm_search_data_list_row_' + i"
-            [attr.aria-label]="item['orgId']"
-            (click)="handleOpenEntryDetails(item)"
-            (onkeypress)="handleOpenEntryDetails(item)"
-            (keydown.enter)="handleOpenEntryDetails(item)"
-          >
-            <div class="py-1 px-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center">
-              <app-image-container
-                [id]="'tm_search_data_list_row_' + i + '_logo'"
-                styleClass="max-h-3rem sm:max-h-4rem max-w-4rem sm:max-w-6rem border-round-sm"
-                [bffUrl]="getImageUrl(item['id'])"
-                aria-hidden="true"
-              ></app-image-container>
-            </div>
-            <div
-              [id]="'tm_search_data_list_row_' + i + '_org_id'"
-              class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
-              [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
-              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['orgId'] }}
-            </div>
-            <div
-              [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
-              class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
-              [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['tenantId'] }}
-            </div>
-            <div
-              class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
-              [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
-              [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
-              [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="note"
-            >
-              {{ item['description'] }}
-            </div>
-          </article>
         </ng-template>
       </ocx-interactive-data-view>
     </ocx-content>
