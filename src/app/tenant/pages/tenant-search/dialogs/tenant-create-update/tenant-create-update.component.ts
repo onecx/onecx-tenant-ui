@@ -1,10 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
-import {
-  AppStateService,
-  DialogButtonClicked,
-  DialogPrimaryButtonDisabled,
-  DialogResult
-} from '@onecx/portal-integration-angular'
+import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/angular-accelerator'
+import { AppStateService } from '@onecx/angular-integration-interface'
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import {
@@ -21,6 +17,7 @@ import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-tenant-create-update',
+  standalone: false,
   templateUrl: './tenant-create-update.component.html',
   styleUrls: ['./tenant-create-update.component.scss']
 })

@@ -1,6 +1,6 @@
 <ocx-portal-page permission="TENANT#SEARCH" helpArticleId="PAGE_TENANT_SEARCH" *ngrxLet="viewModel$; let vm">
   <ocx-search-header
-    [headline]="'TENANT_SEARCH.HEADER' | translate"
+    [header]="'TENANT_SEARCH.HEADER' | translate"
     [subheader]="'TENANT_SEARCH.SUB_HEADER' | translate"
     (searched)="onSearch(tenantSearchForm)"
     (resetted)="onResetSearchCriteria()"
@@ -43,7 +43,8 @@
         [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
         [supportedViewLayouts]="['list', 'grid', 'table']"
         [layout]="layout"
-        (displayedColumnsChange)="onDisplayedColumnsChange($event)"
+        [displayedColumnKeys]="getDisplayedColumnKeys(vm.displayedColumns)"
+        (displayedColumnKeysChange)="onDisplayedColumnKeysChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
         [pageSizes]="[10, 50, 1000]"
         [sortField]="'tenantId'"
