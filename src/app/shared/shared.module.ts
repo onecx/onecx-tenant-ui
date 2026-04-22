@@ -8,19 +8,19 @@ import { FileUploadModule } from 'primeng/fileupload'
 import { FloatLabelModule } from 'primeng/floatlabel'
 import { InputGroupModule } from 'primeng/inputgroup'
 import { InputTextModule } from 'primeng/inputtext'
-import { InputTextareaModule } from 'primeng/inputtextarea'
+import { Textarea } from 'primeng/inputtextarea'
 import { OrderListModule } from 'primeng/orderlist'
 import { RadioButtonModule } from 'primeng/radiobutton'
 import { SkeletonModule } from 'primeng/skeleton'
 import { TabViewModule } from 'primeng/tabview'
 import { TooltipModule } from 'primeng/tooltip'
 import { ImageContainerComponent } from './components/image-container/image-container.component'
-import { PortalCoreModule } from '@onecx/portal-integration-angular'
+import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
 
 @NgModule({
   declarations: [ImageContainerComponent],
   imports: [
-    PortalCoreModule.forMicroFrontend(),
+    AngularAcceleratorModule,
     CommonModule,
     DockModule,
     FileUploadModule,
@@ -28,7 +28,7 @@ import { PortalCoreModule } from '@onecx/portal-integration-angular'
     FormsModule,
     InputGroupModule,
     InputTextModule,
-    InputTextareaModule,
+    Textarea,
     OrderListModule,
     RadioButtonModule,
     ReactiveFormsModule,
@@ -44,7 +44,7 @@ import { PortalCoreModule } from '@onecx/portal-integration-angular'
     FormsModule,
     InputGroupModule,
     InputTextModule,
-    InputTextareaModule,
+    Textarea,
     RadioButtonModule,
     ReactiveFormsModule,
     OrderListModule,
