@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core'
 import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
@@ -11,7 +12,8 @@ import { TranslateTestingModule } from 'ngx-translate-testing'
 import { DialogService } from 'primeng/dynamicdialog'
 import { PrimeIcons } from 'primeng/api'
 
-import { ColumnType, DataTableColumn, PortalCoreModule, UserService } from '@onecx/portal-integration-angular'
+import { AngularAcceleratorModule, ColumnType, DataTableColumn } from '@onecx/angular-accelerator'
+import { UserService } from '@onecx/angular-integration-interface'
 
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
@@ -59,7 +61,7 @@ describe('TenantSearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TenantSearchComponent, ImageContainerComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
         LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
@@ -80,14 +82,15 @@ describe('TenantSearchComponent', () => {
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         provideAppStateServiceMock()
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     }).compileComponents()
   })
   /* eslint-disable @typescript-eslint/no-var-requires */
 
   beforeEach(async () => {
     const userService = TestBed.inject(UserService)
-    userService.hasPermission = () => true
+    userService.hasPermission = () => Promise.resolve(true)
     const translateService = TestBed.inject(TranslateService)
     translateService.use('en')
     fixture = TestBed.createComponent(TenantSearchComponent)
@@ -221,10 +224,10 @@ describe('TenantSearchComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.viewModeChanged({ viewMode: 'advanced' }))
   })
 
-  it('should dispatch chart visibility change', async () => {
+  it('should dispatch chart visibility change', (done) => {
     jest.spyOn(store, 'dispatch')
-    const baseTenantSearchViewModel: TenantSearchViewModel = {
-      chartVisible: true,
+    const testViewModel: TenantSearchViewModel = {
+      chartVisible: false,
       columns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       results: [{ id: '1', imagePath: ' ' }],
@@ -232,43 +235,22 @@ describe('TenantSearchComponent', () => {
       viewMode: 'advanced',
       loadingData: false
     }
-    store.overrideSelector(selectTenantSearchViewModel, {
-      ...baseTenantSearchViewModel,
-      chartVisible: false
+
+    component.viewModel$ = of(testViewModel)
+
+    component.headerActions$.subscribe((actions) => {
+      const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART')
+      expect(toggleChartAction).toBeDefined()
+      toggleChartAction?.actionCallback()
+      expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.chartVisibilityToggled())
+      done()
     })
-
-    store.refreshState()
-    const searchHeader = await tenantSearch.getHeader()
-    const pageHeader = await searchHeader.getPageHeader()
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
-    expect(overflowActionButton).toBeDefined()
-    await overflowActionButton?.click()
-    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart')
-    await showHideChartActionItem?.selectItem()
-    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.chartVisibilityToggled())
-
-    //hide again
-    store.overrideSelector(selectTenantSearchViewModel, {
-      ...baseTenantSearchViewModel,
-      chartVisible: true
-    })
-
-    store.refreshState()
-    const searchHeading = await tenantSearch.getHeader()
-    const pageHeading = await searchHeading.getPageHeader()
-    const overflowButton = await pageHeading.getOverflowActionMenuButton()
-    expect(overflowButton).toBeDefined()
-    await overflowButton?.click()
-    const hideChartActionItem = await pageHeading.getOverFlowMenuItem('Show chart')
-    await hideChartActionItem?.selectItem()
-    expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.chartVisibilityToggled())
   })
 
-  it('should dispatch export', async () => {
-    jest.spyOn(store, 'dispatch')
+  it('should dispatch export', (done) => {
     jest.spyOn(component, 'onExportItems')
 
-    const baseTenantSearchViewModel: TenantSearchViewModel = {
+    const testViewModel: TenantSearchViewModel = {
       chartVisible: true,
       columns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
       displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
@@ -277,22 +259,16 @@ describe('TenantSearchComponent', () => {
       viewMode: 'advanced',
       loadingData: false
     }
-    store.overrideSelector(selectTenantSearchViewModel, {
-      ...baseTenantSearchViewModel,
-      chartVisible: false
+
+    component.viewModel$ = of(testViewModel)
+
+    component.headerActions$.subscribe((actions) => {
+      const exportAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL')
+      expect(exportAction).toBeDefined()
+      exportAction?.actionCallback()
+      expect(component.onExportItems).toHaveBeenCalled()
+      done()
     })
-
-    store.refreshState()
-
-    const searchHeader = await tenantSearch.getHeader()
-    const pageHeader = await searchHeader.getPageHeader()
-    console.log(pageHeader.getInlineActionButtons())
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
-    expect(overflowActionButton).toBeDefined()
-    await overflowActionButton?.click()
-    const exportItem = await pageHeader.getOverFlowMenuItem('Export all')
-    await exportItem?.selectItem()
-    expect(component.onExportItems).toHaveBeenCalled()
   })
   it('should dispatch search config changed action when search config changed', async () => {
     jest.spyOn(store, 'dispatch')
@@ -534,10 +510,11 @@ describe('TenantSearchComponent', () => {
 
   it('should set icon to EYE when user does not have TENANT#ADMIN_EDIT permission', () => {
     const userService = TestBed.inject(UserService)
-    jest.spyOn(userService, 'hasPermission').mockReturnValue(false)
+    jest.spyOn(userService, 'hasPermission').mockResolvedValue(false)
 
     const localFixture = TestBed.createComponent(TenantSearchComponent)
     const localComponent = localFixture.componentInstance
+    localFixture.detectChanges()
 
     const action = localComponent.additionalActions[0]
     expect(action.icon).toBe(PrimeIcons.EYE)

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
-import { PrimeNGConfig } from 'primeng/api'
+import { PrimeNG } from 'primeng/config'
 import { merge, mergeMap } from 'rxjs'
 
 @Component({
@@ -10,7 +10,7 @@ import { merge, mergeMap } from 'rxjs'
 export class AppEntrypointComponent implements OnInit {
   constructor(
     private readonly translateService: TranslateService,
-    private readonly config: PrimeNGConfig
+    private readonly config: PrimeNG
   ) {}
 
   ngOnInit(): void {
