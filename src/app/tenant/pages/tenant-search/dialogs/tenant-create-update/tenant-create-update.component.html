@@ -40,7 +40,7 @@
       </label>
     </span>
 
-    <div class="ml-3 flex flex-row align-items-center gap-4" *ngIf="dialogMode !== dialogModeEnum.CREATE">
+    <div class="flex flex-row align-items-center gap-4" *ngIf="dialogMode !== dialogModeEnum.CREATE">
       <input #fileInput type="file" accept="image/png, image/jpeg" class="hidden" (change)="handleFileChange($event)" />
 
       <img
@@ -50,14 +50,14 @@
         [ocxSrc]="getImageUrl()"
         (load)="onImageLoad()"
         (error)="onImageError()"
-        alt="Tenant"
+        alt="Logo"
       />
       <img
         *ngIf="uploadedFile"
         id="tm_detail_form_image_uploaded"
         class="border-round-sm max-h-3rem max-w-5rem"
         [src]="uploadedFilePreview"
-        alt="New tenant"
+        alt="Logo"
       />
       <img
         *ngIf="(imageRemoved || !hasExistingImage) && !uploadedFile"
@@ -65,6 +65,7 @@
         class="border-round-sm max-h-3rem max-w-5rem"
         [src]="tenantDefaultImagePath"
         class="pi pi-image image-placeholder"
+        [alt]="'LOGO.PLACEHOLDER' | translate"
       />
 
       @if (dialogMode !== dialogModeEnum.DETAILS) {

@@ -125,5 +125,9 @@
         "DESCRIPTION": "Optional tenant description"
       }
     }
+  },
+  "LOGO": {
+    "PLACEHOLDER": "Logo Placeholder",
+    "TOOLTIP": "Logo Mandant"
   }
 }

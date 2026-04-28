@@ -45,7 +45,7 @@
         [layout]="layout"
         (displayedColumnsChange)="onDisplayedColumnsChange($event)"
         [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
-        [pageSizes]="[10, 50, 1000]"
+        [pageSizes]="[10, 50, 200]"
         [sortField]="'tenantId'"
         [sortDirection]="ascendingSortDirection"
       >
@@ -143,7 +143,6 @@
               (click)="handleOpenEntryDetails(item)"
               (onkeypress)="handleOpenEntryDetails(item)"
               (keydown.enter)="handleOpenEntryDetails(item)"
-              tabindex="0"
               [attr.aria-label]="'OrgId: ' + item['orgId'] + ', TenantId: ' + item['tenantId']"
             >
               <div
@@ -168,12 +167,12 @@
               </div>
               <div
                 class="mt-1 h-4rem sm:h-6rem md:h-8rem px-4 flex justify-content-center align-items-center border-round-sm"
+                aria-hidden="true"
               >
                 <app-image-container
                   [id]="'tm_search_data_grid_row_' + i + '_logo'"
                   styleClass="max-h-4rem sm:max-h-6rem md:max-h-8rem border-round-sm"
                   [bffUrl]="getImageUrl(item['id'])"
-                  aria-hidden="true"
                 ></app-image-container>
               </div>
             </article>
