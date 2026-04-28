@@ -125,5 +125,9 @@
         "DESCRIPTION": "Optionale Mandantenbeschreibung"
       }
     }
+  },
+  "LOGO": {
+    "PLACEHOLDER": "Logo Platzhalter",
+    "TOOLTIP": "Logo Mandant"
   }
 }
