@@ -28,6 +28,7 @@ import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-search',
+  standalone: false,
   templateUrl: './tenant-search.component.html',
   styleUrls: ['./tenant-search.component.scss']
 })

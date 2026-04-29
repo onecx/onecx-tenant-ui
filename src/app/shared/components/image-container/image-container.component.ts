@@ -15,6 +15,7 @@ import { prepareUrlPath } from '../../utils/image.utils'
  */
 @Component({
   selector: 'app-image-container',
+  standalone: false,
   templateUrl: './image-container.component.html'
 })
 export class ImageContainerComponent implements OnChanges {

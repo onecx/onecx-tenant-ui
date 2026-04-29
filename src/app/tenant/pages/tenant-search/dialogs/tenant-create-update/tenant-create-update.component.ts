@@ -17,6 +17,7 @@ import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-tenant-create-update',
+  standalone: false,
   templateUrl: './tenant-create-update.component.html',
   styleUrls: ['./tenant-create-update.component.scss']
 })
