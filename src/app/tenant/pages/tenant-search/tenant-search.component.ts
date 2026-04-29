@@ -85,7 +85,7 @@ export class TenantSearchComponent implements OnInit {
       unknown
     >)
   } satisfies Record<keyof TenantSearchCriteria, unknown>)
-  public tenantFilterFormControl = this.formBuilder.control(null)
+  public tenantFilterFormControl = this.formBuilder.control<string | null>(null)
 
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
 
@@ -197,6 +197,15 @@ export class TenantSearchComponent implements OnInit {
 
   onCreateTenant() {
     this.store.dispatch(TenantSearchActions.createTenantButtonClicked())
+  }
+
+  onGlobalFilter(value: string) {
+    this.tenantFilterFormControl.setValue(value)
+  }
+
+  onClearGlobalFilter(filterInput: HTMLInputElement) {
+    filterInput.value = ''
+    this.clearTextFilters()
   }
 
   clearTextFilters(emitEvent = true) {

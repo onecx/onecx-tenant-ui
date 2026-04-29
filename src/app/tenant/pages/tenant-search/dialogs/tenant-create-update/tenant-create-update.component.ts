@@ -46,6 +46,7 @@ export class TenantCreateUpdateComponent
   uploadedFile: File | null = null
   uploadedFilePreview: string | null = null
   tenantDefaultImagePath: string = environment.TENANT_IMAGE_PATH
+  activeMenuItem?: MenuItem
 
   readonly menuItems: MenuItem[] = [
     {
@@ -72,6 +73,7 @@ export class TenantCreateUpdateComponent
   }
 
   ngOnInit() {
+    this.activeMenuItem = this.menuItems[0]
     this.initForm()
     this.adjustToDialogMode()
     if (this.dialogMode !== TenantDialogMode.DETAILS) {

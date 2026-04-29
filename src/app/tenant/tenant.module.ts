@@ -19,6 +19,8 @@ import { CardModule } from 'primeng/card'
 import { TenantCreateUpdateComponent } from './pages/tenant-search/dialogs/tenant-create-update/tenant-create-update.component'
 import { TooltipModule } from 'primeng/tooltip'
 import { TabMenuModule } from 'primeng/tabmenu'
+import { ButtonModule } from 'primeng/button'
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 
 @NgModule({
   providers: [providePortalDialogService()],
@@ -35,7 +37,9 @@ import { TabMenuModule } from 'primeng/tabmenu'
     StoreModule.forFeature(tenantFeature),
     CardModule,
     TooltipModule,
-    TabMenuModule
+    TabMenuModule,
+    ButtonModule,
+    InputGroupAddonModule
   ]
 })
 export class TenantModule {}
