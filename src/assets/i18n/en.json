@@ -115,6 +115,7 @@
     },
     "FILTER": {
       "LABEL": "Filter",
+      "PLACEHOLDER": "Filter",
       "TOOLTIP": "Filter by Org ID or Tenant ID",
       "CLEAR": "Clear filter"
     },
