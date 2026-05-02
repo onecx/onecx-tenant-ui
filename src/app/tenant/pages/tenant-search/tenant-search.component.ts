@@ -29,27 +29,27 @@ export class TenantSearchComponent implements OnInit {
     map((vm) => {
       const actions: Action[] = [
         {
-          labelKey: 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          labelKey: 'TENANT_SEARCH.ACTIONS.EXPORT_ALL',
           icon: PrimeIcons.DOWNLOAD,
-          titleKey: 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          titleKey: 'TENANT_SEARCH.ACTIONS.EXPORT_ALL.TOOLTIP',
           show: 'asOverflow',
           actionCallback: () => this.onExportItems()
         },
         {
           labelKey: vm.chartVisible
-            ? 'TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            ? 'TENANT_SEARCH.ACTIONS.HIDE_CHART'
+            : 'TENANT_SEARCH.ACTIONS.SHOW_CHART',
           icon: PrimeIcons.EYE,
           titleKey: vm.chartVisible
-            ? 'TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            ? 'TENANT_SEARCH.ACTIONS.HIDE_CHART.TOOLTIP'
+            : 'TENANT_SEARCH.ACTIONS.SHOW_CHART.TOOLTIP',
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility()
         },
         {
           labelKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
           icon: PrimeIcons.PLUS,
-          titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE',
+          titleKey: 'TENANT_CREATE_UPDATE.ACTION.CREATE.TOOLTIP',
           show: 'always',
           permission: 'TENANT#ADMIN_CREATE',
           actionCallback: () => this.onCreateTenant()

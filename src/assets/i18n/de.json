@@ -9,7 +9,8 @@
       }
     },
     "ACTION": {
-      "CREATE": "Erstellen"
+      "CREATE": "Erstellen",
+      "CREATE.TOOLTIP": "Neuen Mandanten erstellen"
     },
     "CREATE": {
       "HEADER": "Neuen Mandanten erstellen",
@@ -80,14 +81,15 @@
       "CRITERIA": "Suchfelder",
       "RESULTS": "Suchergebnisse"
     },
-    "HEADER_ACTIONS": {
+    "ACTIONS": {
       "EXPORT_ALL": "Alles exportieren",
+      "EXPORT_ALL.TOOLTIP": "Alle Zeilen der Tabelle exportieren",
       "SHOW_CHART": "Diagramm anzeigen",
+      "SHOW_CHART.TOOLTIP": "Das Diagramm anzeigen",
       "HIDE_CHART": "Diagramm ausblenden",
+      "HIDE_CHART.TOOLTIP": "Das Diagramm ausblenden",
       "CREATE_SEARCH_CONFIG": "Suchkonfiguration erstellen",
-      "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren",
-      "DIALOG_CONFIRM": "Bestätigen",
-      "DIALOG_CANCEL": "Abbrechen"
+      "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren"
     },
     "ERROR_MESSAGES": {
       "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden.",
