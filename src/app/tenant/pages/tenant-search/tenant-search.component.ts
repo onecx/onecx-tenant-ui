@@ -36,9 +36,7 @@ export class TenantSearchComponent implements OnInit {
           actionCallback: () => this.onExportItems()
         },
         {
-          labelKey: vm.chartVisible
-            ? 'TENANT_SEARCH.ACTIONS.HIDE_CHART'
-            : 'TENANT_SEARCH.ACTIONS.SHOW_CHART',
+          labelKey: vm.chartVisible ? 'TENANT_SEARCH.ACTIONS.HIDE_CHART' : 'TENANT_SEARCH.ACTIONS.SHOW_CHART',
           icon: PrimeIcons.EYE,
           titleKey: vm.chartVisible
             ? 'TENANT_SEARCH.ACTIONS.HIDE_CHART.TOOLTIP'
@@ -93,7 +91,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly exportDataService: ExportDataService,
     private readonly imageService: ImagesAPIService,
     private readonly userService: UserService
-  ) { }
+  ) {}
 
   public ngOnInit() {
     this.breadcrumbService.setItems([
@@ -128,15 +126,15 @@ export class TenantSearchComponent implements OnInit {
   private getNewDate(value: any): Date | null {
     return isValidDate(value)
       ? new Date(
-        Date.UTC(
-          value.getFullYear(),
-          value.getMonth(),
-          value.getDate(),
-          value.getHours(),
-          value.getMinutes(),
-          value.getSeconds()
+          Date.UTC(
+            value.getFullYear(),
+            value.getMonth(),
+            value.getDate(),
+            value.getHours(),
+            value.getMinutes(),
+            value.getSeconds()
+          )
         )
-      )
       : value || null
   }
 
