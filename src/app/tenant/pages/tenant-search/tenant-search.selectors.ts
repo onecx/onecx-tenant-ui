@@ -22,7 +22,7 @@ export const selectDisplayedColumns = createSelector(
   tenantSearchSelectors.selectColumns,
   tenantSearchSelectors.selectDisplayedColumns,
   (columns, displayedColumns): DataTableColumn[] => {
-    return (displayedColumns?.map((d) => columns.find((c) => c.id === d)).filter((d) => d) as DataTableColumn[]) ?? []
+    return (displayedColumns?.map((d) => columns.find((c) => c.id === d)).filter(Boolean) as DataTableColumn[]) ?? []
   }
 )
 
