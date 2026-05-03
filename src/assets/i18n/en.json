@@ -9,7 +9,8 @@
       }
     },
     "ACTION": {
-      "CREATE": "Create"
+      "CREATE": "Create",
+      "CREATE.TOOLTIP": "Create a new Tenant"
     },
     "CREATE": {
       "HEADER": "Create Tenant",
@@ -80,14 +81,15 @@
       "CRITERIA": "Search Criteria",
       "RESULTS": "Search Results"
     },
-    "HEADER_ACTIONS": {
+    "ACTIONS": {
       "EXPORT_ALL": "Export all",
+      "EXPORT_ALL.TOOLTIP": "Export all rows of the table",
       "SHOW_CHART": "Show chart",
+      "SHOW_CHART.TOOLTIP": "Show the chart",
       "HIDE_CHART": "Hide chart",
+      "HIDE_CHART.TOOLTIP": "Hide the chart",
       "CREATE_SEARCH_CONFIG": "Create search configuration",
-      "UPDATE_SEARCH_CONFIG": "Update search configuration",
-      "DIALOG_CONFIRM": "Confirm",
-      "DIALOG_CANCEL": "Cancel"
+      "UPDATE_SEARCH_CONFIG": "Update search configuration"
     },
     "ERROR_MESSAGES": {
       "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
