@@ -97,7 +97,7 @@ export class TenantSearchComponent implements OnInit {
     private readonly exportDataService: ExportDataService,
     private readonly imageService: ImagesAPIService,
     private readonly userService: UserService
-  ) {}
+  ) { }
 
   public ngOnInit() {
     this.updateAdditionalActions(false)
@@ -128,24 +128,26 @@ export class TenantSearchComponent implements OnInit {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<TenantSearchCriteria>, [key, value]) => ({
         ...acc,
-        [key]: this.isVisible(key)
-          ? isValidDate(value)
-            ? new Date(
-                Date.UTC(
-                  value.getFullYear(),
-                  value.getMonth(),
-                  value.getDate(),
-                  value.getHours(),
-                  value.getMinutes(),
-                  value.getSeconds()
-                )
-              )
-            : value || null
-          : null
+        [key]: this.isVisible(key) ? this.getNewDate(value) : null
       }),
       {}
     )
     this.store.dispatch(TenantSearchActions.searchButtonClicked({ searchCriteria }))
+  }
+
+  private getNewDate(value: any): Date | null {
+    return isValidDate(value)
+      ? new Date(
+        Date.UTC(
+          value.getFullYear(),
+          value.getMonth(),
+          value.getDate(),
+          value.getHours(),
+          value.getMinutes(),
+          value.getSeconds()
+        )
+      )
+      : value || null
   }
 
   public onResetSearchCriteria() {

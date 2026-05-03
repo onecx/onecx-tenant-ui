@@ -115,6 +115,7 @@
     },
     "FILTER": {
       "LABEL": "Filter",
+      "PLACEHOLDER": "Filter",
       "TOOLTIP": "Filter by Org ID or Tenant ID",
       "CLEAR": "Clear filter"
     },
@@ -125,5 +126,9 @@
         "DESCRIPTION": "Optional tenant description"
       }
     }
+  },
+  "LOGO": {
+    "PLACEHOLDER": "Logo Placeholder",
+    "TOOLTIP": "Logo Mandant"
   }
 }

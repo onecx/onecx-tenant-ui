@@ -114,6 +114,7 @@
       "FULL": "Vollständig"
     },
     "FILTER": {
+      "LABEL": "Filter",
       "PLACEHOLDER": "Filter",
       "TOOLTIP": "Nach Org ID oder Mandanten ID filtern",
       "CLEAR": "Filter löschen"
@@ -125,5 +126,9 @@
         "DESCRIPTION": "Optionale Mandantenbeschreibung"
       }
     }
+  },
+  "LOGO": {
+    "PLACEHOLDER": "Logo Platzhalter",
+    "TOOLTIP": "Logo Mandant"
   }
 }
