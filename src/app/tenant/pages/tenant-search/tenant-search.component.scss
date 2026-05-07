@@ -36,6 +36,21 @@
     padding-bottom: 0.5rem !important;
   }
 
+  .p-dataview-grid .p-dataview-content {
+    padding-left: 1.5rem !important;
+    padding-right: 0.5rem;
+  }
+
+  .p-dataview-grid .p-dataview-content .p-grid,
+  .p-dataview-grid .p-dataview-content .grid {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .p-dataview-grid .tenant-grid-tile {
+    padding: 0.35rem !important;
+  }
+
   /* correct header layouting by lib */
   .table-header-wrapper {
     flex-direction: row !important;
