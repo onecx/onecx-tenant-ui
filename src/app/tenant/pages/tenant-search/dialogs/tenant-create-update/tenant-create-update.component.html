@@ -1,6 +1,6 @@
 <p-tabMenu *ngIf="dialogMode !== dialogModeEnum.CREATE" [model]="menuItems" [(activeItem)]="activeMenuItem">
   <ng-template #item let-item>
-    <a #tabLink class="p-menuitem-link" role="presentation" [pTooltip]="item.tooltip | translate" tooltipPosition="top">
+    <a #tabLink class="p-menuitem-link" [pTooltip]="item.tooltip | translate" tooltipPosition="top">
       <span class="p-menuitem-text">{{ (item.label | translate) || item.label }}</span>
     </a>
   </ng-template>

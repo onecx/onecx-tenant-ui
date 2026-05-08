@@ -18,7 +18,6 @@ import { ImageContainerComponent } from './components/image-container/image-cont
 import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
 
 @NgModule({
-  declarations: [ImageContainerComponent],
   imports: [
     AngularAcceleratorModule,
     CommonModule,
@@ -35,7 +34,8 @@ import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
     SkeletonModule,
     TabViewModule,
     TooltipModule,
-    TranslateModule
+    TranslateModule,
+    ImageContainerComponent
   ],
   exports: [
     DockModule,

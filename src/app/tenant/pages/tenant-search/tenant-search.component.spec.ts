@@ -13,6 +13,7 @@ import { DialogService } from 'primeng/dynamicdialog'
 import { PrimeIcons } from 'primeng/api'
 
 import { AngularAcceleratorModule, ColumnType, DataTableColumn } from '@onecx/angular-accelerator'
+import { PermissionService } from '@onecx/angular-utils'
 import { UserService } from '@onecx/angular-integration-interface'
 
 import { TenantSearchActions } from './tenant-search.actions'
@@ -24,12 +25,11 @@ import { TenantSearchHarness } from './tenant-search.harness'
 import { Tenant } from 'src/app/shared/generated'
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed'
 import { TranslateService } from '@ngx-translate/core'
-import { map, of } from 'rxjs'
+import { firstValueFrom, map, of } from 'rxjs'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { CardModule } from 'primeng/card'
 import { provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
-import { ImageContainerComponent } from 'src/app/shared/components/image-container/image-container.component'
 
 describe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
@@ -59,8 +59,8 @@ describe('TenantSearchComponent', () => {
   /* eslint-disable @typescript-eslint/no-var-requires */
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TenantSearchComponent, ImageContainerComponent],
       imports: [
+        TenantSearchComponent,
         AngularAcceleratorModule,
         LetDirective,
         ReactiveFormsModule,
@@ -81,7 +81,14 @@ describe('TenantSearchComponent', () => {
         }),
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        provideAppStateServiceMock()
+        provideAppStateServiceMock(),
+        {
+          provide: PermissionService,
+          useValue: {
+            hasPermission: () => of(true),
+            getPermissions: () => of([])
+          }
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     }).compileComponents()
@@ -515,6 +522,100 @@ describe('TenantSearchComponent', () => {
     const localFixture = TestBed.createComponent(TenantSearchComponent)
     const localComponent = localFixture.componentInstance
     localFixture.detectChanges()
+
+    const action = localComponent.additionalActions[0]
+    expect(action.icon).toBe(PrimeIcons.EYE)
+  })
+
+  it('should use hide chart labels when chart is visible', async () => {
+    const testViewModel: TenantSearchViewModel = {
+      chartVisible: true,
+      columns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
+      displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
+      results: [{ id: '1', imagePath: ' ' }],
+      searchCriteria: { orgId: '1' },
+      viewMode: 'advanced',
+      loadingData: false
+    }
+
+    store.overrideSelector(selectTenantSearchViewModel, testViewModel)
+    store.refreshState()
+    const actions = await firstValueFrom(component.headerActions$)
+
+    const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART')
+    expect(toggleChartAction).toBeDefined()
+    expect(toggleChartAction?.titleKey).toBe('TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART')
+  })
+
+  it('should emit diagram column from default observable pipeline', (done) => {
+    const vm: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [{ id: 'tenantId', nameKey: 'tenantId', columnType: ColumnType.STRING }],
+      displayedColumns: [],
+      results: [],
+      searchCriteria: {},
+      viewMode: 'advanced',
+      loadingData: false
+    }
+
+    store.overrideSelector(selectTenantSearchViewModel, vm)
+    store.refreshState()
+
+    component.diagramColumn$.subscribe((column) => {
+      expect(column.id).toBe('tenantId')
+      done()
+    })
+  })
+
+  it('should map displayed column keys and ignore unknown keys', () => {
+    const vm: TenantSearchViewModel = {
+      chartVisible: false,
+      columns: [
+        { id: 'orgId', nameKey: 'orgId', columnType: ColumnType.STRING },
+        { id: 'tenantId', nameKey: 'tenantId', columnType: ColumnType.STRING }
+      ],
+      displayedColumns: [],
+      results: [],
+      searchCriteria: {},
+      viewMode: 'advanced',
+      loadingData: false
+    }
+
+    component.viewModel$ = of(vm)
+    const displayedColumnsChangeSpy = jest.spyOn(component, 'onDisplayedColumnsChange')
+
+    component.onDisplayedColumnKeysChange(['tenantId', 'missing'])
+
+    expect(displayedColumnsChangeSpy).toHaveBeenCalledWith([
+      { id: 'tenantId', nameKey: 'tenantId', columnType: ColumnType.STRING }
+    ])
+  })
+
+  it('should set global filter value', () => {
+    component.onGlobalFilter('tenant')
+
+    expect(component.tenantFilterFormControl.value).toBe('tenant')
+  })
+
+  it('should clear input and call clearTextFilters on global filter reset', () => {
+    const filterInput = document.createElement('input')
+    filterInput.value = 'tenant'
+    const clearSpy = jest.spyOn(component, 'clearTextFilters')
+
+    component.onClearGlobalFilter(filterInput)
+
+    expect(filterInput.value).toBe('')
+    expect(clearSpy).toHaveBeenCalled()
+  })
+
+  it('should use fallback icon when permission check fails', async () => {
+    const userService = TestBed.inject(UserService)
+    jest.spyOn(userService, 'hasPermission').mockRejectedValue(new Error('failed permission check'))
+
+    const localFixture = TestBed.createComponent(TenantSearchComponent)
+    const localComponent = localFixture.componentInstance
+    localFixture.detectChanges()
+    await localFixture.whenStable()
 
     const action = localComponent.additionalActions[0]
     expect(action.icon).toBe(PrimeIcons.EYE)

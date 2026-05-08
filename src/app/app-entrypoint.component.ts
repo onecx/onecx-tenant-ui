@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
+import { RouterOutlet } from '@angular/router'
 import { PrimeNG } from 'primeng/config'
 import { merge, mergeMap } from 'rxjs'
 
 @Component({
   selector: 'app-root',
-  standalone: false,
+  standalone: true,
+  imports: [RouterOutlet],
   templateUrl: './app-entrypoint.component.html'
 })
 export class AppEntrypointComponent implements OnInit {

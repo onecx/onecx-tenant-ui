@@ -24,7 +24,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 
 @NgModule({
   providers: [providePortalDialogService()],
-  declarations: [TenantCreateUpdateComponent, TenantSearchComponent],
   imports: [
     DatePickerModule,
     CommonModule,
@@ -39,7 +38,9 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
     TooltipModule,
     TabMenuModule,
     ButtonModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    TenantCreateUpdateComponent,
+    TenantSearchComponent
   ]
 })
 export class TenantModule {}

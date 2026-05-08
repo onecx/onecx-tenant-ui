@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, DoBootstrap, Injector, NgModule, isDevMode } from '@angular/core'
+import { DoBootstrap, Injector, NgModule, inject, isDevMode, provideAppInitializer } from '@angular/core'
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -33,8 +33,8 @@ const effectProvidersForWorkaround = [EffectsRunner, EffectSources, Actions]
 effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
 
 @NgModule({
-  declarations: [AppEntrypointComponent],
   imports: [
+    AppEntrypointComponent,
     AngularAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -61,12 +61,7 @@ effectProvidersForWorkaround.forEach((p) => (p.ɵprov.providedIn = null))
   ],
   providers: [
     { provide: Configuration, useFactory: apiConfigProvider, deps: [Injector] },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeRouter,
-      multi: true,
-      deps: [Router, AppStateService]
-    },
+    provideAppInitializer(() => initializeRouter(inject(Router), inject(AppStateService))()),
     providePermissionService(),
     provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
     provideThemeConfig(),

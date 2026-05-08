@@ -1,8 +1,14 @@
+import { CommonModule, Location } from '@angular/common'
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
-import { DialogButtonClicked, DialogPrimaryButtonDisabled, DialogResult } from '@onecx/angular-accelerator'
+import {
+  AngularAcceleratorModule,
+  DialogButtonClicked,
+  DialogPrimaryButtonDisabled,
+  DialogResult
+} from '@onecx/angular-accelerator'
 import { AppStateService } from '@onecx/angular-integration-interface'
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import {
   TenantCreateUpdateDialogResult,
   TenantCreateUpdateViewModel,
@@ -11,13 +17,31 @@ import {
 import { map } from 'rxjs'
 import { ImagesAPIService } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
+import { ButtonModule } from 'primeng/button'
+import { FloatLabelModule } from 'primeng/floatlabel'
 import { MenuItem } from 'primeng/api'
+import { InputTextModule } from 'primeng/inputtext'
+import { TabMenuModule } from 'primeng/tabmenu'
+import { Textarea } from 'primeng/inputtextarea'
+import { TooltipModule } from 'primeng/tooltip'
 import { environment } from 'src/environments/environment'
-import { Location } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-tenant-create-update',
-  standalone: false,
+  standalone: true,
+  imports: [
+    AngularAcceleratorModule,
+    ButtonModule,
+    CommonModule,
+    FloatLabelModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    TabMenuModule,
+    Textarea,
+    TooltipModule,
+    TranslateModule
+  ],
   templateUrl: './tenant-create-update.component.html',
   styleUrls: ['./tenant-create-update.component.scss']
 })

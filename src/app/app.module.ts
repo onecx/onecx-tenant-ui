@@ -35,8 +35,8 @@ import { AppRoutingModule } from './app-routing.module'
 import { metaReducers, reducers } from './app.reducers'
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
+    AppComponent,
     CommonModule,
     AppRoutingModule,
     BrowserModule,

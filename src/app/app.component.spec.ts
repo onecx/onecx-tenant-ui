@@ -4,20 +4,21 @@ import { TestBed } from '@angular/core/testing'
 import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { TranslateTestingModule } from 'ngx-translate-testing'
+import { MessageService } from 'primeng/api'
 
 import { AppComponent } from './app.component'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
       imports: [
+        AppComponent,
         TranslateTestingModule.withTranslations({
           de: require('./src/assets/i18n/de.json'),
           en: require('./src/assets/i18n/en.json')
         }).withDefaultLanguage('en')
       ],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), MessageService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents()
   })

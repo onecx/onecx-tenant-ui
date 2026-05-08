@@ -80,6 +80,7 @@
               tooltipPosition="top"
               tooltipEvent="hover"
               (click)="onClearGlobalFilter(filterInput)"
+              (keydown.enter)="onClearGlobalFilter(filterInput)"
             />
           </p-inputgroup>
         </ng-template>

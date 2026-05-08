@@ -1,12 +1,23 @@
+import { CommonModule } from '@angular/common'
 import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
-import { FormBuilder, FormControlName, FormGroup } from '@angular/forms'
+import { FormBuilder, FormControlName, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { LetDirective } from '@ngrx/component'
 import { Store } from '@ngrx/store'
+import { TranslateModule } from '@ngx-translate/core'
 import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, withLatestFrom } from 'rxjs'
 import { PrimeIcons } from 'primeng/api'
+import { ButtonModule } from 'primeng/button'
+import { CardModule } from 'primeng/card'
+import { FloatLabelModule } from 'primeng/floatlabel'
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
+import { InputGroupModule } from 'primeng/inputgroup'
+import { InputTextModule } from 'primeng/inputtext'
+import { TooltipModule } from 'primeng/tooltip'
 import deepEqual from 'fast-deep-equal'
 
 import {
   Action,
+  AngularAcceleratorModule,
   BreadcrumbService,
   DataAction,
   DataSortDirection,
@@ -15,6 +26,7 @@ import {
   RowListGridData,
   SearchConfigData
 } from '@onecx/angular-accelerator'
+import { PortalPageComponent } from '@onecx/angular-utils'
 import { UserService } from '@onecx/angular-integration-interface'
 
 import { isValidDate } from 'src/app/shared/utils/isValidDate.utils'
@@ -23,12 +35,29 @@ import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { selectTenantSearchViewModel } from './tenant-search.selectors'
 import { TenantSearchViewModel } from './tenant-search.viewmodel'
+import { ImageContainerComponent } from 'src/app/shared/components/image-container/image-container.component'
 import { ImagesAPIService, Tenant } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
 
 @Component({
   selector: 'app-tenant-search',
-  standalone: false,
+  standalone: true,
+  imports: [
+    AngularAcceleratorModule,
+    ButtonModule,
+    CardModule,
+    CommonModule,
+    FloatLabelModule,
+    ImageContainerComponent,
+    InputGroupAddonModule,
+    InputGroupModule,
+    InputTextModule,
+    LetDirective,
+    PortalPageComponent,
+    ReactiveFormsModule,
+    TooltipModule,
+    TranslateModule
+  ],
   templateUrl: './tenant-search.component.html',
   styleUrls: ['./tenant-search.component.scss']
 })
@@ -210,6 +239,22 @@ export class TenantSearchComponent implements OnInit {
 
   clearTextFilters(emitEvent = true) {
     this.tenantFilterFormControl.setValue(null, { emitEvent })
+  }
+
+  private normalizeSearchCriteriaValue(value: unknown): unknown {
+    if (isValidDate(value)) {
+      return new Date(
+        Date.UTC(
+          value.getFullYear(),
+          value.getMonth(),
+          value.getDate(),
+          value.getHours(),
+          value.getMinutes(),
+          value.getSeconds()
+        )
+      )
+    }
+    return value || null
   }
 
   private isVisible(control: string) {
