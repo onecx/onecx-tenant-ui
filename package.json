@@ -129,5 +129,8 @@
     "typescript": "~5.5.4",
     "webpack": "5.105.0",
     "zone.js": "0.15.0"
+  },
+  "overrides": {
+    "koa": "^2.16.2"
   }
 }
