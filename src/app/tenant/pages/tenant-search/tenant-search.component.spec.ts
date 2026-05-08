@@ -246,7 +246,7 @@ describe('TenantSearchComponent', () => {
     component.viewModel$ = of(testViewModel)
 
     component.headerActions$.subscribe((actions) => {
-      const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.SHOW_CHART')
+      const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.ACTIONS.SHOW_CHART')
       expect(toggleChartAction).toBeDefined()
       toggleChartAction?.actionCallback()
       expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.chartVisibilityToggled())
@@ -270,7 +270,7 @@ describe('TenantSearchComponent', () => {
     component.viewModel$ = of(testViewModel)
 
     component.headerActions$.subscribe((actions) => {
-      const exportAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.EXPORT_ALL')
+      const exportAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.ACTIONS.EXPORT_ALL')
       expect(exportAction).toBeDefined()
       exportAction?.actionCallback()
       expect(component.onExportItems).toHaveBeenCalled()
@@ -374,6 +374,26 @@ describe('TenantSearchComponent', () => {
     component.clearTextFilters()
 
     expect(component.tenantFilterFormControl.value).toBeNull()
+  })
+
+  it('should normalize valid date value to UTC date', () => {
+    const localDate = new Date(2024, 0, 2, 3, 4, 5)
+
+    const result = (component as any).normalizeSearchCriteriaValue(localDate)
+
+    expect(result).toEqual(new Date(Date.UTC(2024, 0, 2, 3, 4, 5)))
+  })
+
+  it('should keep truthy non-date value when normalizing search criteria', () => {
+    const result = (component as any).normalizeSearchCriteriaValue('tenant-1')
+
+    expect(result).toBe('tenant-1')
+  })
+
+  it('should map falsy non-date value to null when normalizing search criteria', () => {
+    const result = (component as any).normalizeSearchCriteriaValue('')
+
+    expect(result).toBeNull()
   })
 
   it('should filter results when handleFilterChange is called with valid filter', () => {
@@ -542,9 +562,9 @@ describe('TenantSearchComponent', () => {
     store.refreshState()
     const actions = await firstValueFrom(component.headerActions$)
 
-    const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART')
+    const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.ACTIONS.HIDE_CHART')
     expect(toggleChartAction).toBeDefined()
-    expect(toggleChartAction?.titleKey).toBe('TENANT_SEARCH.HEADER_ACTIONS.HIDE_CHART')
+    expect(toggleChartAction?.titleKey).toBe('TENANT_SEARCH.ACTIONS.HIDE_CHART.TOOLTIP')
   })
 
   it('should emit diagram column from default observable pipeline', (done) => {
