@@ -131,6 +131,7 @@
     "zone.js": "0.15.0"
   },
   "overrides": {
-    "koa": "^2.16.2"
+    "koa": "^2.16.2",
+    "@angular/compiler-cli": "^19.2.21"
   }
 }
