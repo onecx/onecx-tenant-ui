@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { Location } from '@angular/common'
-import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular'
+import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
 import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { TenantCreateUpdateComponent } from './tenant-create-update.component'
@@ -12,6 +12,12 @@ import { provideHttpClient } from '@angular/common/http'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
 import { environment } from 'src/environments/environment'
+import { TooltipModule } from 'primeng/tooltip'
+import { FloatLabelModule } from 'primeng/floatlabel'
+import { InputTextModule } from 'primeng/inputtext'
+import { Textarea } from 'primeng/inputtextarea'
+import { TabMenuModule } from 'primeng/tabmenu'
+import { ButtonModule } from 'primeng/button'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -62,18 +68,23 @@ describe('TenantCreateUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TenantCreateUpdateComponent],
       imports: [
-        PortalCoreModule,
+        TenantCreateUpdateComponent,
+        AngularAcceleratorModule,
         FormsModule,
         ReactiveFormsModule,
+        FloatLabelModule,
+        InputTextModule,
+        Textarea,
+        TooltipModule,
+        TabMenuModule,
+        ButtonModule,
         TranslateTestingModule.withTranslations(
           'en',
           require('./../../../../../../assets/i18n/en.json')
         ).withTranslations('de', require('./../../../../../../assets/i18n/de.json'))
       ],
       providers: [
-        BreadcrumbService,
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: ImagesAPIService, useValue: mockedImageService },

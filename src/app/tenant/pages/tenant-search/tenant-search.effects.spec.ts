@@ -19,7 +19,7 @@ import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchComponent } from './tenant-search.component'
-import { PortalDialogService } from '@onecx/portal-integration-angular'
+import { PortalDialogService } from '@onecx/angular-accelerator'
 import { TenantDialogMode } from './dialogs/tenant-create-update/tenant-create-update.types'
 import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
 
@@ -140,6 +140,7 @@ describe('TenantSearchEffects:', () => {
     mockedRouter = new MockRouter(effectsActions)
     store = createMockStore({ initialState })
     jest.resetAllMocks()
+    ;(mockedUserService.hasPermission as jest.Mock).mockResolvedValue(true)
   })
 
   it('should display error when TenantSearchActions.tenantSearchResultsLoadingFailed dispatched', (done) => {
@@ -430,7 +431,7 @@ describe('TenantSearchEffects:', () => {
   })
 
   it('should dispatch open details when user has no admin permission', (done) => {
-    jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(false)
+    jest.spyOn(mockedUserService, 'hasPermission').mockResolvedValue(false)
 
     const effects = initEffects()
     effectsActions.next(TenantSearchActions.dialogForExistingEntryOpened({ id: '1' }))
@@ -442,7 +443,7 @@ describe('TenantSearchEffects:', () => {
   })
 
   it('should dispatch edit details when user has admin permission', (done) => {
-    jest.spyOn(mockedUserService, 'hasPermission').mockReturnValue(true)
+    jest.spyOn(mockedUserService, 'hasPermission').mockResolvedValue(true)
 
     const effects = initEffects()
     effectsActions.next(TenantSearchActions.dialogForExistingEntryOpened({ id: '1' }))
