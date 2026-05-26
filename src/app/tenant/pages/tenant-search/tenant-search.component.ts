@@ -128,7 +128,7 @@ export class TenantSearchComponent implements OnInit {
 
   public ngOnInit() {
     this.updateAdditionalActions(false)
-    void this.userService
+    this.userService
       .hasPermission('TENANT#ADMIN_EDIT')
       .then((hasPermission) => this.updateAdditionalActions(hasPermission))
       .catch(() => this.updateAdditionalActions(false))
