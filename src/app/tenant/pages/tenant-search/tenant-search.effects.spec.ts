@@ -13,13 +13,13 @@ import { ReplaySubject, of, throwError } from 'rxjs'
 import { hot } from 'jest-marbles'
 
 import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
+import { PortalDialogService } from '@onecx/portal-integration-angular'
 
 import { ImagesAPIService, RefType, TenantAPIService } from 'src/app/shared/generated'
 import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchComponent } from './tenant-search.component'
-import { PortalDialogService } from '@onecx/portal-integration-angular'
 import { TenantDialogMode } from './dialogs/tenant-create-update/tenant-create-update.types'
 import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
 

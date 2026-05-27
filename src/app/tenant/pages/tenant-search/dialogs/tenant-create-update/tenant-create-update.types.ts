@@ -1,4 +1,4 @@
-import { Tenant } from '../../../../../shared/generated'
+import { Tenant } from 'src/app/shared/generated'
 
 export interface TenantCreateUpdateViewModel {
   itemToEdit: Tenant | undefined
