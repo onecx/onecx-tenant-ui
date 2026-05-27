@@ -117,10 +117,10 @@ export class TenantSearchComponent implements OnInit {
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
 
   constructor(
+    @Inject(LOCALE_ID) public readonly locale: string,
     private readonly breadcrumbService: BreadcrumbService,
     private readonly store: Store,
     private readonly formBuilder: FormBuilder,
-    @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
     private readonly imageService: ImagesAPIService,
     private readonly userService: UserService
