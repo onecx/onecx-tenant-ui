@@ -26,7 +26,7 @@ import {
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator'
 
-import { TenantAPIService } from '../../../shared/generated'
+import { TenantAPIService } from 'src/app/shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
