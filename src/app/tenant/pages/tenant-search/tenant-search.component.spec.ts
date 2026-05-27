@@ -29,7 +29,7 @@ import { CardModule } from 'primeng/card'
 import { provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
 import { ImageContainerComponent } from 'src/app/shared/components/image-container/image-container.component'
 
-describe('TenantSearchComponent', () => {
+fdescribe('TenantSearchComponent', () => {
   let component: TenantSearchComponent
   let fixture: ComponentFixture<TenantSearchComponent>
   let store: MockStore<Store>
@@ -116,12 +116,12 @@ describe('TenantSearchComponent', () => {
     component.onSearch(formValue)
   })
 
-  it('should dispatch resetButtonClicked action on reset search', (done) => {
-    store.scannedActions$.pipe(ofType(TenantSearchActions.resetButtonClicked)).subscribe(() => {
-      done()
-    })
+  it('should dispatch resetButtonClicked action on reset search', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch')
 
     component.onResetSearchCriteria()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(TenantSearchActions.resetButtonClicked())
   })
 
   it('should dispatch searchButtonClicked action on search', (done) => {
