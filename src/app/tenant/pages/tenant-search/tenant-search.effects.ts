@@ -1,21 +1,12 @@
-import { PortalDialogConfig, PortalDialogService } from '@onecx/angular-accelerator'
-import { catchError, concat, from, last, map, mergeMap, Observable, of, switchMap, tap } from 'rxjs'
-import {
-  CreateTenantRequest,
-  UpdateTenantRequest,
-  ImagesAPIService,
-  UploadImageRequestParams,
-  RefType,
-  DeleteImageRequestParams,
-  Tenant
-} from 'src/app/shared/generated'
-import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
+import { PortalDialogConfig, PortalDialogService } from '@onecx/portal-integration-angular'
+import { concat, mergeMap, Observable, withLatestFrom, catchError, last, map, of, switchMap, tap } from 'rxjs'
 import { Injectable, SkipSelf } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
+import { PrimeIcons } from 'primeng/api'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const equal = require('fast-deep-equal')
 
@@ -26,16 +17,25 @@ import {
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator'
 
-import { TenantAPIService } from '../../../shared/generated'
+import {
+  CreateTenantRequest,
+  UpdateTenantRequest,
+  ImagesAPIService,
+  UploadImageRequestParams,
+  RefType,
+  DeleteImageRequestParams,
+  Tenant,
+  TenantAPIService
+} from 'src/app/shared/generated'
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
-import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { tenantSearchSelectors } from './tenant-search.selectors'
+import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import {
   TenantCreateUpdateDialogResult,
   TenantDialogMode
 } from './dialogs/tenant-create-update/tenant-create-update.types'
-import { PrimeIcons } from 'primeng/api'
+import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
 
 export const DialogConfig: PortalDialogConfig = {
   modal: true,

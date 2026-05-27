@@ -13,6 +13,7 @@ import { ReplaySubject, of, throwError } from 'rxjs'
 import { hot } from 'jest-marbles'
 
 import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
+import { PortalDialogService } from '@onecx/portal-integration-angular'
 
 import { ImagesAPIService, RefType, TenantAPIService } from 'src/app/shared/generated'
 import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
