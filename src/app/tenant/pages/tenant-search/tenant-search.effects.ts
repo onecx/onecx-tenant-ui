@@ -1,5 +1,5 @@
-import { PortalDialogConfig, PortalDialogService } from '@onecx/portal-integration-angular'
-import { concat, mergeMap, Observable, withLatestFrom, catchError, last, map, of, switchMap, tap } from 'rxjs'
+import { PortalDialogConfig, PortalDialogService } from '@onecx/angular-accelerator'
+import { concat, mergeMap, Observable, catchError, last, map, of, switchMap, tap } from 'rxjs'
 import { Injectable, SkipSelf } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Actions, createEffect, ofType } from '@ngrx/effects'

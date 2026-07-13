@@ -12,12 +12,6 @@ import { provideHttpClient } from '@angular/common/http'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
 import { environment } from 'src/environments/environment'
-import { TooltipModule } from 'primeng/tooltip'
-import { FloatLabelModule } from 'primeng/floatlabel'
-import { InputTextModule } from 'primeng/inputtext'
-import { Textarea } from 'primeng/inputtextarea'
-import { TabMenuModule } from 'primeng/tabmenu'
-import { ButtonModule } from 'primeng/button'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
