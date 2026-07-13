@@ -248,7 +248,7 @@ fdescribe('TenantSearchComponent', () => {
     component.headerActions$.subscribe((actions) => {
       const toggleChartAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.ACTIONS.SHOW_CHART')
       expect(toggleChartAction).toBeDefined()
-      toggleChartAction?.actionCallback()
+      toggleChartAction?.actionCallback?.()
       expect(store.dispatch).toHaveBeenCalledWith(TenantSearchActions.chartVisibilityToggled())
       done()
     })
@@ -272,7 +272,7 @@ fdescribe('TenantSearchComponent', () => {
     component.headerActions$.subscribe((actions) => {
       const exportAction = actions.find((a) => a.labelKey === 'TENANT_SEARCH.ACTIONS.EXPORT_ALL')
       expect(exportAction).toBeDefined()
-      exportAction?.actionCallback()
+      exportAction?.actionCallback?.()
       expect(component.onExportItems).toHaveBeenCalled()
       done()
     })
@@ -511,7 +511,7 @@ fdescribe('TenantSearchComponent', () => {
     component.headerActions$.subscribe((actions) => {
       const createAction = actions.find((a) => a.labelKey === 'TENANT_CREATE_UPDATE.ACTION.CREATE')
       expect(createAction).toBeDefined()
-      createAction?.actionCallback()
+      createAction?.actionCallback?.()
       expect(component.onCreateTenant).toHaveBeenCalled()
       done()
     })
@@ -525,7 +525,7 @@ fdescribe('TenantSearchComponent', () => {
     expect(action).toBeDefined()
     expect(action.permission).toBe('TENANT#SEARCH')
 
-    action.callback(testData)
+    action.callback?.(testData)
 
     expect(component.handleOpenEntryDetails).toHaveBeenCalledWith(testData)
   })
