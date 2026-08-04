@@ -1,5 +1,18 @@
-import { CommonModule, Location } from '@angular/common'
 import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
+import { Location } from '@angular/common'
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { TranslateModule } from '@ngx-translate/core'
+import { map } from 'rxjs'
+
+import { ButtonModule } from 'primeng/button'
+import { FloatLabelModule } from 'primeng/floatlabel'
+import { MenuItem } from 'primeng/api'
+import { InputTextModule } from 'primeng/inputtext'
+import { TabMenuModule } from 'primeng/tabmenu'
+import { TabsModule } from 'primeng/tabs'
+import { Textarea } from 'primeng/inputtextarea'
+import { TooltipModule } from 'primeng/tooltip'
+
 import {
   AngularAcceleratorModule,
   DialogButtonClicked,
@@ -8,24 +21,14 @@ import {
 } from '@onecx/angular-accelerator'
 import { AppStateService } from '@onecx/angular-integration-interface'
 
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { ImagesAPIService } from 'src/app/shared/generated'
+import { getImageUrl } from 'src/app/shared/utils/image.utils'
+import { environment } from 'src/environments/environment'
 import {
   TenantCreateUpdateDialogResult,
   TenantCreateUpdateViewModel,
   TenantDialogMode
 } from './tenant-create-update.types'
-import { map } from 'rxjs'
-import { ImagesAPIService } from 'src/app/shared/generated'
-import { getImageUrl } from 'src/app/shared/utils/image.utils'
-import { ButtonModule } from 'primeng/button'
-import { FloatLabelModule } from 'primeng/floatlabel'
-import { MenuItem } from 'primeng/api'
-import { InputTextModule } from 'primeng/inputtext'
-import { TabMenuModule } from 'primeng/tabmenu'
-import { Textarea } from 'primeng/inputtextarea'
-import { TooltipModule } from 'primeng/tooltip'
-import { environment } from 'src/environments/environment'
-import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-tenant-create-update',
@@ -33,11 +36,11 @@ import { TranslateModule } from '@ngx-translate/core'
   imports: [
     AngularAcceleratorModule,
     ButtonModule,
-    CommonModule,
     FloatLabelModule,
     InputTextModule,
     ReactiveFormsModule,
     TabMenuModule,
+    TabsModule,
     Textarea,
     TooltipModule,
     TranslateModule
