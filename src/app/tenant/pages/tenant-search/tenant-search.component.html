@@ -35,7 +35,8 @@
   } @else {
     @let data = (filteredResults$ | async) || [];
     <ocx-content-container layout="horizontal">
-      <ocx-content class="ocx-content">
+      <!-- MAIN -->
+      <ocx-content class="ocx-content flex-grow-1">
         <section [attr.aria-label]="'DIALOG.SEARCH.RESULTS' | translate">
           <ocx-interactive-data-view
             id="tm_search_dataview"
@@ -207,6 +208,7 @@
         </section>
       </ocx-content>
 
+      <!-- OPTIONAL -->
       @let diagramColumn = diagramColumn$ | async;
       @if (diagramColumn && vm.results.length > 0 && vm.chartVisible) {
         <ocx-content class="w-full xl:w-3">
