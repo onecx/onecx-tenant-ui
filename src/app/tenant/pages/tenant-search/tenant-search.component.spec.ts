@@ -105,39 +105,27 @@ describe('TenantSearchComponent', () => {
     expect(component).toBeTruthy()
   })
 
-  it('should dispatch searchButtonClicked action on search', (done) => {
-    const formValue = formBuilder.group({ changeMe: '123' })
-    component.tenantSearchForm = formValue
-    component.visibleFormControls = [{ name: 'changeMe' }] as any
+  describe('search', () => {
+    it('should dispatch searchButtonClicked action on search', (done) => {
+      const formValue = formBuilder.group({ orgId: '123' })
+      component.tenantSearchForm = formValue
+      component.visibleFormControls = [{ name: 'orgId' }] as any
 
-    store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
-      expect(a.searchCriteria).toEqual({ changeMe: '123' })
-      done()
+      store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
+        expect(a.searchCriteria).toEqual({ orgId: '123' })
+        done()
+      })
+
+      component.onSearch(formValue)
     })
 
-    component.onSearch(formValue)
-  })
+    it('should dispatch resetButtonClicked action on reset search', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch')
 
-  it('should dispatch resetButtonClicked action on reset search', () => {
-    const dispatchSpy = jest.spyOn(store, 'dispatch')
+      component.onResetSearchCriteria()
 
-    component.onResetSearchCriteria()
-
-    expect(dispatchSpy).toHaveBeenCalledWith(TenantSearchActions.resetButtonClicked())
-  })
-
-  it('should dispatch searchButtonClicked action on search', (done) => {
-    const date = new Date()
-    const formValue = formBuilder.group({ date: date })
-    component.tenantSearchForm = formValue
-    component.visibleFormControls = [{ name: 'changeMe' }] as any
-
-    store.scannedActions$.pipe(ofType(TenantSearchActions.searchButtonClicked)).subscribe((a) => {
-      expect(a.searchCriteria).toEqual({ date: null })
+      expect(dispatchSpy).toHaveBeenCalledWith(TenantSearchActions.resetButtonClicked())
     })
-    done()
-
-    component.onSearch(formValue)
   })
 
   it('should convert valid date to UTC and falsy value to null in searchCriteria', (done) => {

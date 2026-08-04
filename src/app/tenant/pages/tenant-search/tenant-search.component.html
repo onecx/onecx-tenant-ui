@@ -37,132 +37,129 @@
     <ocx-content-container layout="horizontal">
       <!-- MAIN -->
       <ocx-content class="ocx-content flex-grow-1">
-        <section [attr.aria-label]="'DIALOG.SEARCH.RESULTS' | translate">
-          <ocx-interactive-data-view
-            id="tm_search_dataview"
-            styleClass="p-0"
-            [data]="data"
-            [columns]="vm.columns"
-            [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
-            searchConfigPermission="SEARCHCONFIG#USE"
-            [layout]="'grid'"
-            [displayedColumnKeys]="getDisplayedColumnKeys(vm.displayedColumns)"
-            (displayedColumnKeysChange)="onDisplayedColumnKeysChange($event)"
-            [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
-            [listGridPaginator]="true"
-            [pageSizes]="[20, 40, 200]"
-            [supportedViewLayouts]="['list', 'grid', 'table']"
-            [sortDirection]="ascendingSortDirection"
-            [sortField]="'tenantId'"
-            [actionColumnPosition]="'left'"
-            [additionalActions]="additionalActions"
-          >
-            <ng-template #topCenter>
-              <div class="flex flex-wrap flex-row justify-content-between align-items-center gap-2">
-                <!-- GLOBAL Filter -->
-                <p-inputgroup class="w-auto">
-                  <p-inputgroup-addon>
-                    <i class="pi pi-filter" aria-hidden="true"></i>
-                  </p-inputgroup-addon>
-                  <p-floatlabel variant="on">
-                    <input
-                      #globalFilterInput
-                      type="text"
-                      pInputText
-                      id="tm_search_filter"
-                      class="text-responsive"
-                      (input)="onGlobalFilter(globalFilterInput.value)"
-                      [value]="tenantFilterFormControl.value ?? ''"
-                      [ariaLabel]="'TENANT_SEARCH.FILTER.LABEL' | translate"
-                      [pTooltip]="'TENANT_SEARCH.FILTER.TOOLTIP' | translate"
-                      [tooltipPosition]="'top'"
-                      tooltipEvent="hover"
-                    />
-                    <label for="tm_search_filter" aria-hidden="true">
-                      {{ 'TENANT_SEARCH.FILTER.LABEL' | translate }}</label
-                    >
-                  </p-floatlabel>
-                  <p-button
-                    id="tm_search_filter_clear"
-                    icon="pi pi-filter-slash"
-                    (onClick)="onClearGlobalFilter(globalFilterInput)"
-                    (onKeydown)="onClearGlobalFilter(globalFilterInput)"
-                    [disabled]="!tenantFilterFormControl.value"
-                    [ariaLabel]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
-                    [pTooltip]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
-                    tooltipPosition="top"
+        <ocx-interactive-data-view
+          id="tm_search_dataview"
+          styleClass="p-0"
+          [data]="data"
+          [columns]="vm.columns"
+          [emptyResultsMessage]="'TENANT_SEARCH.EMPTY_RESULTS' | translate"
+          searchConfigPermission="SEARCHCONFIG#USE"
+          [layout]="'grid'"
+          [displayedColumnKeys]="getDisplayedColumnKeys(vm.displayedColumns)"
+          (displayedColumnKeysChange)="onDisplayedColumnKeysChange($event)"
+          [defaultGroupKey]="'TENANT_SEARCH.PREDEFINED_GROUP.DEFAULT'"
+          [listGridPaginator]="true"
+          [pageSizes]="[20, 40, 200]"
+          [supportedViewLayouts]="['list', 'grid', 'table']"
+          [sortDirection]="ascendingSortDirection"
+          [sortField]="'tenantId'"
+          [actionColumnPosition]="'left'"
+          [additionalActions]="additionalActions"
+        >
+          <ng-template #topCenter>
+            <div class="flex flex-wrap flex-row justify-content-between align-items-center gap-2">
+              <!-- GLOBAL Filter -->
+              <p-inputgroup class="w-auto">
+                <p-inputgroup-addon>
+                  <i class="pi pi-filter" aria-hidden="true"></i>
+                </p-inputgroup-addon>
+                <p-floatlabel variant="on">
+                  <input
+                    #globalFilterInput
+                    type="text"
+                    pInputText
+                    id="tm_search_filter"
+                    class="text-responsive"
+                    (input)="onGlobalFilter(globalFilterInput.value)"
+                    [value]="tenantFilterFormControl.value ?? ''"
+                    [ariaLabel]="'TENANT_SEARCH.FILTER.LABEL' | translate"
+                    [pTooltip]="'TENANT_SEARCH.FILTER.TOOLTIP' | translate"
+                    [tooltipPosition]="'top'"
                     tooltipEvent="hover"
                   />
-                </p-inputgroup>
-                <!-- ALIGNMENT Helper -->
-                <div>&nbsp;</div>
-              </div>
-            </ng-template>
+                  <label for="tm_search_filter" aria-hidden="true">
+                    {{ 'TENANT_SEARCH.FILTER.LABEL' | translate }}</label
+                  >
+                </p-floatlabel>
+                <p-button
+                  id="tm_search_filter_clear"
+                  icon="pi pi-filter-slash"
+                  (onClick)="onClearGlobalFilter(globalFilterInput)"
+                  (onKeydown)="onClearGlobalFilter(globalFilterInput)"
+                  [disabled]="!tenantFilterFormControl.value"
+                  [ariaLabel]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
+                  [pTooltip]="'TENANT_SEARCH.FILTER.CLEAR' | translate"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                />
+              </p-inputgroup>
+              <!-- ALIGNMENT Helper -->
+              <div>&nbsp;</div>
+            </div>
+          </ng-template>
 
-            <!-- LIST -->
-            <section [attr.aria-label]="'TENANT_SEARCH.SECTIONS.RESULTS' | translate">
-              <ng-template #listItem let-item let-i="index">
-                <article
-                  [id]="'tm_search_data_list_row_' + i"
-                  class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 border-1 border-transparent border-round-sm transition-colors transition-duration-150 hover:surface-100 hover:border-100 cursor-pointer list-item-row"
-                  [attr.aria-label]="item['orgId']"
-                  (click)="handleOpenEntryDetails(item)"
-                  (onkeypress)="handleOpenEntryDetails(item)"
-                  (keydown.enter)="handleOpenEntryDetails(item)"
+          <!-- LIST -->
+          <section [attr.aria-label]="'TENANT_SEARCH.SECTIONS.RESULTS' | translate">
+            <ng-template #listItem let-item let-i="index">
+              <article
+                [id]="'tm_search_data_list_row_' + i"
+                class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 border-1 border-transparent border-round-sm transition-colors transition-duration-150 hover:surface-100 hover:border-100 cursor-pointer list-item-row"
+                [attr.aria-label]="item['orgId']"
+                (click)="handleOpenEntryDetails(item)"
+                (onkeypress)="handleOpenEntryDetails(item)"
+                (keydown.enter)="handleOpenEntryDetails(item)"
+              >
+                <div
+                  class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
+                  aria-hidden="true"
                 >
-                  <div
-                    class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
-                    aria-hidden="true"
-                  >
-                    <app-image-container
-                      [id]="'tm_search_data_list_row_' + i + '_logo'"
-                      styleClass="max-h-3rem max-w-4rem sm:max-w-6rem border-round-sm"
-                      [bffUrl]="getImageUrl(item['id'])"
-                    ></app-image-container>
-                  </div>
-                  <div
-                    [id]="'tm_search_data_list_row_' + i + '_org_id'"
-                    class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
-                    [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
-                    [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
-                    tooltipPosition="top"
-                    tooltipEvent="hover"
-                    role="note"
-                  >
-                    {{ item['orgId'] }}
-                  </div>
-                  <div
-                    [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
-                    class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
-                    [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-                    [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
-                    tooltipPosition="top"
-                    tooltipEvent="hover"
-                    role="note"
-                  >
-                    {{ item['tenantId'] }}
-                  </div>
-                  <div
-                    class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
-                    [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
-                    [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
-                    [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
-                    tooltipPosition="top"
-                    tooltipEvent="hover"
-                    role="note"
-                  >
-                    {{ item['description'] }}
-                  </div>
-                </article>
-              </ng-template>
-            </section>
+                  <app-image-container
+                    [id]="'tm_search_data_list_row_' + i + '_logo'"
+                    styleClass="max-h-3rem max-w-4rem sm:max-w-6rem border-round-sm"
+                    [bffUrl]="getImageUrl(item['id'])"
+                  ></app-image-container>
+                </div>
+                <div
+                  [id]="'tm_search_data_list_row_' + i + '_org_id'"
+                  class="p-0 col-8 sm:col-6 md:col-6 lg:col-5 xl:col-3 sm:font-bold text-base sm:text-md md:text-lg text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                  [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
+                  [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.ORG_ID' | translate"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                  role="note"
+                >
+                  {{ item['orgId'] }}
+                </div>
+                <div
+                  [id]="'tm_search_data_list_row_' + i + '_tenant_id'"
+                  class="p-0 hidden sm:block col-3 md:col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                  [attr.aria-label]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+                  [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.TENANT_ID' | translate"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                  role="note"
+                >
+                  {{ item['tenantId'] }}
+                </div>
+                <div
+                  class="p-0 hidden xl:block col-2 text-overflow-ellipsis overflow-hidden white-space-nowrap"
+                  [id]="'tm_search_data_list_row_' + item['id'] + '_description'"
+                  [attr.aria-label]="'TENANT_SEARCH.COLUMNS.DESCRIPTION' | translate"
+                  [pTooltip]="'TENANT_SEARCH.LIST_ITEM.TOOLTIPS.DESCRIPTION' | translate"
+                  tooltipPosition="top"
+                  tooltipEvent="hover"
+                  role="note"
+                >
+                  {{ item['description'] }}
+                </div>
+              </article>
+            </ng-template>
+          </section>
 
-            <!-- GRID -->
+          <!-- GRID -->
+          <section [attr.aria-label]="'DIALOG.SEARCH.RESULTS' | translate">
             <ng-template #gridItem let-item let-i="index">
               <div class="col-6 md:col-4 lg:col-4 xl:col-3 p-2">
-                <!--
-                styleClass="p-2 flex flex-column gap-1 sm:gap-2 justify-content-between text-center border-1 border-transparent transition-colors transition-duration-150 hover:surface-100 hover:border-100 cursor-pointer"
-              -->
                 <p-card
                   [style]="{ margin: '0rem;' }"
                   styleClass="cursor-pointer hover:bg-gray-200 text-center m-2 p-1"
@@ -204,8 +201,8 @@
                 </p-card>
               </div>
             </ng-template>
-          </ocx-interactive-data-view>
-        </section>
+          </section>
+        </ocx-interactive-data-view>
       </ocx-content>
 
       <!-- OPTIONAL -->
