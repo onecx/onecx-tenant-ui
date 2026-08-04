@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core'
 import { Location } from '@angular/common'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { TranslateModule } from '@ngx-translate/core'
@@ -9,7 +9,6 @@ import { FloatLabelModule } from 'primeng/floatlabel'
 import { MenuItem } from 'primeng/api'
 import { InputTextModule } from 'primeng/inputtext'
 import { TabMenuModule } from 'primeng/tabmenu'
-import { TabsModule } from 'primeng/tabs'
 import { Textarea } from 'primeng/inputtextarea'
 import { TooltipModule } from 'primeng/tooltip'
 
@@ -40,11 +39,11 @@ import {
     InputTextModule,
     ReactiveFormsModule,
     TabMenuModule,
-    TabsModule,
     Textarea,
     TooltipModule,
     TranslateModule
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './tenant-create-update.component.html',
   styleUrls: ['./tenant-create-update.component.scss']
 })

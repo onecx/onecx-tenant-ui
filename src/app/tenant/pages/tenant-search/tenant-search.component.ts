@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { AsyncPipe } from '@angular/common'
 import { FormBuilder, FormControlName, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { LetDirective } from '@ngrx/component'
@@ -60,6 +60,7 @@ import { getImageUrl } from 'src/app/shared/utils/image.utils'
     // components
     ImageContainerComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './tenant-search.component.html',
   styleUrls: ['./tenant-search.component.scss']
 })
