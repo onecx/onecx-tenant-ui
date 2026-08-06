@@ -5,10 +5,10 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
 import { concat, from, mergeMap, Observable, catchError, last, map, of, switchMap, tap } from 'rxjs'
-
-import { PrimeIcons } from 'primeng/api'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const equal = require('fast-deep-equal')
+
+import { PrimeIcons } from 'primeng/api'
 
 import { PortalDialogConfig, PortalDialogService } from '@onecx/angular-accelerator'
 import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'

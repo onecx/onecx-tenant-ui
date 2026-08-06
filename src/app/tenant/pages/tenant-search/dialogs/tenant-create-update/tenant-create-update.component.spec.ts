@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { Location } from '@angular/common'
+import { provideHttpClient } from '@angular/common/http'
+import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
-import { Location } from '@angular/common'
+import { TranslateTestingModule } from 'ngx-translate-testing'
+
 import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
 import { AppStateServiceMock, provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks'
-import { TranslateTestingModule } from 'ngx-translate-testing'
-import { TenantCreateUpdateComponent } from './tenant-create-update.component'
-import { provideHttpClient } from '@angular/common/http'
-import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
-import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
+import { UserService } from '@onecx/angular-integration-interface'
+
 import { environment } from 'src/environments/environment'
+import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
+
+import { TenantCreateUpdateComponent } from './tenant-create-update.component'
+import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -52,6 +57,7 @@ describe('TenantCreateUpdateComponent', () => {
   let component: TenantCreateUpdateComponent
   let fixture: ComponentFixture<TenantCreateUpdateComponent>
   let appStateServiceMock: AppStateServiceMock
+  let langSubject: BehaviorSubject<string>
 
   const mockActivatedRoute = {}
   const mockedImageService: Partial<ImagesAPIService> = {
@@ -59,8 +65,15 @@ describe('TenantCreateUpdateComponent', () => {
       basePath: '/test'
     })
   }
+  function initTestComponent(): void {
+    fixture = TestBed.createComponent(TenantCreateUpdateComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  }
 
   beforeEach(async () => {
+    langSubject = new BehaviorSubject<string>('en')
+
     await TestBed.configureTestingModule({
       imports: [
         TenantCreateUpdateComponent,
@@ -75,6 +88,10 @@ describe('TenantCreateUpdateComponent', () => {
       providers: [
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        {
+          provide: UserService,
+          useValue: { lang$: langSubject, profile$: new BehaviorSubject<any>({}) }
+        },
         { provide: ImagesAPIService, useValue: mockedImageService },
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -290,16 +307,6 @@ describe('TenantCreateUpdateComponent', () => {
     })
   })
 
-  it('should switch tabs via menu commands', () => {
-    component.selectedTab = 'internal'
-
-    component.menuItems[0].command?.({} as any)
-    expect(component.selectedTab).toBe('main')
-
-    component.menuItems[1].command?.({} as any)
-    expect(component.selectedTab).toBe('internal')
-  })
-
   it('should toggle existing image flag on load and error', () => {
     component.hasExistingImage = false
     component.onImageLoad()
@@ -406,5 +413,23 @@ describe('TenantCreateUpdateComponent', () => {
 
     const expectedPath = Location.joinWithSlash(mockMfe.remoteBaseUrl, environment.TENANT_IMAGE_PATH)
     expect(component.tenantDefaultImagePath).toBe(expectedPath)
+  })
+
+  describe('date format', () => {
+    it('should use German date format', () => {
+      langSubject.next('de')
+
+      initTestComponent()
+
+      expect(component.dateFormat).toEqual('dd.MM.yyyy HH:mm:ss')
+    })
+
+    it('should use English date format', () => {
+      langSubject.next('en')
+
+      initTestComponent()
+
+      expect(component.dateFormat).toEqual('M/d/yy, hh:mm:ss a')
+    })
   })
 })

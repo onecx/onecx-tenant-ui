@@ -25,6 +25,13 @@ globalThis.ngJest = {
   }
 }
 
+/* eslint-disable @typescript-eslint/no-empty-function */
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
 // setup-jest.ts
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone'
 
