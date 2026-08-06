@@ -14,8 +14,8 @@ import { UserService } from '@onecx/angular-integration-interface'
 import { environment } from 'src/environments/environment'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 
-import { TenantCreateUpdateComponent } from './tenant-create-update.component'
-import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-create-update.types'
+import { TenantDetailComponent } from './tenant-detail.component'
+import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-detail.types'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 
 Object.defineProperty(window, 'matchMedia', {
@@ -53,9 +53,9 @@ const viewModel: TenantCreateUpdateViewModel = {
   }
 }
 
-describe('TenantCreateUpdateComponent', () => {
-  let component: TenantCreateUpdateComponent
-  let fixture: ComponentFixture<TenantCreateUpdateComponent>
+describe('TenantDetailComponent', () => {
+  let component: TenantDetailComponent
+  let fixture: ComponentFixture<TenantDetailComponent>
   let appStateServiceMock: AppStateServiceMock
   let langSubject: BehaviorSubject<string>
 
@@ -66,7 +66,7 @@ describe('TenantCreateUpdateComponent', () => {
     })
   }
   function initTestComponent(): void {
-    fixture = TestBed.createComponent(TenantCreateUpdateComponent)
+    fixture = TestBed.createComponent(TenantDetailComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   }
@@ -76,7 +76,7 @@ describe('TenantCreateUpdateComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        TenantCreateUpdateComponent,
+        TenantDetailComponent,
         AngularAcceleratorModule,
         FormsModule,
         ReactiveFormsModule,
@@ -87,19 +87,16 @@ describe('TenantCreateUpdateComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        {
-          provide: UserService,
-          useValue: { lang$: langSubject, profile$: new BehaviorSubject<any>({}) }
-        },
-        { provide: ImagesAPIService, useValue: mockedImageService },
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideAppStateServiceMock()
+        provideAppStateServiceMock(),
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: UserService, useValue: { lang$: langSubject } },
+        { provide: ImagesAPIService, useValue: mockedImageService }
       ]
     }).compileComponents()
 
-    fixture = TestBed.createComponent(TenantCreateUpdateComponent)
+    fixture = TestBed.createComponent(TenantDetailComponent)
     component = fixture.componentInstance
     appStateServiceMock = TestBed.inject(AppStateServiceMock)
     fixture.detectChanges()

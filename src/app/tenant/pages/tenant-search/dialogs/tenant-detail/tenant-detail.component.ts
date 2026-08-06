@@ -33,15 +33,12 @@ import { AppStateService, UserService } from '@onecx/angular-integration-interfa
 import { ImagesAPIService } from 'src/app/shared/generated'
 import { getImageUrl } from 'src/app/shared/utils/image.utils'
 import { environment } from 'src/environments/environment'
+
 import { TenantInternComponent } from '../tenant-intern/tenant-intern.component'
-import {
-  TenantCreateUpdateDialogResult,
-  TenantCreateUpdateViewModel,
-  TenantDialogMode
-} from './tenant-create-update.types'
+import { TenantCreateUpdateDialogResult, TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-detail.types'
 
 @Component({
-  selector: 'app-tenant-create-update',
+  selector: 'app-tenant-detail',
   standalone: true,
   imports: [
     AngularAcceleratorModule,
@@ -58,14 +55,14 @@ import {
     TenantInternComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './tenant-create-update.component.html',
-  styleUrls: ['./tenant-create-update.component.scss']
+  templateUrl: './tenant-detail.component.html',
+  styleUrls: ['./tenant-detail.component.scss']
 })
-export class TenantCreateUpdateComponent
+export class TenantDetailComponent
   implements
     DialogPrimaryButtonDisabled,
     DialogResult<TenantCreateUpdateDialogResult | undefined>,
-    DialogButtonClicked<TenantCreateUpdateComponent>,
+    DialogButtonClicked<TenantDetailComponent>,
     OnInit
 {
   private readonly user = inject(UserService)

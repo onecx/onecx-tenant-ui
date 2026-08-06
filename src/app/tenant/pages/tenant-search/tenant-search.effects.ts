@@ -5,8 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
 import { concat, from, mergeMap, Observable, catchError, last, map, of, switchMap, tap } from 'rxjs'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const equal = require('fast-deep-equal')
+import equal from 'fast-deep-equal'
 
 import { PrimeIcons } from 'primeng/api'
 
@@ -28,15 +27,13 @@ import {
   Tenant,
   TenantAPIService
 } from 'src/app/shared/generated'
+
 import { TenantSearchActions } from './tenant-search.actions'
 import { TenantSearchComponent } from './tenant-search.component'
 import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
-import {
-  TenantCreateUpdateDialogResult,
-  TenantDialogMode
-} from './dialogs/tenant-create-update/tenant-create-update.types'
-import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
+import { TenantCreateUpdateDialogResult, TenantDialogMode } from './dialogs/tenant-detail/tenant-detail.types'
+import { TenantDetailComponent } from './dialogs/tenant-detail/tenant-detail.component'
 
 export const DialogConfig: PortalDialogConfig = {
   modal: true,
@@ -119,7 +116,7 @@ export class TenantSearchEffects {
         return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
           'TENANT_CREATE_UPDATE.UPDATE.HEADER',
           {
-            type: TenantCreateUpdateComponent,
+            type: TenantDetailComponent,
             inputs: {
               vm: {
                 itemToEdit
@@ -195,7 +192,7 @@ export class TenantSearchEffects {
         return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
           'TENANT_CREATE_UPDATE.CREATE.HEADER',
           {
-            type: TenantCreateUpdateComponent,
+            type: TenantDetailComponent,
             inputs: {
               vm: {
                 itemToEdit: undefined
@@ -271,7 +268,7 @@ export class TenantSearchEffects {
           return this.portalDialogService.openDialog<TenantCreateUpdateDialogResult | undefined>(
             'TENANT_CREATE_UPDATE.DETAILS.HEADER',
             {
-              type: TenantCreateUpdateComponent,
+              type: TenantDetailComponent,
               inputs: {
                 vm: {
                   itemToEdit: tenantDetails

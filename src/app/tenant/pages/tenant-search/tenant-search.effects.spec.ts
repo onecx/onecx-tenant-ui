@@ -21,8 +21,8 @@ import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchComponent } from './tenant-search.component'
-import { TenantDialogMode } from './dialogs/tenant-create-update/tenant-create-update.types'
-import { TenantCreateUpdateComponent } from './dialogs/tenant-create-update/tenant-create-update.component'
+import { TenantDialogMode } from './dialogs/tenant-detail/tenant-detail.types'
+import { TenantDetailComponent } from './dialogs/tenant-detail/tenant-detail.component'
 
 class MockRouter implements Partial<Router> {
   constructor(effectsActions: ReplaySubject<any>) {
@@ -859,7 +859,7 @@ describe('TenantSearchEffects:', () => {
         expect(openDialogSpy).toHaveBeenCalledWith(
           'TENANT_CREATE_UPDATE.DETAILS.HEADER',
           expect.objectContaining({
-            type: TenantCreateUpdateComponent,
+            type: TenantDetailComponent,
             inputs: expect.objectContaining({
               vm: expect.objectContaining({
                 itemToEdit: tenantDetails
