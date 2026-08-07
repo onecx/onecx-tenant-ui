@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment'
 import { Configuration, ImagesAPIService } from 'src/app/shared/generated'
 
 import { TenantDetailComponent } from './tenant-detail.component'
-import { TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-detail.types'
+import { TenantDetailViewModel, TenantDialogMode } from './tenant-detail.types'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 
 Object.defineProperty(window, 'matchMedia', {
@@ -44,7 +44,7 @@ afterAll(() => {
   }
 })
 
-const viewModel: TenantCreateUpdateViewModel = {
+const viewModel: TenantDetailViewModel = {
   itemToEdit: {
     id: '1',
     orgId: '1',
@@ -60,7 +60,7 @@ describe('TenantDetailComponent', () => {
   let langSubject: BehaviorSubject<string>
 
   const mockActivatedRoute = {}
-  const mockedImageService: Partial<ImagesAPIService> = {
+  const mockImageService: Partial<ImagesAPIService> = {
     configuration: new Configuration({
       basePath: '/test'
     })
@@ -92,7 +92,7 @@ describe('TenantDetailComponent', () => {
         provideAppStateServiceMock(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: UserService, useValue: { lang$: langSubject } },
-        { provide: ImagesAPIService, useValue: mockedImageService }
+        { provide: ImagesAPIService, useValue: mockImageService }
       ]
     }).compileComponents()
 

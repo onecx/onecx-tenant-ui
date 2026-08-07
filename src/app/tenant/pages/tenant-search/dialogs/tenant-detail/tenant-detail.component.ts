@@ -35,7 +35,7 @@ import { getImageUrl } from 'src/app/shared/utils/image.utils'
 import { environment } from 'src/environments/environment'
 
 import { TenantInternComponent } from '../tenant-intern/tenant-intern.component'
-import { TenantCreateUpdateDialogResult, TenantCreateUpdateViewModel, TenantDialogMode } from './tenant-detail.types'
+import { TenantDetailDialogResult, TenantDetailViewModel, TenantDialogMode } from './tenant-detail.types'
 
 @Component({
   selector: 'app-tenant-detail',
@@ -61,7 +61,7 @@ import { TenantCreateUpdateDialogResult, TenantCreateUpdateViewModel, TenantDial
 export class TenantDetailComponent
   implements
     DialogPrimaryButtonDisabled,
-    DialogResult<TenantCreateUpdateDialogResult | undefined>,
+    DialogResult<TenantDetailDialogResult | undefined>,
     DialogButtonClicked<TenantDetailComponent>,
     OnInit
 {
@@ -71,7 +71,7 @@ export class TenantDetailComponent
   private readonly appState = inject(AppStateService)
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
-  @Input() public vm: TenantCreateUpdateViewModel = {
+  @Input() public vm: TenantDetailViewModel = {
     itemToEdit: undefined
   }
 
@@ -81,7 +81,7 @@ export class TenantDetailComponent
 
   public TenantDialogMode = TenantDialogMode
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
-  dialogResult: TenantCreateUpdateDialogResult | undefined = undefined
+  dialogResult: TenantDetailDialogResult | undefined = undefined
   hasExistingImage = true
   imageRemoved = false
   uploadedFile: File | null = null
