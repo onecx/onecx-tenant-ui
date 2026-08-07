@@ -1,0 +1,5 @@
+@use '/src/app/_tm-mixins.scss' as *;
+
+@include ocx-text-responsive;
+@include ocx-required-label;
+@include ocx-p-tabs;
