@@ -5,8 +5,8 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { concatLatestFrom } from '@ngrx/operators'
 import { concat, from, mergeMap, Observable, catchError, last, map, of, switchMap, tap } from 'rxjs'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const equal = require('fast-deep-equal')
+import * as _equal from 'fast-deep-equal'
+const equal = _equal as unknown as (a: any, b: any) => boolean
 
 import { PrimeIcons } from 'primeng/api'
 
