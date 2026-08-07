@@ -4,22 +4,22 @@
       <p-tab
         value="0"
         id="tm_tab_props"
-        [ariaLabel]="'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.PROPERTIES' | translate"
-        [pTooltip]="'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.PROPERTIES' | translate"
+        [ariaLabel]="'TENANT_DETAIL.MENU.TOOLTIPS.PROPERTIES' | translate"
+        [pTooltip]="'TENANT_DETAIL.MENU.TOOLTIPS.PROPERTIES' | translate"
         tooltipPosition="top"
         tooltipEvent="hover"
       >
-        {{ 'TENANT_CREATE_UPDATE.MENU.PROPERTIES' | translate }}
+        {{ 'TENANT_DETAIL.MENU.PROPERTIES' | translate }}
       </p-tab>
       <p-tab
         value="1"
         id="tm_tab_intern"
-        [ariaLabel]="'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.INTERNAL' | translate"
-        [pTooltip]="'TENANT_CREATE_UPDATE.MENU.TOOLTIPS.INTERNAL' | translate"
+        [ariaLabel]="'TENANT_DETAIL.MENU.TOOLTIPS.INTERNAL' | translate"
+        [pTooltip]="'TENANT_DETAIL.MENU.TOOLTIPS.INTERNAL' | translate"
         tooltipPosition="top"
         tooltipEvent="hover"
       >
-        {{ 'TENANT_CREATE_UPDATE.MENU.INTERNAL' | translate }}
+        {{ 'TENANT_DETAIL.MENU.INTERNAL' | translate }}
       </p-tab>
     </p-tablist>
 
@@ -33,13 +33,13 @@
               id="tm_detail_form_orgId"
               class="w-full pb-2 pt-3 text-responsive"
               formControlName="orgId"
-              [ariaLabel]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
-              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.ORG_ID' | translate"
+              [ariaLabel]="'TENANT_DETAIL.FORM.TOOLTIPS.ORG_ID' | translate"
+              [pTooltip]="'TENANT_DETAIL.FORM.TOOLTIPS.ORG_ID' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
             />
             <label class="ocx-required-label" for="tm_detail_form_orgId">
-              {{ 'TENANT_CREATE_UPDATE.FORM.ORG_ID' | translate }}
+              {{ 'TENANT_DETAIL.FORM.ORG_ID' | translate }}
             </label>
           </p-floatlabel>
           <p-floatlabel variant="on" class="w-full">
@@ -49,13 +49,13 @@
               id="tm_detail_form_tenantId"
               class="w-full pb-2 pt-3 text-responsive"
               formControlName="tenantId"
-              [ariaLabel]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
-              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.TENANT_ID' | translate"
+              [ariaLabel]="'TENANT_DETAIL.FORM.TOOLTIPS.TENANT_ID' | translate"
+              [pTooltip]="'TENANT_DETAIL.FORM.TOOLTIPS.TENANT_ID' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
             />
             <label class="ocx-required-label" for="tm_detail_form_tenantId">
-              {{ 'TENANT_CREATE_UPDATE.FORM.TENANT_ID' | translate }}
+              {{ 'TENANT_DETAIL.FORM.TENANT_ID' | translate }}
             </label>
           </p-floatlabel>
 
@@ -105,7 +105,7 @@
                   icon="pi pi-trash"
                   (onClick)="handleFileRemove()"
                   [disabled]="(!hasExistingImage || imageRemoved) && !uploadedFile"
-                  [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.REMOVE_IMAGE' | translate"
+                  [pTooltip]="'TENANT_DETAIL.FORM.TOOLTIPS.REMOVE_IMAGE' | translate"
                   tooltipPosition="top"
                   tooltipEvent="hover"
                 ></p-button>
@@ -113,8 +113,8 @@
                   id="tm_detail_form_image_action_upload"
                   icon="pi pi-upload"
                   (onClick)="fileInput.click()"
-                  [ariaLabel]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
-                  [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
+                  [ariaLabel]="'TENANT_DETAIL.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
+                  [pTooltip]="'TENANT_DETAIL.FORM.TOOLTIPS.CHOOSE_IMAGE' | translate"
                   tooltipPosition="top"
                   tooltipEvent="hover"
                 ></p-button>
@@ -129,12 +129,12 @@
               id="tm_detail_form_description"
               class="w-full pb-2 pt-3"
               formControlName="description"
-              [ariaLabel]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
-              [pTooltip]="'TENANT_CREATE_UPDATE.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              [ariaLabel]="'TENANT_DETAIL.FORM.TOOLTIPS.DESCRIPTION' | translate"
+              [pTooltip]="'TENANT_DETAIL.FORM.TOOLTIPS.DESCRIPTION' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
             ></textarea>
-            <label for="tm_detail_form_description"> {{ 'TENANT_CREATE_UPDATE.FORM.DESCRIPTION' | translate }}</label>
+            <label for="tm_detail_form_description"> {{ 'TENANT_DETAIL.FORM.DESCRIPTION' | translate }}</label>
           </p-floatlabel>
         </div>
       </p-tabpanel>

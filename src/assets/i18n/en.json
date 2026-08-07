@@ -11,7 +11,7 @@
       "MODIFICATION_USER": "Name of the user of the last change"
     }
   },
-  "TENANT_CREATE_UPDATE": {
+  "TENANT_DETAIL": {
     "MENU": {
       "PROPERTIES": "Properties",
       "INTERNAL": "Internal",
