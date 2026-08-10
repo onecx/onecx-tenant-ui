@@ -1,4 +1,4 @@
-import { Injectable, SkipSelf } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
@@ -45,17 +45,15 @@ export const DialogConfig: PortalDialogConfig = {
 
 @Injectable()
 export class TenantSearchEffects {
-  constructor(
-    private readonly portalDialogService: PortalDialogService,
-    private readonly actions$: Actions,
-    @SkipSelf() private readonly route: ActivatedRoute,
-    private readonly tenantService: TenantAPIService,
-    private readonly router: Router,
-    private readonly store: Store,
-    private readonly messageService: PortalMessageService,
-    private readonly imageService: ImagesAPIService,
-    private readonly userServcie: UserService
-  ) {}
+  private route = inject(ActivatedRoute, { skipSelf: true })
+  private readonly portalDialogService = inject(PortalDialogService)
+  private readonly actions$ = inject(Actions)
+  private readonly tenantService = inject(TenantAPIService)
+  private readonly router = inject(Router)
+  private readonly store = inject(Store)
+  private readonly messageService = inject(PortalMessageService)
+  private readonly imageService = inject(ImagesAPIService)
+  private readonly userServcie = inject(UserService)
 
   syncParamsToUrl$ = createEffect(
     () => {
