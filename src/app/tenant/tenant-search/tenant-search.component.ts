@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { AsyncPipe } from '@angular/common'
 import { FormBuilder, FormControlName, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { LetDirective } from '@ngrx/component'
@@ -65,14 +65,8 @@ import { getImageUrl } from 'src/app/shared/utils/image.utils'
   styleUrls: ['./tenant-search.component.scss']
 })
 export class TenantSearchComponent implements OnInit {
-  private readonly breadcrumbService = inject(BreadcrumbService)
-  private readonly store = inject(Store)
-  private readonly formBuilder = inject(FormBuilder)
-  private readonly exportDataService = inject(ExportDataService)
-  private readonly imageService = inject(ImagesAPIService)
-  private readonly userService = inject(UserService)
-
   viewModel$: Observable<TenantSearchViewModel> = this.store.select(selectTenantSearchViewModel)
+
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
@@ -123,6 +117,16 @@ export class TenantSearchComponent implements OnInit {
   public tenantFilterFormControl = this.formBuilder.control<string | null>(null)
 
   @ViewChildren(FormControlName) visibleFormControls!: QueryList<FormControlName>
+
+  constructor(
+    @Inject(LOCALE_ID) public readonly locale: string,
+    private readonly breadcrumbService: BreadcrumbService,
+    private readonly store: Store,
+    private readonly formBuilder: FormBuilder,
+    private readonly exportDataService: ExportDataService,
+    private readonly imageService: ImagesAPIService,
+    private readonly userService: UserService
+  ) {}
 
   public ngOnInit() {
     this.updateAdditionalActions(false)
