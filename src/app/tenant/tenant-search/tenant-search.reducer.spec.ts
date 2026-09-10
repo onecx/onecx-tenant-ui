@@ -22,7 +22,7 @@ describe('TenantSearchReducer', () => {
         expect(nextState).toEqual({
           ...initialState,
           results: tenant.results,
-          loadingData: false
+          loading: false
         })
         expect(nextState).not.toBe(initialState)
       })
@@ -124,9 +124,9 @@ describe('TenantSearchReducer', () => {
     expect(state.criteria).toEqual({})
   })
 
-  it('should clear results on tenantSearchResultsLoadingFailed', () => {
+  it('should clear results on tenantSearchFailed', () => {
     const modifiedState = { ...initialState, results: [{ id: '1' }] }
-    const action = TenantSearchActions.tenantSearchResultsLoadingFailed({ error: '' })
+    const action = TenantSearchActions.tenantSearchFailed({ status: null, errorText: null, exceptionKey: null })
     const state = tenantSearchReducer(modifiedState, action)
     expect(state.results).toEqual([])
   })
@@ -157,15 +157,15 @@ describe('TenantSearchReducer', () => {
     expect(state.displayedColumns).toEqual(['name'])
   })
 
-  it('should set loadingData to true on updateTenantSucceeded', () => {
-    const modifiedState = { ...initialState, loadingData: false }
+  it('should set loading to true on updateTenantSucceeded', () => {
+    const modifiedState = { ...initialState, loading: false }
     const state = tenantSearchReducer(modifiedState, TenantSearchActions.updateTenantSucceeded())
-    expect(state.loadingData).toBe(true)
+    expect(state.loading).toBe(true)
   })
 
-  it('should set loadingData to true on createTenantSucceeded', () => {
-    const modifiedState = { ...initialState, loadingData: false }
+  it('should set loading to true on createTenantSucceeded', () => {
+    const modifiedState = { ...initialState, loading: false }
     const state = tenantSearchReducer(modifiedState, TenantSearchActions.createTenantSucceeded())
-    expect(state.loadingData).toBe(true)
+    expect(state.loading).toBe(true)
   })
 })

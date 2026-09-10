@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store'
-import { TenantSearchActions } from './tenant-search.actions'
+import { ActionErrorType, TenantSearchActions } from './tenant-search.actions'
 import { tenantSearchColumns } from './tenant-search.columns'
 import { TenantSearchState } from './tenant-search.state'
 import { RouterNavigatedAction, routerNavigatedAction } from '@ngrx/router-store'
@@ -12,7 +12,8 @@ export const initialState: TenantSearchState = {
   viewMode: 'basic',
   chartVisible: false,
   criteria: {},
-  loadingData: true
+  loading: true,
+  exceptionKey: null
 }
 
 export const tenantSearchReducer = createReducer(
@@ -23,7 +24,7 @@ export const tenantSearchReducer = createReducer(
       return {
         ...state,
         criteria: results.data,
-        loadingData: true
+        loading: true
       }
     }
     return state
@@ -52,12 +53,14 @@ export const tenantSearchReducer = createReducer(
   on(TenantSearchActions.tenantSearchResultsReceived, (state: TenantSearchState, { results }): TenantSearchState => ({
     ...state,
     results,
-    loadingData: false
+    loading: false,
+    exceptionKey: null
   })),
-  on(TenantSearchActions.tenantSearchResultsLoadingFailed, (state: TenantSearchState): TenantSearchState => ({
+  on(TenantSearchActions.tenantSearchFailed, (state: TenantSearchState, error: ActionErrorType): TenantSearchState => ({
     ...state,
     results: [],
-    loadingData: false
+    loading: false,
+    exceptionKey: error.exceptionKey ?? null
   })),
   on(TenantSearchActions.chartVisibilityRehydrated, (state: TenantSearchState, { visible }): TenantSearchState => ({
     ...state,
@@ -77,10 +80,10 @@ export const tenantSearchReducer = createReducer(
   })),
   on(TenantSearchActions.updateTenantSucceeded, (state: TenantSearchState) => ({
     ...state,
-    loadingData: true
+    loading: true
   })),
   on(TenantSearchActions.createTenantSucceeded, (state: TenantSearchState) => ({
     ...state,
-    loadingData: true
+    loading: true
   }))
 )

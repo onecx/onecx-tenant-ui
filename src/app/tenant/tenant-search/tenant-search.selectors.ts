@@ -32,14 +32,25 @@ export const selectTenantSearchViewModel = createSelector(
   selectDisplayedColumns,
   tenantSearchSelectors.selectViewMode,
   tenantSearchSelectors.selectChartVisible,
-  tenantSearchSelectors.selectLoadingData,
-  (columns, searchCriteria, results, displayedColumns, viewMode, chartVisible, loadingData): TenantSearchViewModel => ({
+  tenantSearchSelectors.selectLoading,
+  tenantSearchSelectors.selectExceptionKey,
+  (
     columns,
     searchCriteria,
     results,
     displayedColumns,
     viewMode,
     chartVisible,
-    loadingData
+    loading,
+    exceptionKey
+  ): TenantSearchViewModel => ({
+    columns,
+    searchCriteria,
+    results,
+    displayedColumns,
+    viewMode,
+    chartVisible,
+    loading,
+    exceptionKey
   })
 )

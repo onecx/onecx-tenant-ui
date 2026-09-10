@@ -143,6 +143,29 @@
   },
   "LOGO": {
     "PLACEHOLDER": "Logo Placeholder",
-    "TOOLTIP": "Logo Mandant"
+    "TOOLTIP": "Tenant Logo"
+  },
+  "EXCEPTIONS": {
+    "HTTP_STATUS_undefined": {
+      "TENANTS": "Unknown problem occurred while fetching tenants - please try again."
+    },
+    "HTTP_STATUS_0": {
+      "TENANTS": "Unknown problem occurred while fetching tenants - please try again."
+    },
+    "HTTP_STATUS_400": {
+      "TENANTS": "Your request could not be processed."
+    },
+    "HTTP_STATUS_401": {
+      "TENANTS": "You are not authorized to view tenants."
+    },
+    "HTTP_STATUS_403": {
+      "TENANTS": "You do not have the rights to view tenants."
+    },
+    "HTTP_STATUS_404": {
+      "TENANTS": "Tenants not found."
+    },
+    "HTTP_STATUS_500": {
+      "TENANTS": "Unknown problem occurred while fetching tenants - please try again."
+    }
   }
 }

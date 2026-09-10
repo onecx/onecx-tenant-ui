@@ -2,6 +2,7 @@
 
 @include ocx-text-responsive;
 @include ocx-interactive-data-view-fixes;
+@include ocx-p-message;
 
 :host ::ng-deep {
   .ocx-content > div {
@@ -12,5 +13,6 @@
   /* fixes for p-card */
   --onecx-tenant-onecx-tenant-ui-card-body-padding: 0.5rem;
   --onecx-tenant-onecx-tenant-ui-card-border-radius: 4px;
-  --onecx-tenant-onecx-tenant-ui-card-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
+  --onecx-tenant-onecx-tenant-ui-card-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }

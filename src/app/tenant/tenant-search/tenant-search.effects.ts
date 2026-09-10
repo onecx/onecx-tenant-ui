@@ -35,6 +35,7 @@ import { tenantSearchSelectors } from './tenant-search.selectors'
 import { TenantSearchCriteria, tenantSearchCriteriasSchema } from './tenant-search.parameters'
 import { TenantDetailDialogResult, TenantDialogMode } from '../tenant-detail/tenant-detail.types'
 import { TenantDetailComponent } from '../tenant-detail/tenant-detail.component'
+import { Utils } from 'src/app/shared/utils/utils'
 
 export const DialogConfig: PortalDialogConfig = {
   modal: true,
@@ -56,6 +57,12 @@ export class TenantSearchEffects {
     private readonly imageService: ImagesAPIService,
     private readonly userServcie: UserService
   ) {}
+
+  private context = 'TENANTS'
+
+  private buildExceptionKey(status: number): string {
+    return 'EXCEPTIONS.HTTP_STATUS_' + Utils.mapping_error_status(status) + '.' + this.context
+  }
 
   syncParamsToUrl$ = createEffect(
     () => {
@@ -330,7 +337,7 @@ export class TenantSearchEffects {
 
   errorMessages: { action: Action; key: string }[] = [
     {
-      action: TenantSearchActions.tenantSearchResultsLoadingFailed,
+      action: TenantSearchActions.tenantSearchFailed,
       key: 'TENANT_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED'
     }
   ]
@@ -359,8 +366,10 @@ export class TenantSearchEffects {
       ),
       catchError((error) =>
         of(
-          TenantSearchActions.tenantSearchResultsLoadingFailed({
-            error
+          TenantSearchActions.tenantSearchFailed({
+            status: error.status,
+            errorText: error.statusText,
+            exceptionKey: this.buildExceptionKey(error.status)
           })
         )
       )
