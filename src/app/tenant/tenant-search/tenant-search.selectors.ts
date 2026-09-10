@@ -25,7 +25,7 @@ export const selectDisplayedColumns = createSelector(
   }
 )
 
-// nosonar
+// prettier-ignore
 export const selectTenantSearchViewModel = createSelector(
   tenantSearchSelectors.selectColumns,
   tenantSearchSelectors.selectCriteria,
@@ -45,6 +45,7 @@ export const selectTenantSearchViewModel = createSelector(
     loading,
     exceptionKey
   ): TenantSearchViewModel => ({
+    // nosonar
     columns,
     searchCriteria,
     results,
