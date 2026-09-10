@@ -39,6 +39,7 @@ import { Utils } from 'src/app/shared/utils/utils'
 
 export const DialogConfig: PortalDialogConfig = {
   modal: true,
+  closable: true,
   draggable: true,
   resizable: true,
   width: '30vw'
