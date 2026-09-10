@@ -45,7 +45,6 @@ export const selectTenantSearchViewModel = createSelector(
     loading,
     exceptionKey
   ): TenantSearchViewModel => ({
-    // nosonar
     columns,
     searchCriteria,
     results,
@@ -54,5 +53,5 @@ export const selectTenantSearchViewModel = createSelector(
     chartVisible,
     loading,
     exceptionKey
-  })
+  }) // nosonar
 )
