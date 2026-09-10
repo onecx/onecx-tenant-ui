@@ -30,13 +30,20 @@
     </div>
   </ocx-search-header>
 
-  @if (vm.loadingData) {
-    <ocx-loading-indicator></ocx-loading-indicator>
-  } @else {
-    @let data = (filteredResults$ | async) || [];
-    <ocx-content-container layout="horizontal">
-      <!-- MAIN -->
-      <ocx-content class="ocx-content flex-grow-1">
+  @let data = (filteredResults$ | async) || [];
+  <ocx-content-container layout="horizontal">
+    <!-- MAIN -->
+    <ocx-content class="ocx-content flex-grow-1">
+      @if (vm.extras.loading) {
+        <ocx-loading-indicator></ocx-loading-indicator>
+      } @else if (vm.extras.exceptionKey) {
+        <p-message
+          id="tm_search_message_error"
+          severity="error"
+          styleClass="m-3"
+          [text]="vm.extras.exceptionKey | translate"
+        ></p-message>
+      } @else {
         <ocx-interactive-data-view
           id="tm_search_dataview"
           styleClass="p-0"
@@ -157,7 +164,7 @@
           </section>
 
           <!-- GRID -->
-          <section [attr.aria-label]="'DIALOG.SEARCH.RESULTS' | translate">
+          <section [attr.aria-label]="'TENANT_SEARCH.SECTIONS.RESULTS' | translate">
             <ng-template #gridItem let-item let-i="index">
               <div class="col-6 md:col-4 lg:col-4 xl:col-3 p-2">
                 <p-card
@@ -203,21 +210,21 @@
             </ng-template>
           </section>
         </ocx-interactive-data-view>
-      </ocx-content>
-
-      <!-- OPTIONAL -->
-      @let diagramColumn = diagramColumn$ | async;
-      @if (diagramColumn && vm.results.length > 0 && vm.chartVisible) {
-        <ocx-content class="w-full xl:w-3">
-          <div class="flex flex-column md:flex-row lg:flex-column justify-content-center">
-            <ocx-group-by-count-diagram
-              [data]="vm.results"
-              [column]="diagramColumn"
-              sumKey="TENANT_SEARCH.DIAGRAM.SUM"
-            ></ocx-group-by-count-diagram>
-          </div>
-        </ocx-content>
       }
-    </ocx-content-container>
-  }
+    </ocx-content>
+
+    <!-- OPTIONAL -->
+    @let diagramColumn = diagramColumn$ | async;
+    @if (diagramColumn && vm.results.length > 0 && vm.chartVisible) {
+      <ocx-content class="w-full xl:w-3">
+        <div class="flex flex-column md:flex-row lg:flex-column justify-content-center">
+          <ocx-group-by-count-diagram
+            [data]="vm.results"
+            [column]="diagramColumn"
+            sumKey="TENANT_SEARCH.DIAGRAM.SUM"
+          ></ocx-group-by-count-diagram>
+        </div>
+      </ocx-content>
+    }
+  </ocx-content-container>
 </ocx-portal-page>

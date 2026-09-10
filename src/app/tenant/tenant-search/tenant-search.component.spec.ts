@@ -197,7 +197,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -220,7 +220,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(testViewModel)
@@ -244,7 +244,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(testViewModel)
@@ -293,7 +293,7 @@ describe('TenantSearchComponent', () => {
       searchCriteria: {},
       chartVisible: false,
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.diagramColumnId = testColumnId
@@ -356,26 +356,6 @@ describe('TenantSearchComponent', () => {
     expect(component.tenantFilterFormControl.value).toBeNull()
   })
 
-  it('should normalize valid date value to UTC date', () => {
-    const localDate = new Date(2024, 0, 2, 3, 4, 5)
-
-    const result = (component as any).normalizeSearchCriteriaValue(localDate)
-
-    expect(result).toEqual(new Date(Date.UTC(2024, 0, 2, 3, 4, 5)))
-  })
-
-  it('should keep truthy non-date value when normalizing search criteria', () => {
-    const result = (component as any).normalizeSearchCriteriaValue('tenant-1')
-
-    expect(result).toBe('tenant-1')
-  })
-
-  it('should map falsy non-date value to null when normalizing search criteria', () => {
-    const result = (component as any).normalizeSearchCriteriaValue('')
-
-    expect(result).toBeNull()
-  })
-
   it('should filter results when handleFilterChange is called with valid filter', () => {
     const viewModel: TenantSearchViewModel = {
       chartVisible: false,
@@ -388,7 +368,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('test', viewModel.results)
@@ -410,7 +390,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('', viewModel.results)
@@ -431,7 +411,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange'](null, viewModel.results)
@@ -452,7 +432,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('test-org', viewModel.results)
@@ -474,7 +454,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('special', viewModel.results)
@@ -535,7 +515,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     store.overrideSelector(selectTenantSearchViewModel, testViewModel)
@@ -555,7 +535,7 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     store.overrideSelector(selectTenantSearchViewModel, vm)
@@ -578,7 +558,7 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       viewMode: 'advanced',
-      loadingData: false
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(vm)

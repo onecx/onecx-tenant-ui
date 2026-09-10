@@ -5,6 +5,8 @@ import { DataTableColumn, SearchConfigData } from '@onecx/angular-accelerator'
 import { Tenant } from 'src/app/shared/generated'
 import { TenantSearchCriteria } from './tenant-search.parameters'
 
+export type ActionErrorType = { status?: number | null; errorText?: string | null; exceptionKey?: string | null }
+
 export const TenantSearchActions = createActionGroup({
   source: 'TenantSearch',
   events: {
@@ -22,7 +24,7 @@ export const TenantSearchActions = createActionGroup({
     'Search button clicked': props<{ searchCriteria: TenantSearchCriteria }>(),
     'Search config selected': props<{ searchConfig: SearchConfigData | undefined }>(),
     'Tenant search results received': props<{ results: Tenant[]; totalElements: number }>(),
-    'Tenant search results loading failed': props<{ error: string | null }>(),
+    'Tenant search failed': props<ActionErrorType>(),
     'Displayed columns changed': props<{ displayedColumns: DataTableColumn[] }>(),
     'Chart visibility rehydrated': props<{ visible: boolean }>(),
     'Chart visibility toggled': emptyProps(),

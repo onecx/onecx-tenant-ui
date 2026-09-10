@@ -13,6 +13,7 @@ import { FloatLabelModule } from 'primeng/floatlabel'
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon'
 import { InputGroupModule } from 'primeng/inputgroup'
 import { InputTextModule } from 'primeng/inputtext'
+import { MessageModule } from 'primeng/message'
 import { PrimeIcons } from 'primeng/api'
 import { TooltipModule } from 'primeng/tooltip'
 
@@ -53,6 +54,7 @@ import { getImageUrl } from 'src/app/shared/utils/image.utils'
     InputGroupModule,
     InputTextModule,
     LetDirective,
+    MessageModule,
     PortalPageComponent,
     ReactiveFormsModule,
     TooltipModule,
@@ -241,22 +243,6 @@ export class TenantSearchComponent implements OnInit {
 
   clearTextFilters(emitEvent = true) {
     this.tenantFilterFormControl.setValue(null, { emitEvent })
-  }
-
-  private normalizeSearchCriteriaValue(value: unknown): unknown {
-    if (isValidDate(value)) {
-      return new Date(
-        Date.UTC(
-          value.getFullYear(),
-          value.getMonth(),
-          value.getDate(),
-          value.getHours(),
-          value.getMinutes(),
-          value.getSeconds()
-        )
-      )
-    }
-    return value || null
   }
 
   private isVisible(control: string) {

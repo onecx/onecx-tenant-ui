@@ -144,13 +144,9 @@ describe('TenantSearchEffects:', () => {
     ;(mockedUserService.hasPermission as jest.Mock).mockResolvedValue(true)
   })
 
-  it('should display error when TenantSearchActions.tenantSearchResultsLoadingFailed dispatched', (done) => {
+  it('should display error when TenantSearchActions.tenantSearchFailed dispatched', (done) => {
     const effects = initEffects()
-    effectsActions.next(
-      TenantSearchActions.tenantSearchResultsLoadingFailed({
-        error: null
-      })
-    )
+    effectsActions.next(TenantSearchActions.tenantSearchFailed({ status: null, errorText: null, exceptionKey: null }))
 
     effects.displayError$.subscribe(() => {
       expect(mockedMessageService.error).toHaveBeenLastCalledWith({
@@ -266,27 +262,13 @@ describe('TenantSearchEffects:', () => {
     })
   })
 
-  it('should dispatch TenantSearchActions.tenantSearchResultsLoadingFailed when search call fails on new search criteria', (done) => {
-    const error = {
-      cause: 'Bad org id'
-    }
-    jest.spyOn(mockedTenantService, 'searchTenants').mockReturnValue(throwError(() => error))
+  it('should dispatch tenantSearchFailed when search call fails on new search criteria', (done) => {
+    const errorResponse = { status: 400, statusText: 'Bad org id' }
+    jest.spyOn(mockedTenantService, 'searchTenants').mockReturnValue(throwError(() => errorResponse))
 
-    const previousSearchCriteriaParams = {
-      orgId: 'prev_org_id',
-      pageNumber: '1',
-      pageSize: '1'
-    }
-    const newSearchCriteriaParams = {
-      orgId: 'org_id',
-      pageNumber: '1',
-      pageSize: '1'
-    }
-    const newSearchCriteria = {
-      orgId: 'org_id',
-      pageNumber: 1,
-      pageSize: 1
-    }
+    const previousSearchCriteriaParams = { orgId: 'prev_org_id', pageNumber: '1', pageSize: '1' }
+    const newSearchCriteriaParams = { orgId: 'org_id', pageNumber: '1', pageSize: '1' }
+    const newSearchCriteria = { orgId: 'org_id', pageNumber: 1, pageSize: 1 }
     store.overrideSelector(tenantSearchSelectors.selectCriteria, newSearchCriteria)
 
     const effects = initEffects()
@@ -301,8 +283,10 @@ describe('TenantSearchEffects:', () => {
     effects.searchByUrl$.subscribe((action) => {
       expect(mockedTenantService.searchTenants).toHaveBeenLastCalledWith({ tenantSearchCriteria: newSearchCriteria })
       expect(action).toEqual({
-        type: TenantSearchActions.tenantSearchResultsLoadingFailed.type,
-        error: error
+        type: TenantSearchActions.tenantSearchFailed.type,
+        status: errorResponse.status,
+        errorText: errorResponse.statusText,
+        exceptionKey: 'EXCEPTIONS.HTTP_STATUS_400.TENANTS'
       })
       done()
     })

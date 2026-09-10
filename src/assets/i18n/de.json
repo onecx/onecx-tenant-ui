@@ -144,5 +144,28 @@
   "LOGO": {
     "PLACEHOLDER": "Logo Platzhalter",
     "TOOLTIP": "Logo Mandant"
+  },
+  "EXCEPTIONS": {
+    "HTTP_STATUS_undefined": {
+      "TENANTS": "Unbekanntes Problem beim Abrufen der Mandanten - bitte versuchen Sie es noch einmal."
+    },
+    "HTTP_STATUS_0": {
+      "TENANTS": "Unbekanntes Problem beim Abrufen der Mandanten - bitte versuchen Sie es noch einmal."
+    },
+    "HTTP_STATUS_400": {
+      "TENANTS": "Ihre Anfrage konnte nicht bearbeitet werden."
+    },
+    "HTTP_STATUS_401": {
+      "TENANTS": "Sie sind nicht autorisiert, um Mandanten zu sehen."
+    },
+    "HTTP_STATUS_403": {
+      "TENANTS": "Sie haben keine Rechte, um Mandanten zu sehen."
+    },
+    "HTTP_STATUS_404": {
+      "TENANTS": "Mandanten nicht gefunden."
+    },
+    "HTTP_STATUS_500": {
+      "TENANTS": "Unbekanntes Problem beim Abrufen der Mandanten - bitte versuchen Sie es noch einmal."
+    }
   }
 }

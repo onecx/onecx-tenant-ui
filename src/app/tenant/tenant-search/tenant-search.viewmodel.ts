@@ -9,5 +9,5 @@ export interface TenantSearchViewModel {
   displayedColumns: DataTableColumn[]
   viewMode: 'basic' | 'advanced'
   chartVisible: boolean
-  loadingData: boolean
+  extras: { loading: boolean; exceptionKey: string | null }
 }
