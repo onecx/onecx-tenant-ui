@@ -1,4 +1,4 @@
-import { Injectable, SkipSelf } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { routerNavigatedAction } from '@ngrx/router-store'
@@ -47,22 +47,20 @@ export const DialogConfig: PortalDialogConfig = {
 
 @Injectable()
 export class TenantSearchEffects {
-  constructor(
-    private readonly portalDialogService: PortalDialogService,
-    private readonly actions$: Actions,
-    @SkipSelf() private readonly route: ActivatedRoute,
-    private readonly tenantService: TenantAPIService,
-    private readonly router: Router,
-    private readonly store: Store,
-    private readonly messageService: PortalMessageService,
-    private readonly imageService: ImagesAPIService,
-    private readonly userServcie: UserService
-  ) {}
+  private readonly portalDialogService = inject(PortalDialogService)
+  private readonly actions$ = inject(Actions)
+  private readonly tenantService = inject(TenantAPIService)
+  private readonly router = inject(Router)
+  private readonly route = inject(ActivatedRoute, { skipSelf: true })
+  private readonly store = inject(Store)
+  private readonly messageService = inject(PortalMessageService)
+  private readonly imageService = inject(ImagesAPIService)
+  private readonly userServcie = inject(UserService)
 
-  private context = 'TENANTS'
+  private readonly context = '.TENANTS'
 
   private buildExceptionKey(status: number): string {
-    return 'EXCEPTIONS.HTTP_STATUS_' + Utils.mapping_error_status(status) + '.' + this.context
+    return 'EXCEPTIONS.HTTP_STATUS_' + Utils.mapping_error_status(status) + this.context
   }
 
   syncParamsToUrl$ = createEffect(

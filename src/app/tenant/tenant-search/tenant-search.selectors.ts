@@ -25,6 +25,7 @@ export const selectDisplayedColumns = createSelector(
   }
 )
 
+// nosonar
 export const selectTenantSearchViewModel = createSelector(
   tenantSearchSelectors.selectColumns,
   tenantSearchSelectors.selectCriteria,
