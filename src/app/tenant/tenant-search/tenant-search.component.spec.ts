@@ -197,8 +197,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
     store.overrideSelector(selectTenantSearchViewModel, {
       ...baseTenantSearchViewModel,
@@ -221,8 +220,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(testViewModel)
@@ -246,8 +244,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(testViewModel)
@@ -296,8 +293,7 @@ describe('TenantSearchComponent', () => {
       searchCriteria: {},
       chartVisible: false,
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.diagramColumnId = testColumnId
@@ -372,8 +368,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('test', viewModel.results)
@@ -395,8 +390,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('', viewModel.results)
@@ -417,8 +411,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange'](null, viewModel.results)
@@ -439,8 +432,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('test-org', viewModel.results)
@@ -462,8 +454,7 @@ describe('TenantSearchComponent', () => {
       ],
       searchCriteria: {},
       viewMode: 'basic',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component['handleFilterChange']('special', viewModel.results)
@@ -524,8 +515,7 @@ describe('TenantSearchComponent', () => {
       results: [{ id: '1', imagePath: ' ' }],
       searchCriteria: { orgId: '1' },
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     store.overrideSelector(selectTenantSearchViewModel, testViewModel)
@@ -545,8 +535,7 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     store.overrideSelector(selectTenantSearchViewModel, vm)
@@ -569,8 +558,7 @@ describe('TenantSearchComponent', () => {
       results: [],
       searchCriteria: {},
       viewMode: 'advanced',
-      loading: false,
-      exceptionKey: null
+      extras: { loading: false, exceptionKey: null }
     }
 
     component.viewModel$ = of(vm)

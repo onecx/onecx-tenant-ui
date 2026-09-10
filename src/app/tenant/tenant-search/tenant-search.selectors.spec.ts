@@ -98,8 +98,7 @@ describe('Tenant search selectors:', () => {
           displayedColumns,
           viewMode,
           chartVisible,
-          false,
-          null
+          { loading: false, exceptionKey: null }
         )
       ).toEqual({
         columns: columns,
@@ -108,8 +107,7 @@ describe('Tenant search selectors:', () => {
         displayedColumns: displayedColumns,
         viewMode: viewMode,
         chartVisible: chartVisible,
-        loading: false,
-        exceptionKey: null
+        extras: { loading: false, exceptionKey: null }
       })
     })
 

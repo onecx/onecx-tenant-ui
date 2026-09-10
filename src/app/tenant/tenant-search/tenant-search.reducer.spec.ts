@@ -22,7 +22,7 @@ describe('TenantSearchReducer', () => {
         expect(nextState).toEqual({
           ...initialState,
           results: tenant.results,
-          loading: false
+          extras: { loading: false, exceptionKey: null }
         })
         expect(nextState).not.toBe(initialState)
       })
@@ -158,14 +158,14 @@ describe('TenantSearchReducer', () => {
   })
 
   it('should set loading to true on updateTenantSucceeded', () => {
-    const modifiedState = { ...initialState, loading: false }
+    const modifiedState = { ...initialState, extras: { loading: false, exceptionKey: null } }
     const state = tenantSearchReducer(modifiedState, TenantSearchActions.updateTenantSucceeded())
-    expect(state.loading).toBe(true)
+    expect(state.extras.loading).toBe(true)
   })
 
   it('should set loading to true on createTenantSucceeded', () => {
-    const modifiedState = { ...initialState, loading: false }
+    const modifiedState = { ...initialState, extras: { loading: false, exceptionKey: null } }
     const state = tenantSearchReducer(modifiedState, TenantSearchActions.createTenantSucceeded())
-    expect(state.loading).toBe(true)
+    expect(state.extras.loading).toBe(true)
   })
 })

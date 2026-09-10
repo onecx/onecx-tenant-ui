@@ -25,7 +25,6 @@ export const selectDisplayedColumns = createSelector(
   }
 )
 
-// prettier-ignore
 export const selectTenantSearchViewModel = createSelector(
   tenantSearchSelectors.selectColumns,
   tenantSearchSelectors.selectCriteria,
@@ -33,25 +32,14 @@ export const selectTenantSearchViewModel = createSelector(
   selectDisplayedColumns,
   tenantSearchSelectors.selectViewMode,
   tenantSearchSelectors.selectChartVisible,
-  tenantSearchSelectors.selectLoading,
-  tenantSearchSelectors.selectExceptionKey,
-  (
+  tenantSearchSelectors.selectExtras,
+  (columns, searchCriteria, results, displayedColumns, viewMode, chartVisible, extras): TenantSearchViewModel => ({
     columns,
     searchCriteria,
     results,
     displayedColumns,
     viewMode,
     chartVisible,
-    loading,
-    exceptionKey
-  ): TenantSearchViewModel => ({
-    columns,
-    searchCriteria,
-    results,
-    displayedColumns,
-    viewMode,
-    chartVisible,
-    loading,
-    exceptionKey
-  }) // nosonar
+    extras: { loading: extras.loading, exceptionKey: extras.exceptionKey }
+  })
 )

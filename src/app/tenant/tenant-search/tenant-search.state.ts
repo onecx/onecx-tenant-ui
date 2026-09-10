@@ -10,6 +10,5 @@ export interface TenantSearchState {
   displayedColumns: string[] | null
   viewMode: 'basic' | 'advanced'
   chartVisible: boolean
-  loading: boolean
-  exceptionKey: string | null
+  extras: { loading: boolean; exceptionKey: string | null }
 }

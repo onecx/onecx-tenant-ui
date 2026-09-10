@@ -12,8 +12,7 @@ export const initialState: TenantSearchState = {
   viewMode: 'basic',
   chartVisible: false,
   criteria: {},
-  loading: true,
-  exceptionKey: null
+  extras: { loading: true, exceptionKey: null }
 }
 
 export const tenantSearchReducer = createReducer(
@@ -24,7 +23,7 @@ export const tenantSearchReducer = createReducer(
       return {
         ...state,
         criteria: results.data,
-        loading: true
+        extras: { loading: true, exceptionKey: null }
       }
     }
     return state
@@ -42,6 +41,7 @@ export const tenantSearchReducer = createReducer(
     }
     return state
   }),
+  // searching
   on(TenantSearchActions.searchButtonClicked, (state: TenantSearchState, { searchCriteria }): TenantSearchState => ({
     ...state,
     criteria: searchCriteria
@@ -53,23 +53,15 @@ export const tenantSearchReducer = createReducer(
   on(TenantSearchActions.tenantSearchResultsReceived, (state: TenantSearchState, { results }): TenantSearchState => ({
     ...state,
     results,
-    loading: false,
-    exceptionKey: null
+    extras: { loading: false, exceptionKey: null }
   })),
   on(TenantSearchActions.tenantSearchFailed, (state: TenantSearchState, error: ActionErrorType): TenantSearchState => ({
     ...state,
     results: [],
-    loading: false,
-    exceptionKey: error.exceptionKey ?? null
+    extras: { loading: false, exceptionKey: error.exceptionKey ?? null }
   })),
-  on(TenantSearchActions.chartVisibilityRehydrated, (state: TenantSearchState, { visible }): TenantSearchState => ({
-    ...state,
-    chartVisible: visible
-  })),
-  on(TenantSearchActions.chartVisibilityToggled, (state: TenantSearchState): TenantSearchState => ({
-    ...state,
-    chartVisible: !state.chartVisible
-  })),
+
+  // viewing
   on(TenantSearchActions.viewModeChanged, (state: TenantSearchState, { viewMode }): TenantSearchState => ({
     ...state,
     viewMode: viewMode
@@ -80,10 +72,20 @@ export const tenantSearchReducer = createReducer(
   })),
   on(TenantSearchActions.updateTenantSucceeded, (state: TenantSearchState) => ({
     ...state,
-    loading: true
+    extras: { loading: true, exceptionKey: null }
   })),
   on(TenantSearchActions.createTenantSucceeded, (state: TenantSearchState) => ({
     ...state,
-    loading: true
+    extras: { loading: true, exceptionKey: null }
+  })),
+
+  // Chart visibility and view mode related actions
+  on(TenantSearchActions.chartVisibilityRehydrated, (state: TenantSearchState, { visible }): TenantSearchState => ({
+    ...state,
+    chartVisible: visible
+  })),
+  on(TenantSearchActions.chartVisibilityToggled, (state: TenantSearchState): TenantSearchState => ({
+    ...state,
+    chartVisible: !state.chartVisible
   }))
 )
