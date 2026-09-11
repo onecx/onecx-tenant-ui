@@ -374,7 +374,7 @@ describe('TenantSearchComponent', () => {
     component['handleFilterChange']('test', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
-      expect(results.length).toBe(1)
+      expect(results).toHaveLength(1)
       expect(results[0].id).toBe('3')
     })
   })
@@ -396,7 +396,7 @@ describe('TenantSearchComponent', () => {
     component['handleFilterChange']('', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
-      expect(results.length).toBe(2)
+      expect(results).toHaveLength(2)
     })
   })
 
@@ -417,7 +417,7 @@ describe('TenantSearchComponent', () => {
     component['handleFilterChange'](null, viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
-      expect(results.length).toBe(2)
+      expect(results).toHaveLength(2)
     })
   })
 
@@ -438,7 +438,7 @@ describe('TenantSearchComponent', () => {
     component['handleFilterChange']('test-org', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
-      expect(results.length).toBe(1)
+      expect(results).toHaveLength(1)
       expect(results[0]['orgId']).toBe('test-org')
     })
   })
@@ -460,7 +460,7 @@ describe('TenantSearchComponent', () => {
     component['handleFilterChange']('special', viewModel.results)
 
     component.filteredResults$.subscribe((results) => {
-      expect(results.length).toBe(1)
+      expect(results).toHaveLength(1)
       expect(results[0]['tenantId']).toBe('special-tenant')
     })
   })

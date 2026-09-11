@@ -607,7 +607,7 @@ describe('TenantSearchEffects:', () => {
         done()
       })
     })
-    it('should remove image when flagged as removed', (done) => {
+    it('should delete image when flagged as removed', (done) => {
       const objectId = '1'
       const itemToEdit = {
         orgId: '2',
