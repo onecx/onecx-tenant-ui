@@ -55,7 +55,7 @@ describe('ImageContainerComponent', () => {
   })
 
   describe('on changes', () => {
-    it('should use imageUrl as URL if was set', () => {
+    it('should use imageUrl as URL when provided', () => {
       component.imageUrl = 'https://host/path-to-image'
 
       component.ngOnChanges()

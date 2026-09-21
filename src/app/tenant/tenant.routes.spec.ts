@@ -3,7 +3,7 @@ import { routes } from './tenant.routes'
 
 describe('bookmark routes', () => {
   it('should define exactly 2 routes', () => {
-    expect(routes.length).toBe(1)
+    expect(routes).toHaveLength(1)
   })
 
   describe('root route', () => {
