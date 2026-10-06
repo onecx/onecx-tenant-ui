@@ -12,7 +12,7 @@ export class Utils {
   }
 
   static copyToClipboard(text?: string): void {
-    if (text) navigator.clipboard.writeText(text)
+    if (text) void navigator.clipboard.writeText(text)
   }
 
   static getCurrentDateTime(): string {

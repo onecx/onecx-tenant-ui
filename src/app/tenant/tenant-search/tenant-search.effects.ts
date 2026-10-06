@@ -76,7 +76,7 @@ export class TenantSearchEffects {
             const params = {
               ...criteria
             }
-            this.router.navigate([], {
+            void this.router.navigate([], {
               relativeTo: this.route,
               queryParams: params,
               replaceUrl: true,
