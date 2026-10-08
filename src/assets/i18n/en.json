@@ -139,6 +139,10 @@
         "ORG_ID": "Organization ID for the tenant. Used to assign a user to a tenant within IAM (Identity Access Management)",
         "DESCRIPTION": "Optional tenant description"
       }
+    },
+    "RESET_BUTTON_SEARCH_AND_RESULTS": {
+      "ARIA_LABEL": "Reset search criteria and results",
+      "DETAIL": "Reset search criteria and results"
     }
   },
   "LOGO": {

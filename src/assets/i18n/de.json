@@ -139,6 +139,10 @@
         "ORG_ID": "Organisations-ID",
         "DESCRIPTION": "Optionale Mandantenbeschreibung"
       }
+    },
+    "RESET_BUTTON_SEARCH_AND_RESULTS": {
+      "ARIA_LABEL": "Suchkriterien und Ergebnisse zurücksetzen",
+      "DETAIL": "Suchkriterien und Ergebnisse zurücksetzen"
     }
   },
   "LOGO": {
