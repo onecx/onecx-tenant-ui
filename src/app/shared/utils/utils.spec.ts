@@ -47,6 +47,23 @@ describe('Utils', () => {
 
       expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('text')
     })
+
+    it('should log an error when clipboard write fails', async () => {
+      const error = new Error('Clipboard write failed')
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+      Object.assign(window.navigator, {
+        clipboard: {
+          writeText: jest.fn().mockImplementation(() => Promise.reject(error))
+        }
+      })
+
+      Utils.copyToClipboard('text')
+      await Promise.resolve()
+
+      expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('text')
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+      consoleErrorSpy.mockRestore()
+    })
   })
 
   describe('getCurrentDateTime', () => {

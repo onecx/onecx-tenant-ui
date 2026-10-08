@@ -187,7 +187,9 @@ export class TenantSearchComponent implements OnInit {
 
   public onExportItems() {
     this.viewModel$.pipe(first()).subscribe((data) => {
-      void this.exportDataService.exportCsv(data.displayedColumns, data.results, 'tenant.csv')
+      this.exportDataService
+        .exportCsv(data.displayedColumns, data.results, 'tenant.csv')
+        .catch((err) => console.error(err))
     })
   }
 
