@@ -101,7 +101,11 @@
       "HIDE_CHART": "Hide chart",
       "HIDE_CHART.TOOLTIP": "Hide the chart",
       "CREATE_SEARCH_CONFIG": "Create search configuration",
-      "UPDATE_SEARCH_CONFIG": "Update search configuration"
+      "UPDATE_SEARCH_CONFIG": "Update search configuration",
+      "RESET_BUTTON": {
+        "ARIA_LABEL": "Reset search criteria and results",
+        "TOOLTIP": "Reset search criteria and results"
+      }
     },
     "ERROR_MESSAGES": {
       "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",

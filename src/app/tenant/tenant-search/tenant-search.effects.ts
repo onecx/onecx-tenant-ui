@@ -76,12 +76,14 @@ export class TenantSearchEffects {
             const params = {
               ...criteria
             }
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: params,
-              replaceUrl: true,
-              onSameUrlNavigation: 'ignore'
-            })
+            this.router
+              .navigate([], {
+                relativeTo: this.route,
+                queryParams: params,
+                replaceUrl: true,
+                onSameUrlNavigation: 'ignore'
+              })
+              .catch((err) => console.error(err))
           }
         })
       )

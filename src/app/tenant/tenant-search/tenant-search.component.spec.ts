@@ -257,6 +257,31 @@ describe('TenantSearchComponent', () => {
       done()
     })
   })
+
+  it('should log an error when exportCsv fails', async () => {
+    const error = new Error('CSV export failed')
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    const exportCsvSpy = jest.spyOn(component['exportDataService'], 'exportCsv').mockRejectedValue(error)
+    const testViewModel: TenantSearchViewModel = {
+      chartVisible: true,
+      columns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
+      displayedColumns: [{ columnType: ColumnType.STRING, id: '1', nameKey: 'orgId' }],
+      results: [{ id: '1', imagePath: ' ' }],
+      searchCriteria: { orgId: '1' },
+      viewMode: 'advanced',
+      extras: { loading: false, exceptionKey: null }
+    }
+
+    component.viewModel$ = of(testViewModel)
+
+    component.onExportItems()
+    await Promise.resolve()
+
+    expect(exportCsvSpy).toHaveBeenCalledWith(testViewModel.displayedColumns, testViewModel.results, 'tenant.csv')
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    consoleErrorSpy.mockRestore()
+  })
+
   it('should dispatch search config changed action when search config changed', async () => {
     jest.spyOn(store, 'dispatch')
 

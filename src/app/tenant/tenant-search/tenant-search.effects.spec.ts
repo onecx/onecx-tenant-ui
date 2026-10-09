@@ -195,6 +195,33 @@ describe('TenantSearchEffects:', () => {
     })
   })
 
+  it('should log an error when syncParamsToUrl navigation rejects', async () => {
+    const error = new Error('Navigation failed')
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    const routerNavigateSpy = jest.spyOn(mockedRouter, 'navigate').mockImplementation(() => Promise.reject(error))
+
+    store.overrideSelector(tenantSearchSelectors.selectCriteria, { orgId: 'org_id', pageNumber: 1, pageSize: 10 })
+    activatedRouteMock.queryParams = of({ orgId: 'other_org', pageNumber: 1, pageSize: 10 })
+
+    const effects = initEffects()
+    effects.syncParamsToUrl$.subscribe()
+    effectsActions.next(
+      TenantSearchActions.searchButtonClicked({
+        searchCriteria: { orgId: 'org_id', pageNumber: 1, pageSize: 10 }
+      })
+    )
+    await Promise.resolve()
+
+    expect(routerNavigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: activatedRouteMock,
+      queryParams: { orgId: 'org_id', pageNumber: 1, pageSize: 10 },
+      replaceUrl: true,
+      onSameUrlNavigation: 'ignore'
+    })
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    consoleErrorSpy.mockRestore()
+  })
+
   it('should dispatch TenantSearchActions.chartVisibilityRehydrated with visible: true on TenantSearchComponent route navigation', (done) => {
     const localStorageSpy = jest.spyOn(Storage.prototype, 'getItem')
     localStorageSpy.mockReturnValue('true')
