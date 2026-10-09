@@ -101,7 +101,11 @@
       "HIDE_CHART": "Diagramm ausblenden",
       "HIDE_CHART.TOOLTIP": "Das Diagramm ausblenden",
       "CREATE_SEARCH_CONFIG": "Suchkonfiguration erstellen",
-      "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren"
+      "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren",
+      "RESET_BUTTON": {
+        "ARIA_LABEL": "Suchkriterien und Ergebnisse zurücksetzen",
+        "TOOLTIP": "Suchkriterien und Ergebnisse zurücksetzen"
+      }
     },
     "ERROR_MESSAGES": {
       "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden.",
@@ -139,10 +143,6 @@
         "ORG_ID": "Organisations-ID",
         "DESCRIPTION": "Optionale Mandantenbeschreibung"
       }
-    },
-    "RESET_BUTTON_SEARCH_AND_RESULTS": {
-      "ARIA_LABEL": "Suchkriterien und Ergebnisse zurücksetzen",
-      "DETAIL": "Suchkriterien und Ergebnisse zurücksetzen"
     }
   },
   "LOGO": {
