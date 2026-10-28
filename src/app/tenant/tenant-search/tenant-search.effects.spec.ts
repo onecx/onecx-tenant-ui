@@ -38,12 +38,10 @@ class MockRouter implements Partial<Router> {
   effectsActions: ReplaySubject<any>
 
   routeFor = (component: Type<any>) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.root!.component! = component
   }
 
   setRouterUrl = (url: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.snapshot.url = url
   }
 
@@ -57,7 +55,6 @@ class MockRouter implements Partial<Router> {
   }
 
   setRouterParams = (params: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.snapshot.root.queryParams = params
   }
 

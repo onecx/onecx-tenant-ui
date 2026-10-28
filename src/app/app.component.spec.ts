@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
@@ -18,8 +16,7 @@ describe('AppComponent', () => {
           en: require('./src/assets/i18n/en.json')
         }).withDefaultLanguage('en')
       ],
-      providers: [provideHttpClient(), provideHttpClientTesting(), MessageService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [provideHttpClient(), provideHttpClientTesting(), MessageService]
     }).compileComponents()
   })
 
