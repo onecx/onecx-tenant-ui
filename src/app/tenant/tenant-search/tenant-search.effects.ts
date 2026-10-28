@@ -388,26 +388,26 @@ export class TenantSearchEffects {
     return this.tenantService.updateTenant({ id: itemId, updateTenantRequest: itemToEdit })
   }
 
-  private getUpdateImageOperation(itemToEditId: string, image: File): Observable<any> {
-    function mapMimeType(type: string): MimeType {
-      switch (type) {
-        case 'image/svg+xml':
-          return MimeType.Svgxml
-        case 'image/jpg':
-          return MimeType.Jpg
-        case 'image/jpeg':
-          return MimeType.Jpeg
-        case 'image/png':
-          return MimeType.Png
-        default:
-          return MimeType.Png
-      }
+  private mapMimeType(type: string): MimeType {
+    switch (type) {
+      case 'image/svg+xml':
+        return MimeType.Svgxml
+      case 'image/jpg':
+        return MimeType.Jpg
+      case 'image/jpeg':
+        return MimeType.Jpeg
+      case 'image/png':
+        return MimeType.Png
+      default:
+        return MimeType.Png
     }
+  }
 
+  private getUpdateImageOperation(itemToEditId: string, image: File): Observable<any> {
     const uploadParams: UploadImageRequestParams = {
       refId: itemToEditId,
       refType: RefType.Logo,
-      mimeType: mapMimeType(image.type),
+      mimeType: this.mapMimeType(image.type),
       body: image
     }
     return this.imageService.uploadImage(uploadParams)
