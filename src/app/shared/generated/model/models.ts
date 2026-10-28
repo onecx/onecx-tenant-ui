@@ -1,5 +1,6 @@
 export * from './createTenantRequest';
 export * from './imageInfo';
+export * from './mimeType';
 export * from './problemDetailInvalidParam';
 export * from './problemDetailParam';
 export * from './problemDetailResponse';

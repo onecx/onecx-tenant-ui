@@ -11,6 +11,7 @@ git_push.sh
 index.ts
 model/createTenantRequest.ts
 model/imageInfo.ts
+model/mimeType.ts
 model/models.ts
 model/problemDetailInvalidParam.ts
 model/problemDetailParam.ts

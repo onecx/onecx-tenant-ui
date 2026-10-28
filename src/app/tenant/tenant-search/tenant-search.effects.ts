@@ -23,6 +23,7 @@ import {
   UpdateTenantRequest,
   ImagesAPIService,
   UploadImageRequestParams,
+  MimeType,
   RefType,
   DeleteImageRequestParams,
   Tenant,
@@ -388,9 +389,25 @@ export class TenantSearchEffects {
   }
 
   private getUpdateImageOperation(itemToEditId: string, image: File): Observable<any> {
+    function mapMimeType(type: string): MimeType {
+      switch (type) {
+        case 'image/svg+xml':
+          return MimeType.Svgxml
+        case 'image/jpg':
+          return MimeType.Jpg
+        case 'image/jpeg':
+          return MimeType.Jpeg
+        case 'image/png':
+          return MimeType.Png
+        default:
+          return MimeType.Png
+      }
+    }
+
     const uploadParams: UploadImageRequestParams = {
       refId: itemToEditId,
       refType: RefType.Logo,
+      mimeType: mapMimeType(image.type),
       body: image
     }
     return this.imageService.uploadImage(uploadParams)
