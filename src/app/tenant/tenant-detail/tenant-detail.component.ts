@@ -20,8 +20,6 @@ import { TabsModule } from 'primeng/tabs'
 import { TextareaModule } from 'primeng/textarea'
 import { TooltipModule } from 'primeng/tooltip'
 
-import { TabMenuModule } from 'primeng/tabmenu'
-
 import {
   AngularAcceleratorModule,
   DialogButtonClicked,
@@ -46,7 +44,6 @@ import { TenantDetailDialogResult, TenantDetailViewModel, TenantDialogMode } fro
     FloatLabelModule,
     InputTextModule,
     ReactiveFormsModule,
-    TabMenuModule,
     TabsModule,
     TextareaModule,
     TooltipModule,
@@ -80,13 +77,13 @@ export class TenantDetailComponent
   public formGroup!: FormGroup
 
   public TenantDialogMode = TenantDialogMode
-  primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
-  dialogResult: TenantDetailDialogResult | undefined = undefined
-  hasExistingImage = true
-  imageRemoved = false
-  uploadedFile: File | null = null
-  uploadedFilePreview: string | null = null
-  tenantDefaultImagePath: string = environment.TENANT_IMAGE_PATH
+  public primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter()
+  public dialogResult: TenantDetailDialogResult | undefined = undefined
+  public hasExistingImage = true
+  public imageRemoved = false
+  public uploadedFile: File | null = null
+  public uploadedFilePreview: string | null = null
+  public tenantDefaultImagePath: string = environment.TENANT_IMAGE_PATH
   public dateFormat = 'M/d/yy, hh:mm:ss a'
   private readonly baseImagePath: string
   private uploadedFileUrl: string | null = null

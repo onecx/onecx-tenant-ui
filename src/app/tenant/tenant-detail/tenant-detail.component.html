@@ -73,18 +73,18 @@
                 exists only for Sonar report
               </label>
 
-              <div class="flex justify-content-center h-3rem">
+              <div class="flex justify-content-center h-3rem w-6rem">
                 @if (uploadedFile) {
                   <img
                     id="tm_detail_form_image_uploaded"
-                    class="border-round-sm max-h-3rem max-w-8rem"
+                    class="border-round-sm max-h-3rem max-w-6rem"
                     [src]="uploadedFilePreview"
                     alt="Logo"
                   />
                 } @else if (imageRemoved || !hasExistingImage) {
                   <img
                     id="tm_detail_form_image_default"
-                    class="border-round-sm max-h-3rem max-w-8rem"
+                    class="border-round-sm max-h-3rem max-w-6rem"
                     [src]="tenantDefaultImagePath"
                     class="pi pi-image image-placeholder"
                     [alt]="'LOGO.PLACEHOLDER' | translate"
@@ -92,7 +92,7 @@
                 } @else if (!imageRemoved && hasExistingImage) {
                   <img
                     id="tm_detail_form_image_preview"
-                    class="border-round-sm max-h-3rem max-w-8rem"
+                    class="border-round-sm max-h-3rem max-w-6rem"
                     [ocxSrc]="getImageUrl()"
                     (load)="onImageLoad()"
                     (error)="onImageError()"
