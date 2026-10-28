@@ -21,6 +21,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ImageInfo } from '../model/imageInfo';
 // @ts-ignore
+import { MimeType } from '../model/mimeType';
+// @ts-ignore
 import { ProblemDetailResponse } from '../model/problemDetailResponse';
 // @ts-ignore
 import { RefType } from '../model/refType';
@@ -41,6 +43,7 @@ export interface GetImageRequestParams {
 }
 
 export interface UploadImageRequestParams {
+    mimeType: MimeType;
     refId: string;
     refType: RefType;
     body: Blob;
@@ -248,6 +251,10 @@ export class ImagesAPIService {
     public uploadImage(requestParameters: UploadImageRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ImageInfo>>;
     public uploadImage(requestParameters: UploadImageRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ImageInfo>>;
     public uploadImage(requestParameters: UploadImageRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const mimeType = requestParameters.mimeType;
+        if (mimeType === null || mimeType === undefined) {
+            throw new Error('Required parameter mimeType was null or undefined when calling uploadImage.');
+        }
         const refId = requestParameters.refId;
         if (refId === null || refId === undefined) {
             throw new Error('Required parameter refId was null or undefined when calling uploadImage.');
@@ -262,6 +269,9 @@ export class ImagesAPIService {
         }
 
         let localVarHeaders = this.defaultHeaders;
+        if (mimeType !== undefined && mimeType !== null) {
+            localVarHeaders = localVarHeaders.set('mimeType', String(mimeType));
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

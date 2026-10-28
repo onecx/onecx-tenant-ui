@@ -55,7 +55,6 @@ describe('TenantSearchComponent', () => {
     })
   })
 
-  /* eslint-disable @typescript-eslint/no-var-requires */
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -85,7 +84,6 @@ describe('TenantSearchComponent', () => {
       ]
     }).compileComponents()
   }))
-  /* eslint-disable @typescript-eslint/no-var-requires */
 
   beforeEach(async () => {
     const userService = TestBed.inject(UserService)

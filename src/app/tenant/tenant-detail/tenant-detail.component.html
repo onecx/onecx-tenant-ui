@@ -65,7 +65,7 @@
                 #fileInput
                 id="tm_detail_form_image_input"
                 type="file"
-                accept="image/png, image/jpeg"
+                accept="image/*"
                 class="hidden"
                 (change)="handleFileChange($event)"
               />
@@ -73,31 +73,33 @@
                 exists only for Sonar report
               </label>
 
-              @if (uploadedFile) {
-                <img
-                  id="tm_detail_form_image_uploaded"
-                  class="border-round-sm max-h-3rem max-w-5rem"
-                  [src]="uploadedFilePreview"
-                  alt="Logo"
-                />
-              } @else if (imageRemoved || !hasExistingImage) {
-                <img
-                  id="tm_detail_form_image_default"
-                  class="border-round-sm max-h-3rem max-w-5rem"
-                  [src]="tenantDefaultImagePath"
-                  class="pi pi-image image-placeholder"
-                  [alt]="'LOGO.PLACEHOLDER' | translate"
-                />
-              } @else if (!imageRemoved && hasExistingImage) {
-                <img
-                  id="tm_detail_form_image_preview"
-                  class="border-round-sm max-h-3rem max-w-5rem"
-                  [ocxSrc]="getImageUrl()"
-                  (load)="onImageLoad()"
-                  (error)="onImageError()"
-                  alt="Logo"
-                />
-              }
+              <div class="flex justify-content-center h-3rem">
+                @if (uploadedFile) {
+                  <img
+                    id="tm_detail_form_image_uploaded"
+                    class="border-round-sm max-h-3rem max-w-8rem"
+                    [src]="uploadedFilePreview"
+                    alt="Logo"
+                  />
+                } @else if (imageRemoved || !hasExistingImage) {
+                  <img
+                    id="tm_detail_form_image_default"
+                    class="border-round-sm max-h-3rem max-w-8rem"
+                    [src]="tenantDefaultImagePath"
+                    class="pi pi-image image-placeholder"
+                    [alt]="'LOGO.PLACEHOLDER' | translate"
+                  />
+                } @else if (!imageRemoved && hasExistingImage) {
+                  <img
+                    id="tm_detail_form_image_preview"
+                    class="border-round-sm max-h-3rem max-w-8rem"
+                    [ocxSrc]="getImageUrl()"
+                    (load)="onImageLoad()"
+                    (error)="onImageError()"
+                    alt="Logo"
+                  />
+                }
+              </div>
 
               @if (dialogMode !== TenantDialogMode.DETAILS) {
                 <p-button
@@ -123,7 +125,7 @@
           }
           <p-floatlabel variant="on" class="w-full">
             <textarea
-              pInputTextarea
+              pTextarea
               rows="3"
               type="text"
               id="tm_detail_form_description"

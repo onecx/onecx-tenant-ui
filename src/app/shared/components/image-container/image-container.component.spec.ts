@@ -103,7 +103,7 @@ describe('ImageContainerComponent', () => {
       jest.spyOn(component.imageLoadResult, 'emit')
 
       component.url = '/external/url'
-      component['urlType'] === 'ext-url'
+      component['urlType'] = 'ext-url'
       component.bffUrl = '/bff/url'
 
       component.onImageLoadError()
@@ -118,7 +118,7 @@ describe('ImageContainerComponent', () => {
 
       component['defaultImageUrl'] = 'default-url'
       component.url = '/external/url'
-      component['urlType'] === 'ext-url'
+      component['urlType'] = 'ext-url'
       component.bffUrl = undefined
 
       component.onImageLoadError()

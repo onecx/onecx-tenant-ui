@@ -9,13 +9,13 @@ import {
 } from '@angular/router'
 import { ROUTER_NAVIGATED, RouterNavigatedAction } from '@ngrx/router-store'
 import { MockStore, createMockStore } from '@ngrx/store/testing'
-import { ReplaySubject, of, throwError } from 'rxjs'
+import { ReplaySubject, firstValueFrom, of, throwError } from 'rxjs'
 import { hot } from 'jest-marbles'
 
 import { PortalMessageService, UserService } from '@onecx/angular-integration-interface'
 import { PortalDialogService } from '@onecx/angular-accelerator'
 
-import { ImagesAPIService, RefType, TenantAPIService } from 'src/app/shared/generated'
+import { ImagesAPIService, MimeType, RefType, TenantAPIService } from 'src/app/shared/generated'
 
 import { TenantSearchEffects, DialogConfig } from './tenant-search.effects'
 import { TenantSearchActions } from './tenant-search.actions'
@@ -38,12 +38,10 @@ class MockRouter implements Partial<Router> {
   effectsActions: ReplaySubject<any>
 
   routeFor = (component: Type<any>) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.root!.component! = component
   }
 
   setRouterUrl = (url: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.snapshot.url = url
   }
 
@@ -57,7 +55,6 @@ class MockRouter implements Partial<Router> {
   }
 
   setRouterParams = (params: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.routerState!.snapshot.root.queryParams = params
   }
 
@@ -612,6 +609,7 @@ describe('TenantSearchEffects:', () => {
       const imageRequest = {
         refId: objectId,
         refType: RefType.Logo,
+        mimeType: MimeType.Png,
         body: image
       }
       store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: objectId, orgId: 'org1' }])
@@ -634,6 +632,44 @@ describe('TenantSearchEffects:', () => {
         done()
       })
     })
+    const mimeTypeCases: [string, MimeType][] = [
+      ['image/svg+xml', MimeType.Svgxml],
+      ['image/jpg', MimeType.Jpg],
+      ['image/jpeg', MimeType.Jpeg],
+      ['image/png', MimeType.Png],
+      ['image/unknown', MimeType.Png]
+    ]
+    it.each(mimeTypeCases)(
+      'should map image type %s to mimeType %s when updating tenant with image',
+      async (fileType, expectedMimeType) => {
+        const objectId = '1'
+        const itemToEdit = {
+          orgId: '2',
+          description: 'Test Desc'
+        }
+        const image = new Blob([], { type: fileType })
+        store.overrideSelector(tenantSearchSelectors.selectResults, [{ id: objectId, orgId: 'org1' }])
+
+        jest
+          .spyOn(mockedDialogService, 'openDialog')
+          .mockReturnValue(of({ button: 'primary', result: { id: objectId, image, ...itemToEdit } } as any))
+        jest.spyOn(mockedTenantService, 'updateTenant').mockReturnValue(of(itemToEdit as any))
+        jest.spyOn(mockedImageService, 'uploadImage').mockReturnValue(of({} as any))
+
+        const effects = initEffects()
+        effectsActions.next(TenantSearchActions.editTenantButtonClicked({ id: objectId }))
+
+        const action = await firstValueFrom(effects.editButtonClicked$)
+        expect(mockedImageService.uploadImage).toHaveBeenCalledWith({
+          refId: objectId,
+          refType: RefType.Logo,
+          mimeType: expectedMimeType,
+          body: image
+        })
+        expect(action.type).toBe(TenantSearchActions.updateTenantSucceeded.type)
+      }
+    )
+
     it('should delete image when flagged as removed', (done) => {
       const objectId = '1'
       const itemToEdit = {
@@ -712,6 +748,7 @@ describe('TenantSearchEffects:', () => {
       const uploadImageRequest = {
         refId: objectId,
         refType: RefType.Logo,
+        mimeType: MimeType.Png,
         body: image
       }
 

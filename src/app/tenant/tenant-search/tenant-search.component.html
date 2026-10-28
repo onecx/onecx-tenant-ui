@@ -113,10 +113,10 @@
               <article
                 [id]="'tm_search_data_list_row_' + i"
                 class="w-full sm:mx-3 py-1 px-3 flex flex-row flex-nowrap justify-content-start align-items-center column-gap-3 border-1 border-transparent border-round-sm transition-colors transition-duration-150 hover:surface-100 hover:border-100 cursor-pointer list-item-row"
-                [attr.aria-label]="item['orgId']"
                 (click)="handleOpenEntryDetails(item)"
-                (onkeypress)="handleOpenEntryDetails(item)"
                 (keydown.enter)="handleOpenEntryDetails(item)"
+                (keydown.space)="handleOpenEntryDetails(item)"
+                [attr.aria-label]="item['orgId']"
               >
                 <div
                   class="p-0 h-3rem sm:h-4rem col-4 sm:col-3 md:col-2 flex justify-content-around align-items-center"
@@ -173,8 +173,8 @@
                   [style]="{ margin: '0rem;' }"
                   styleClass="cursor-pointer hover:bg-gray-200 text-center m-2 p-1"
                   (click)="handleOpenEntryDetails(item)"
-                  (onkeypress)="handleOpenEntryDetails(item)"
                   (keydown.enter)="handleOpenEntryDetails(item)"
+                  (keydown.space)="handleOpenEntryDetails(item)"
                   [attr.aria-label]="'OrgId: ' + item['orgId'] + ', TenantId: ' + item['tenantId']"
                 >
                   <div
